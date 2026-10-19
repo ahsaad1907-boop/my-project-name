@@ -1,0 +1,378 @@
+Date,Time,Latitude,Longitude,Altitude,MGRS,UTM,Mission Name,Event,Tx Name,Serial #,Channel,Frequency,Modulation,Tx Power,Type,Type Data,Src1,Src1 Data,Src2,Src2 Data,TTS
+2026-07-18,20:03:43.000Z,35.2021979,-116.6368459,663.711,None,None,18JULPCC6,Quick Mission Start,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:03:47.000Z,35.2021968,-116.6368466,663.661,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:04:20.000Z,35.2024848,-116.6370965,670.986,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:04:20.000Z,35.2024848,-116.6370965,670.986,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:04:20.000Z,35.2024848,-116.6370965,670.986,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:04:55.000Z,35.2022653,-116.6369242,668.692,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:05:26.000Z,35.2022614,-116.6369487,668.604,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:05:26.000Z,35.2022614,-116.6369487,668.604,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:05:26.000Z,35.2022614,-116.6369487,668.604,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:06:00.000Z,35.2021756,-116.6368751,667.667,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:06:32.000Z,35.202099,-116.6366987,667.07,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:06:32.000Z,35.202099,-116.6366987,667.07,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:06:32.000Z,35.202099,-116.6366987,667.07,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:07:07.000Z,35.2021756,-116.6368432,663.502,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:07:37.000Z,35.2020818,-116.6367578,663.248,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:07:37.000Z,35.2020818,-116.6367578,663.248,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:07:37.000Z,35.2020818,-116.6367578,663.248,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:08:14.000Z,35.202156,-116.6368667,660.377,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:08:45.000Z,35.202235,-116.6370811,659.532,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:08:45.000Z,35.202235,-116.6370811,659.532,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:08:45.000Z,35.202235,-116.6370811,659.532,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:09:20.000Z,35.2021903,-116.6368486,665.286,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:10:25.000Z,35.2021977,-116.6368686,669.794,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:10:57.000Z,35.202226,-116.6368827,669.735,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:10:57.000Z,35.202226,-116.6368827,669.735,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:10:58.000Z,35.2022537,-116.6369009,669.445,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:11:32.000Z,35.2021778,-116.6368452,665.175,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:12:04.000Z,35.202213,-116.6368459,665.973,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:12:04.000Z,35.202213,-116.6368459,665.973,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:12:04.000Z,35.202213,-116.6368459,665.973,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:12:39.000Z,35.20218,-116.6368682,664.581,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:13:08.000Z,35.2021681,-116.6369427,663.522,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:13:08.000Z,35.2021681,-116.6369427,663.522,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:13:08.000Z,35.2021681,-116.6369427,663.522,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:13:45.000Z,35.2021923,-116.6368983,661.39,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:14:16.000Z,35.2021936,-116.6369583,660.231,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:14:16.000Z,35.2021936,-116.6369583,660.231,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:14:16.000Z,35.2021936,-116.6369583,660.231,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:14:50.000Z,35.2021828,-116.6368605,656.503,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:15:58.000Z,35.2021679,-116.6368419,656.506,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:16:28.000Z,35.2022111,-116.6369008,655.138,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:16:28.000Z,35.2022111,-116.6369008,655.138,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:16:28.000Z,35.2022111,-116.6369008,655.138,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:17:04.000Z,35.2021523,-116.6368205,654.439,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:17:34.000Z,35.2021326,-116.6368662,654.481,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:17:34.000Z,35.2021326,-116.6368662,654.481,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:17:34.000Z,35.2021326,-116.6368662,654.481,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:18:10.000Z,35.2021342,-116.6368219,656.252,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:18:41.000Z,35.2021601,-116.6368302,656.304,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:18:41.000Z,35.2021601,-116.6368302,656.304,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:18:41.000Z,35.2021601,-116.6368302,656.304,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:19:16.000Z,35.2021519,-116.6368337,659.477,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:19:46.000Z,35.2021565,-116.6367686,659.744,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:19:46.000Z,35.2021565,-116.6367686,659.744,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:19:46.000Z,35.2021565,-116.6367686,659.744,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:20:23.000Z,35.2021417,-116.636819,661.321,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:20:52.000Z,35.2022041,-116.6368952,662.474,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:20:52.000Z,35.2022041,-116.6368952,662.474,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:20:52.000Z,35.2022041,-116.6368952,662.474,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:21:29.000Z,35.2021589,-116.6368187,665.268,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:22:00.000Z,35.2021727,-116.6368691,665.637,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:22:00.000Z,35.2021727,-116.6368691,665.637,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:22:00.000Z,35.2021727,-116.6368691,665.637,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:22:35.000Z,35.2021588,-116.6367931,663.735,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:23:42.000Z,35.2021872,-116.6367914,657.34,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:24:12.000Z,35.2023126,-116.6367443,655.66,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:24:12.000Z,35.2023126,-116.6367443,655.66,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:24:12.000Z,35.2023126,-116.6367443,655.66,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:24:48.000Z,35.2021947,-116.636783,654.365,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:25:19.000Z,35.2022163,-116.6367603,653.771,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:25:19.000Z,35.2022163,-116.6367603,653.771,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:25:19.000Z,35.2022163,-116.6367603,653.771,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:25:54.000Z,35.2021674,-116.6367693,655.244,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:26:25.000Z,35.202192,-116.6367382,655.987,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:26:25.000Z,35.202192,-116.6367382,655.987,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:26:25.000Z,35.202192,-116.6367382,655.987,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:27:01.000Z,35.2021825,-116.6367708,654.058,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:27:31.000Z,35.2021274,-116.6368235,653.393,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:27:31.000Z,35.2021274,-116.6368235,653.393,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:27:32.000Z,35.2021236,-116.6368202,653.396,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:28:07.000Z,35.2021556,-116.6367912,651.766,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:28:38.000Z,35.2021072,-116.6367182,0.0,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:28:38.000Z,35.2021072,-116.6367182,0.0,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:28:38.000Z,35.2021072,-116.6367182,0.0,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:29:13.000Z,35.2021392,-116.6367727,655.052,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:29:44.000Z,35.2021472,-116.636859,0.0,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:29:44.000Z,35.2021472,-116.636859,0.0,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:29:44.000Z,35.2021472,-116.636859,0.0,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:30:19.000Z,35.2021634,-116.6367867,652.027,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:30:49.000Z,35.2021619,-116.636868,0.0,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:30:49.000Z,35.2021619,-116.636868,0.0,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:30:49.000Z,35.2021619,-116.636868,0.0,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:31:26.000Z,35.2021719,-116.6368169,648.075,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:31:57.000Z,35.2022963,-116.6367705,0.0,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:31:57.000Z,35.2022963,-116.6367705,0.0,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:31:57.000Z,35.2022963,-116.6367705,0.0,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:32:31.000Z,35.2021843,-116.6368209,643.815,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:33:03.000Z,35.2022391,-116.6367812,645.444,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:33:03.000Z,35.2022391,-116.6367812,645.444,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:33:03.000Z,35.2022391,-116.6367812,645.444,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:33:38.000Z,35.2021822,-116.6368207,647.023,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:34:09.000Z,35.2021538,-116.6368194,648.307,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:34:09.000Z,35.2021538,-116.6368194,648.307,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:34:09.000Z,35.2021538,-116.6368194,648.307,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:34:43.000Z,35.2021543,-116.636837,654.007,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:35:16.000Z,35.2022308,-116.6368563,653.586,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:35:16.000Z,35.2022308,-116.6368563,653.586,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:35:16.000Z,35.2022308,-116.6368563,653.586,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:35:51.000Z,35.2021613,-116.6368353,657.878,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:36:22.000Z,35.2022647,-116.6368037,660.693,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:36:22.000Z,35.2022647,-116.6368037,660.693,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:36:22.000Z,35.2022647,-116.6368037,660.693,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:36:57.000Z,35.2021494,-116.6368327,663.182,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:37:28.000Z,35.2020557,-116.6369145,663.502,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:37:28.000Z,35.2020557,-116.6369145,663.502,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:37:28.000Z,35.2020557,-116.6369145,663.502,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:38:03.000Z,35.2021519,-116.636821,664.896,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:38:35.000Z,35.2020246,-116.6367822,0.0,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:38:35.000Z,35.2020246,-116.6367822,0.0,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:38:35.000Z,35.2020246,-116.6367822,0.0,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:39:10.000Z,35.2021446,-116.6367837,663.609,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:39:41.000Z,35.2019771,-116.6368339,662.935,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:39:41.000Z,35.2019771,-116.6368339,662.935,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:39:41.000Z,35.2019771,-116.6368339,662.935,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:40:16.000Z,35.2021119,-116.6367793,666.408,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:40:47.000Z,35.2020344,-116.6367239,666.873,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:40:47.000Z,35.2020344,-116.6367239,666.873,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:40:47.000Z,35.2020344,-116.6367239,666.873,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:41:22.000Z,35.2021184,-116.6367695,669.737,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:41:54.000Z,35.2020553,-116.6367698,671.201,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:41:54.000Z,35.2020553,-116.6367698,671.201,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:41:54.000Z,35.2020553,-116.6367698,671.201,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:42:29.000Z,35.2021176,-116.6367727,672.462,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:43:00.000Z,35.2021515,-116.6367116,672.452,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:43:00.000Z,35.2021515,-116.6367116,672.452,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:43:00.000Z,35.2021515,-116.6367116,672.452,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:43:35.000Z,35.2021408,-116.6367946,668.042,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:44:06.000Z,35.2020741,-116.6367637,666.029,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:44:06.000Z,35.2020741,-116.6367637,666.029,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:44:06.000Z,35.2020741,-116.6367637,666.029,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:44:41.000Z,35.2021422,-116.6368029,665.291,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:45:12.000Z,35.202217,-116.6368252,665.519,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:45:12.000Z,35.202217,-116.6368252,665.519,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:45:12.000Z,35.202217,-116.6368252,665.519,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:45:47.000Z,35.2021816,-116.6367914,664.873,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:46:18.000Z,35.2021865,-116.636805,665.201,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:46:18.000Z,35.2021865,-116.636805,665.201,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:46:18.000Z,35.2021865,-116.636805,665.201,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:46:52.000Z,35.2021805,-116.6367797,663.967,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:47:24.000Z,35.202165,-116.6367409,664.723,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:47:24.000Z,35.202165,-116.6367409,664.723,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:47:24.000Z,35.202165,-116.6367409,664.723,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:48:00.000Z,35.2021819,-116.6367603,662.38,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:48:31.000Z,35.2020471,-116.6368001,661.584,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:48:31.000Z,35.2020471,-116.6368001,661.584,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:48:31.000Z,35.2020471,-116.6368001,661.584,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:49:06.000Z,35.2021459,-116.6367631,663.598,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:49:37.000Z,35.2020587,-116.636771,665.345,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:49:37.000Z,35.2020587,-116.636771,665.345,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:49:37.000Z,35.2020587,-116.636771,665.345,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:50:13.000Z,35.2021343,-116.6367815,665.368,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:50:43.000Z,35.2021823,-116.6367222,666.084,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:50:43.000Z,35.2021823,-116.6367222,666.084,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:50:43.000Z,35.2021823,-116.6367222,666.084,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:51:17.000Z,35.2021136,-116.6367867,668.217,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:51:51.000Z,35.2021062,-116.6368141,668.825,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:51:51.000Z,35.2021062,-116.6368141,668.825,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:51:51.000Z,35.2021062,-116.6368141,668.825,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:52:25.000Z,35.2021096,-116.6367957,672.808,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:52:56.000Z,35.2021855,-116.6367981,672.685,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:52:56.000Z,35.2021855,-116.6367981,672.685,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:52:57.000Z,35.2021876,-116.6368004,672.707,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:53:32.000Z,35.2020901,-116.6367964,677.062,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:54:03.000Z,35.2020234,-116.6367731,0.0,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:54:03.000Z,35.2020234,-116.6367731,0.0,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:54:03.000Z,35.2020234,-116.6367731,0.0,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:54:38.000Z,35.2020624,-116.6367904,680.165,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:55:09.000Z,35.2019624,-116.6368604,679.715,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:55:09.000Z,35.2019624,-116.6368604,679.715,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:55:09.000Z,35.2019624,-116.6368604,679.715,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:55:43.000Z,35.2020325,-116.6368134,691.056,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:56:15.000Z,35.2020897,-116.6368112,697.517,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:56:15.000Z,35.2020897,-116.6368112,697.517,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:56:15.000Z,35.2020897,-116.6368112,697.517,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:56:50.000Z,35.2020228,-116.6368369,718.153,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:57:22.000Z,35.2019104,-116.6368396,712.161,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:57:22.000Z,35.2019104,-116.6368396,712.161,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:57:22.000Z,35.2019104,-116.6368396,712.161,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:57:56.000Z,35.2019702,-116.6367788,708.107,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:58:27.000Z,35.2018802,-116.6367477,706.894,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:58:27.000Z,35.2018802,-116.6367477,706.894,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:58:27.000Z,35.2018802,-116.6367477,706.894,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:59:02.000Z,35.2019775,-116.6367921,698.397,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:59:34.000Z,35.2020013,-116.6367366,694.65,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,20:59:34.000Z,35.2020013,-116.6367366,694.65,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,20:59:34.000Z,35.2020013,-116.6367366,694.65,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:00:10.000Z,35.2020638,-116.6368107,682.488,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:00:40.000Z,35.2020881,-116.6367619,678.15,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:00:40.000Z,35.2020881,-116.6367619,678.15,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:00:41.000Z,35.202093,-116.6367478,677.974,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:01:16.000Z,35.2021057,-116.6368453,671.414,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:01:47.000Z,35.2020855,-116.6368732,668.453,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:01:47.000Z,35.2020855,-116.6368732,668.453,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:01:47.000Z,35.2020855,-116.6368732,668.453,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:02:22.000Z,35.2021443,-116.6368669,666.376,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:02:53.000Z,35.2020176,-116.6365423,664.662,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:02:53.000Z,35.2020176,-116.6365423,664.662,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:02:53.000Z,35.2020176,-116.6365423,664.662,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:03:29.000Z,35.2021104,-116.6368326,667.03,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:03:59.000Z,35.2020966,-116.6367726,665.797,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:03:59.000Z,35.2020966,-116.6367726,665.797,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:04:00.000Z,35.2020813,-116.6368567,665.856,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:04:34.000Z,35.2021284,-116.6368156,664.168,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:05:06.000Z,35.2022215,-116.636773,663.756,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:05:06.000Z,35.2022215,-116.636773,663.756,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:05:06.000Z,35.2022215,-116.636773,663.756,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:05:39.000Z,35.2021634,-116.636829,656.863,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:06:12.000Z,35.2023757,-116.6367574,656.545,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:06:12.000Z,35.2023757,-116.6367574,656.545,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:06:12.000Z,35.2023757,-116.6367574,656.545,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:06:48.000Z,35.2021779,-116.6367752,654.693,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:07:18.000Z,35.2021327,-116.6367054,654.869,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:07:18.000Z,35.2021327,-116.6367054,654.869,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:07:18.000Z,35.2021327,-116.6367054,654.869,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:07:54.000Z,35.2022183,-116.6366595,639.657,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:08:24.000Z,35.2021823,-116.6366763,633.766,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:08:24.000Z,35.2021823,-116.6366763,633.766,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:08:24.000Z,35.2021823,-116.6366763,633.766,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:09:00.000Z,35.2022312,-116.6365892,630.883,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:09:31.000Z,35.2022239,-116.636619,628.44,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:09:31.000Z,35.2022239,-116.636619,628.44,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:09:31.000Z,35.2022239,-116.636619,628.44,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:10:06.000Z,35.2022143,-116.6366216,633.74,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:10:37.000Z,35.2021949,-116.6366875,637.032,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:10:37.000Z,35.2021949,-116.6366875,637.032,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:10:37.000Z,35.2021949,-116.6366875,637.032,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:11:11.000Z,35.202173,-116.6367169,649.081,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:12:19.000Z,35.2021655,-116.6367919,650.128,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:12:50.000Z,35.2018572,-116.6368773,648.576,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:12:50.000Z,35.2018572,-116.6368773,648.576,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:12:50.000Z,35.2018572,-116.6368773,648.576,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:13:25.000Z,35.2021288,-116.6368236,652.703,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:13:55.000Z,35.2022033,-116.6368142,652.265,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:13:55.000Z,35.2022033,-116.6368142,652.265,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:13:55.000Z,35.2022033,-116.6368142,652.265,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:14:31.000Z,35.2021661,-116.6368296,655.963,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:15:03.000Z,35.2020758,-116.6368611,657.877,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:15:03.000Z,35.2020758,-116.6368611,657.877,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:15:03.000Z,35.2020758,-116.6368611,657.877,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:15:37.000Z,35.2021719,-116.6368524,655.366,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:16:07.000Z,35.2020961,-116.6368878,653.126,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:16:07.000Z,35.2020961,-116.6368878,653.126,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:16:07.000Z,35.2020961,-116.6368878,653.126,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:16:42.000Z,35.2021571,-116.6368537,658.274,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:17:15.000Z,35.2020937,-116.6367795,655.949,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:17:15.000Z,35.2020937,-116.6367795,655.949,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:17:16.000Z,35.202096,-116.6367608,655.744,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:17:51.000Z,35.2021811,-116.6368513,660.787,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:18:57.000Z,35.2021825,-116.6368684,669.045,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:19:29.000Z,35.2021154,-116.6367523,671.297,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:19:29.000Z,35.2021154,-116.6367523,671.297,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:19:29.000Z,35.2021154,-116.6367523,671.297,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:20:03.000Z,35.2021925,-116.6368592,669.092,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:21:10.000Z,35.2021924,-116.6368701,672.763,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:21:40.000Z,35.2021216,-116.636905,672.99,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:21:40.000Z,35.2021216,-116.636905,672.99,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:21:40.000Z,35.2021216,-116.636905,672.99,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:22:16.000Z,35.2021889,-116.6368481,673.499,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:22:47.000Z,35.2020344,-116.6368318,672.199,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:22:47.000Z,35.2020344,-116.6368318,672.199,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:22:47.000Z,35.2020344,-116.6368318,672.199,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:23:21.000Z,35.2021447,-116.636801,666.147,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:24:29.000Z,35.202158,-116.6367774,668.169,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:24:58.000Z,35.2021094,-116.6368433,667.604,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:24:58.000Z,35.2021094,-116.6368433,667.604,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:25:00.000Z,35.2021074,-116.6368322,667.806,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:25:35.000Z,35.2021933,-116.6367697,666.314,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:26:07.000Z,35.2022867,-116.6366654,666.395,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:26:07.000Z,35.2022867,-116.6366654,666.395,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:26:07.000Z,35.2022867,-116.6366654,666.395,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:26:41.000Z,35.2021821,-116.6367647,667.804,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:27:12.000Z,35.2022027,-116.6367855,666.506,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:27:12.000Z,35.2022027,-116.6367855,666.506,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:27:12.000Z,35.2022027,-116.6367855,666.506,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:27:48.000Z,35.203362,-116.636511,661.115,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:28:19.000Z,35.2073401,-116.6375781,656.687,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:28:19.000Z,35.2073401,-116.6375781,656.687,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:28:19.000Z,35.2073401,-116.6375781,656.687,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:28:53.000Z,35.2110351,-116.6406987,657.975,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:30:02.000Z,35.2119904,-116.6414862,660.008,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:30:32.000Z,35.2120833,-116.6415676,661.714,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:30:32.000Z,35.2120833,-116.6415676,661.714,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:30:32.000Z,35.2120833,-116.6415676,661.714,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:31:08.000Z,35.2132439,-116.6425689,661.373,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:31:38.000Z,35.2145317,-116.6436987,661.819,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:31:38.000Z,35.2145317,-116.6436987,661.819,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:31:38.000Z,35.2145317,-116.6436987,661.819,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:32:14.000Z,35.2164207,-116.6455549,666.207,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:33:20.000Z,35.2201855,-116.6491759,676.249,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:33:51.000Z,35.2218786,-116.650859,677.933,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:33:51.000Z,35.2218786,-116.650859,677.933,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:33:51.000Z,35.2218786,-116.650859,677.933,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:34:26.000Z,35.2239023,-116.6527742,685.25,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:34:58.000Z,35.2257729,-116.6545275,0.0,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:35:34.000Z,35.2274801,-116.656429,696.252,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:36:40.000Z,35.2259616,-116.6608336,704.647,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:37:10.000Z,35.224899,-116.6627675,712.354,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:37:10.000Z,35.224899,-116.6627675,712.354,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:37:12.000Z,35.2248547,-116.66288,711.958,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:37:46.000Z,35.2243868,-116.6638187,719.754,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:38:18.000Z,35.2237058,-116.6639793,721.411,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:38:18.000Z,35.2237058,-116.6639793,721.411,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:38:18.000Z,35.2237058,-116.6639793,721.411,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:38:52.000Z,35.2225207,-116.6663908,733.899,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:40:00.000Z,35.2210664,-116.6685321,745.86,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:40:30.000Z,35.2203007,-116.6686782,745.425,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:40:30.000Z,35.2203007,-116.6686782,745.425,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:40:30.000Z,35.2203007,-116.6686782,745.425,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:41:06.000Z,35.2193824,-116.6681524,737.893,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:41:38.000Z,35.2187404,-116.6682004,738.009,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:41:38.000Z,35.2187404,-116.6682004,738.009,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:41:38.000Z,35.2187404,-116.6682004,738.009,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:42:13.000Z,35.2188649,-116.6682768,739.931,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:43:19.000Z,35.2187406,-116.6682675,722.572,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:43:50.000Z,35.2187801,-116.6680549,0.0,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:43:50.000Z,35.2187801,-116.6680549,0.0,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:43:50.000Z,35.2187801,-116.6680549,0.0,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:44:25.000Z,35.2189118,-116.6681809,725.036,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:44:56.000Z,35.2187651,-116.6681986,724.025,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:44:56.000Z,35.2187651,-116.6681986,724.025,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:44:56.000Z,35.2187651,-116.6681986,724.025,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:45:32.000Z,35.2189164,-116.6681864,724.871,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:46:03.000Z,35.2189834,-116.6682291,0.0,None,None,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-18,21:46:03.000Z,35.2189834,-116.6682291,0.0,None,None,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:46:03.000Z,35.2189834,-116.6682291,0.0,None,None,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-18,21:46:39.000Z,35.2189767,-116.6682063,726.672,None,None,18JULPCC6,RF ON,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,RF OFF,44675,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission End,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,18JULPCC6,Mission Repeat,44675,INV1A100050,none,none,none,none,none,none,none,none,none,none,none

@@ -1,0 +1,560 @@
+Date,Time,Latitude,Longitude,Altitude,MGRS,UTM,Mission Name,Event,Tx Name,Serial #,Channel,Frequency,Modulation,Tx Power,Type,Type Data,Src1,Src1 Data,Src2,Src2 Data,TTS
+2026-07-23,17:05:36.000Z,35.2148114,-116.6666829,734.481,None,None,23JULPCC6,Quick Mission Start,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:05:41.000Z,35.2148118,-116.6666861,733.783,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:06:48.000Z,35.2148065,-116.6666782,729.818,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:07:54.000Z,35.2148087,-116.6666867,734.595,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:09:00.000Z,35.2148161,-116.6666765,740.13,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:10:07.000Z,35.2148223,-116.6666583,741.31,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:11:13.000Z,35.2148202,-116.6666702,737.597,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:12:18.000Z,35.2147753,-116.6666723,734.891,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:13:26.000Z,35.2147585,-116.6667122,730.621,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:14:32.000Z,35.21473,-116.6667682,725.897,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:15:37.000Z,35.2147639,-116.6666838,735.8,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:16:44.000Z,35.2148034,-116.6666442,732.045,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:17:50.000Z,35.2147844,-116.6666945,729.623,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:18:57.000Z,35.2147978,-116.6667095,736.12,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:20:03.000Z,35.2148313,-116.6666368,736.461,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:21:09.000Z,35.2148149,-116.6667023,738.719,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:22:16.000Z,35.2148397,-116.6666713,731.966,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:23:21.000Z,35.2148429,-116.6666352,728.198,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:24:29.000Z,35.2148465,-116.6666288,729.283,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:25:35.000Z,35.214892,-116.6666139,713.627,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:26:41.000Z,35.2148747,-116.6666711,721.407,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:27:47.000Z,35.2148794,-116.6666478,722.406,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:28:52.000Z,35.2148725,-116.6666315,719.396,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,17:30:00.000Z,35.2148354,-116.6666004,731.838,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-23,18:48:45.000Z,35.2148199,-116.6666281,736.303,None,None,23JULPCC6,Mission Start,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,18:48:49.000Z,35.2148224,-116.6666244,736.721,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,18:49:54.000Z,35.2148047,-116.6666781,731.507,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,18:51:03.000Z,35.214756,-116.6666097,735.187,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,18:52:09.000Z,35.2148132,-116.6667181,719.368,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,18:53:15.000Z,35.2147671,-116.6665588,714.057,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,18:54:21.000Z,35.2148,-116.6667391,709.754,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,18:55:27.000Z,35.2148747,-116.6668194,699.993,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,18:56:35.000Z,35.2148191,-116.6666895,725.105,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,18:57:40.000Z,35.2148033,-116.6666378,726.943,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,18:58:47.000Z,35.2147952,-116.6666204,728.397,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,18:59:54.000Z,35.2147899,-116.6666472,732.3,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:00:59.000Z,35.2148088,-116.6665763,729.563,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:02:05.000Z,35.2148044,-116.666511,737.51,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:03:14.000Z,35.2146511,-116.6664689,728.37,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:04:21.000Z,35.2147084,-116.6666884,738.157,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:05:25.000Z,35.2145484,-116.6665183,744.589,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:06:32.000Z,35.2147446,-116.6666984,748.86,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:07:40.000Z,35.2147786,-116.6666221,737.285,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:08:48.000Z,35.2147597,-116.6666495,739.283,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:09:53.000Z,35.2147804,-116.666665,735.096,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:11:01.000Z,35.2148188,-116.6666576,739.902,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:12:07.000Z,35.2148414,-116.6666376,743.332,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:13:14.000Z,35.2147717,-116.6666594,732.679,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:14:20.000Z,35.2147745,-116.6666704,728.22,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:15:26.000Z,35.2146498,-116.6666846,710.895,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:16:33.000Z,35.2147783,-116.6666574,727.193,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:17:40.000Z,35.214734,-116.6666766,727.15,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:18:46.000Z,35.2147943,-116.6666775,737.821,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:19:52.000Z,35.2148126,-116.6666537,742.486,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:20:59.000Z,35.2148614,-116.6666805,742.135,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:22:02.000Z,35.2148332,-116.6666762,742.243,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:23:11.000Z,35.2148206,-116.6666682,740.427,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:24:17.000Z,35.2148172,-116.6666559,739.809,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:25:22.000Z,35.2148291,-116.6666734,733.779,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:26:30.000Z,35.2148079,-116.6666792,731.892,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:27:33.000Z,35.2148191,-116.6667067,729.553,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:28:42.000Z,35.2148348,-116.6666839,726.909,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:29:48.000Z,35.2148179,-116.6667091,711.59,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:30:54.000Z,35.214815,-116.6666378,732.465,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:32:01.000Z,35.2147879,-116.6665515,747.825,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:33:07.000Z,35.2149566,-116.6668634,729.782,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:34:14.000Z,35.2147267,-116.6666317,754.054,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:35:20.000Z,35.2147161,-116.6666523,759.625,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:36:26.000Z,35.2149971,-116.6667604,706.007,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:37:34.000Z,35.2147573,-116.6665531,749.465,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:38:40.000Z,35.214331,-116.6663121,796.383,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:39:46.000Z,35.2147743,-116.6665253,754.123,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:40:52.000Z,35.2147583,-116.6664562,786.721,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:41:59.000Z,35.2140868,-116.6671048,701.394,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:43:06.000Z,35.2007804,-116.6587635,747.033,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:44:13.000Z,35.1866337,-116.6503068,613.317,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:45:18.000Z,35.1697969,-116.6438695,-367.978,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:46:26.000Z,35.2146482,-116.6659107,588.911,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:47:33.000Z,35.2137163,-116.6592884,965.509,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:48:38.000Z,35.2148498,-116.6666562,721.395,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:49:47.000Z,35.2147158,-116.6665805,725.633,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:50:53.000Z,35.2174896,-116.668278,738.113,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:51:57.000Z,35.2186848,-116.6689926,742.699,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:53:05.000Z,35.218689,-116.6689648,749.301,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:54:11.000Z,35.2186698,-116.6689524,739.46,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:55:19.000Z,35.2187145,-116.6689281,737.047,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:56:25.000Z,35.2187122,-116.6689772,740.973,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:57:31.000Z,35.2187319,-116.6689332,743.654,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:58:37.000Z,35.2187257,-116.6689176,739.516,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,19:59:44.000Z,35.2187142,-116.6689881,746.835,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:00:50.000Z,35.2186777,-116.6689888,748.569,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:01:57.000Z,35.2186825,-116.6689895,746.353,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:03:04.000Z,35.2186775,-116.6689654,748.219,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:04:10.000Z,35.2186674,-116.6689646,749.696,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:05:15.000Z,35.2187,-116.668987,751.069,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:06:22.000Z,35.2186785,-116.6689662,753.611,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:07:29.000Z,35.2186736,-116.6689811,735.908,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:08:35.000Z,35.2186534,-116.6690015,752.7,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:09:41.000Z,35.2186255,-116.669004,755.113,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:10:49.000Z,35.2186244,-116.6690206,744.73,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:11:54.000Z,35.2185961,-116.6690264,761.729,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:13:01.000Z,35.2187047,-116.6690593,776.198,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:14:07.000Z,35.2186975,-116.669359,787.226,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:15:13.000Z,35.2186174,-116.6691491,770.067,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:16:18.000Z,35.218822,-116.6689972,731.737,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:17:26.000Z,35.2185623,-116.669018,744.396,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:18:32.000Z,35.2185501,-116.6690557,754.274,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:19:37.000Z,35.2185998,-116.6688637,738.13,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:20:45.000Z,35.2186519,-116.6690188,728.579,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:21:50.000Z,35.2186585,-116.6689226,735.158,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:22:58.000Z,35.2186895,-116.6689781,716.469,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:24:03.000Z,35.2186679,-116.6691111,727.301,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:25:10.000Z,35.2178316,-116.6692294,721.926,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:26:16.000Z,35.2186709,-116.6690419,741.252,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:27:22.000Z,35.2187102,-116.669044,740.585,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:28:28.000Z,35.2186299,-116.6690441,742.268,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:29:34.000Z,35.2184531,-116.6689578,759.677,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:30:41.000Z,35.2185968,-116.6689724,731.847,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:31:47.000Z,35.2186655,-116.6689843,733.095,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:32:54.000Z,35.2185181,-116.6690084,722.18,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:34:00.000Z,35.2187684,-116.6689883,728.135,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:35:08.000Z,35.218602,-116.668962,732.155,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-23,20:35:39.000Z,35.220162,-116.6684291,0.0,None,None,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-23,20:35:39.000Z,35.220162,-116.6684291,0.0,None,None,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:35:39.000Z,35.220162,-116.6684291,0.0,None,None,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:36:13.000Z,35.2188284,-116.6689936,735.168,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:37:21.000Z,35.2186979,-116.6689735,738.229,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:38:26.000Z,35.2187132,-116.6690098,735.687,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:39:34.000Z,35.21871,-116.668817,749.725,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-23,20:40:40.000Z,35.2187296,-116.6687332,712.883,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+2026-07-24,16:14:09.000Z,35.2186598,-116.6683122,733.991,None,None,23JULPCC6,Mission Start,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-24,16:14:15.000Z,35.2186569,-116.6683154,735.231,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-24,16:15:21.000Z,35.218647,-116.6683196,724.408,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-24,16:16:28.000Z,35.2204359,-116.6696167,745.05,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-24,16:17:34.000Z,35.2205984,-116.669638,751.402,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-24,16:18:39.000Z,35.2205882,-116.669647,746.72,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Location,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-24,16:19:45.000Z,35.2206414,-116.6696266,747.176,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-24,16:20:52.000Z,35.220653,-116.6696641,746.508,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-24,17:06:56.000Z,35.2147816,-116.6666725,728.552,None,None,23JULPCC6,Mission Start,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-24,17:07:02.000Z,35.2147842,-116.666677,729.099,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,RF OFF,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission End,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,No GPS,23JULPCC6,Mission Repeat,44675 repeater,INV1A100050,none,none,none,none,none,none,none,none,none,none,none
+2026-07-24,17:08:07.000Z,35.214817,-116.6666885,734.263,None,None,23JULPCC6,RF ON,44675 repeater,INV1A100050,1,446.75,CW,10.0,Single,none,Carrier,none,none,none,none
