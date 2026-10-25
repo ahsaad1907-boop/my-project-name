@@ -178,7 +178,7 @@ def lookup_timeline_scale(selected_date):
     
     # FIXED: Reverted back to returning clean string fields so callback doesn't lose data
     marks = {}
-    for step in range(0, total_range + 1, 30):
+    for step in range(0, total_range + 1, 60):
         total_m = m_start + step
         h = total_m // 60
         m = total_m % 60
