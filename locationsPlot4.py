@@ -162,7 +162,7 @@ for date_key, path_directory in DATES_CONFIG.items():
         "min_minute": min_minute, "max_minute": max_minute
     }
 
-print("Cache verification ready. Initializing web layout server...")
+print("Cache verification ready. Initializing web layout server....")
 
 
 def lookup_timeline_scale(selected_date):
