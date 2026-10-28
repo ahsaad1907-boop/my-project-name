@@ -16,7 +16,6 @@ DATES_CONFIG = {
 
 
 def parse_time_to_minutes(time_str):
-    """Extracts total minutes since midnight to eliminate date conflicts."""
     if pd.isna(time_str):
         return None
     t_str = str(time_str).strip()
@@ -33,7 +32,6 @@ def parse_time_to_minutes(time_str):
 
 
 def load_clean_file(full_path):
-    """Parses files dynamically handling explicit column labels."""
     try:
         df = pd.read_csv(full_path)
         lat_col = "Latitude" if "Latitude" in df.columns else "lat_dd"
@@ -168,7 +166,6 @@ print("Cache verification ready. Initializing web layout server...")
 
 
 def lookup_timeline_scale(selected_date):
-    """Generates precise, bounded minute slider steps as clean string data."""
     day_cache = GLOBAL_DATA_CACHE[selected_date]
     m_start = day_cache["min_minute"]
     m_end = day_cache["max_minute"]
@@ -176,7 +173,6 @@ def lookup_timeline_scale(selected_date):
     total_range = m_end - m_start
     total_range = max(1, total_range)
     
-    # FIXED: Reverted back to returning clean string fields so callback doesn't lose data
     marks = {}
     for step in range(0, total_range + 1, 60):
         total_m = m_start + step
@@ -205,7 +201,6 @@ app.layout = html.Div([
         style={'fontFamily': 'sans-serif'}
     ),
     
-    # FIXED: Bypassed version limits by embedding a raw stylesheet override string right in the layout
     html.Div([
         html.Button(
             "▶ Play", id="play-button", n_clicks=0,
@@ -227,7 +222,6 @@ app.layout = html.Div([
         dcc.Interval(
             id="play-interval", interval=300, n_intervals=0, disabled=True
         ),
-        # 👑 CSS Injection: This resizes the time marks beneath the track safely on all versions
         html.Div(
             style={'display': 'none'},
             children=html.Iframe(
@@ -257,7 +251,6 @@ app.layout = html.Div([
 })
 
 
-# --- 4. CALLBACK 1: PLAYBACK TIMING TOGGLE MATRIX ---
 @app.callback(
     [Output('play-button', 'children'),
      Output('play-interval', 'disabled')],
@@ -276,7 +269,6 @@ def toggle_playback(n_clicks, current_range, max_val):
         return "▶ Play", True
 
 
-# --- 4.5 CALLBACK 1.5: TIMELINE RANGE STRETCHER ENGINE ---
 @app.callback(
     [Output('time-slider', 'max'), 
      Output('time-slider', 'marks'), 
@@ -295,11 +287,9 @@ def update_slider_mechanics(selected_date, n_intervals, current_range):
         return total_range, marks, [0, total_range]
         
     if trigger_id == 'play-interval':
-        # Safely extract single list element integers out of the handle array
         low_handle = int(current_range[0]) + 1
         high_handle = int(current_range[1])
         
-        # Stop advancing the trailing node if it catches up to the leading node
         if low_handle >= high_handle:
             low_handle = high_handle
             
@@ -308,7 +298,6 @@ def update_slider_mechanics(selected_date, n_intervals, current_range):
     return total_range, marks, current_range
 
 
-# --- 5. CALLBACK 2: DATA PROCESSING & MAP GENERATOR ---
 @app.callback(
     Output('folium-map', 'srcDoc'),
     Input('date-tabs', 'value'),
@@ -321,7 +310,6 @@ def update_map(selected_date, slider_range_window):
         
         start_minute_offset = day_cache["min_minute"]
         
-        # FIXED: Extract individual integer indices out of the handle selection window array
         min_cutoff = start_minute_offset + int(slider_range_window[0])
         max_cutoff = start_minute_offset + int(slider_range_window[1])
         
@@ -360,7 +348,6 @@ def update_map(selected_date, slider_range_window):
                         sliced_df[[lt, ln]].values.tolist()
                     )
                     if lb and not sliced_df[lb].dropna().empty:
-                        # Target the trailing handle index row securely (iloc[0])
                         raw_lob_degrees = float(sliced_df[lb].iloc[0])
                         latest_lob_val = f"{raw_lob_degrees}°"
 
