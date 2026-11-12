@@ -187,7 +187,7 @@ def lookup_timeline_scale(selected_date):
     return total_range, marks
 
 
-app = Dash(__name__)
+app = Dash(__name__, suppress_callback_exceptions=True)
 
 app.layout = html.Div([
     html.Div(
@@ -216,6 +216,36 @@ app.layout = html.Div([
     
     dcc.Store(id='chat-history-store', data=[]),
     dcc.Store(id='bot-features-store', data={}),
+    dcc.Store(id='active-handle-store', data={'handle': 0, 'prev_val': None}),
+    html.Button(id='handle-0-focus-btn', n_clicks=0, style={'display': 'none'}),
+    html.Button(id='handle-1-focus-btn', n_clicks=0, style={'display': 'none'}),
+    html.Iframe(
+        style={'display': 'none'},
+        srcDoc="""
+        <script>
+            setInterval(function() {
+                var doc = window.parent.document;
+                var handles = doc.querySelectorAll('#slider-wrapper-container .rc-slider-handle');
+                if (handles.length >= 2) {
+                    if (!handles[0].dataset.hooked) {
+                        handles[0].dataset.hooked = '1';
+                        handles[0].addEventListener('pointerdown', function() {
+                            var b0 = doc.getElementById('handle-0-focus-btn');
+                            if (b0) b0.click();
+                        });
+                    }
+                    if (!handles[1].dataset.hooked) {
+                        handles[1].dataset.hooked = '1';
+                        handles[1].addEventListener('pointerdown', function() {
+                            var b1 = doc.getElementById('handle-1-focus-btn');
+                            if (b1) b1.click();
+                        });
+                    }
+                }
+            }, 300);
+        </script>
+        """
+    ),
     
     html.H1(
         "Sensor Tracking Dashboard", 
@@ -229,47 +259,96 @@ app.layout = html.Div([
         style={'fontFamily': 'sans-serif'}
     ),
     
-    html.Div([
-        html.Button(
-            "▶ Play", id="play-button", n_clicks=0,
-            style={
-                'marginRight': '15px', 'fontWeight': 'bold', 
-                'padding': '5px 15px', 'fontFamily': 'sans-serif',
-                'cursor': 'pointer', 'borderRadius': '4px',
-                'border': '1px solid #ccc', 'backgroundColor': '#f8f9fa'
-            }
-        ),
-        html.Label(
-            "Adjust Chronological Time (Minute Window Selection):", 
-            style={'fontWeight': 'bold', 'fontFamily': 'sans-serif'}
-        ),
-        dcc.RangeSlider(
-            id='time-slider', min=0, max=100, step=1, value=[0, 100],
-            marks={0: '00:00'}
-        ),
-        dcc.Interval(
-            id="play-interval", interval=300, n_intervals=0, disabled=True
-        ),
-    ], id="controls-container", style={
-        'width': '96%', 'margin': 'auto', 'padding': '15px 0 10px 0',
-        'display': 'flex', 'alignItems': 'center', 'boxSizing': 'border-box'
-    }),
+        html.Div([
+            html.Button(
+                "▶ Play", id="play-button", n_clicks=0,
+                style={
+                    'marginRight': '15px', 'fontWeight': 'bold', 
+                    'padding': '5px 15px', 'fontFamily': 'sans-serif',
+                    'cursor': 'pointer', 'borderRadius': '4px',
+                    'border': '1px solid #ccc', 'backgroundColor': '#f8f9fa'
+                }
+            ),
+            # 1. MOVED FIRST: Slider Mode buttons
+            html.Div([
+                html.Label("Slider Mode:", style={'fontWeight': 'bold', 'fontFamily': 'sans-serif', 'marginRight': '6px'}),
+                dcc.RadioItems(
+                    id='slider-mode-toggle',
+                    options=[
+                        {'label': 'Range Window', 'value': 'RANGE'},
+                        {'label': 'Single Marker', 'value': 'SINGLE'}
+                    ],
+                    value='RANGE',
+                    inline=True,
+                    labelStyle={'marginRight': '6px', 'display': 'inline-flex', 'alignItems': 'center', 'cursor': 'pointer'},
+                    inputStyle={'marginRight': '3px'},
+                    style={'fontFamily': 'sans-serif', 'display': 'inline-flex', 'alignItems': 'center', 'marginRight': '15px'}
+                )
+            ], style={'display': 'flex', 'alignItems': 'center'}),
+
+            # 2. MOVED SECOND: Start / End Marker buttons
+            dcc.RadioItems(
+                id='active-handle-selector',
+                options=[
+                    {'label': 'Start Marker', 'value': 0},
+                    {'label': 'End Marker', 'value': 1}
+                ],
+                value=0,
+                inline=False,
+                labelStyle={'display': 'flex', 'alignItems': 'center', 'marginBottom': '2px', 'cursor': 'pointer'},
+                inputStyle={'marginRight': '4px'},
+                style={
+                    'fontFamily': 'sans-serif', 'fontSize': '12px', 
+                    'display': 'flex', 'flexDirection': 'column', 
+                    'justifyContent': 'center', 'marginRight': '15px'
+                }
+            ),
+            
+            html.Div(
+                id='slider-wrapper-container', 
+                children=[
+                    dcc.RangeSlider(id='time-slider', min=0, max=100, step=1, value=[0, 100])
+                ],
+                style={'flex': '1'}
+            ),
+            
+            dcc.Interval(
+                id="play-interval", interval=300, n_intervals=0, disabled=True
+            ),
+        ], id="controls-container", style={
+            'width': '96%', 'margin': 'auto', 'padding': '15px 0 10px 0',
+            'display': 'flex', 'alignItems': 'center', 'boxSizing': 'border-box'
+        }),
     
     html.Div([
         html.Div([
             html.Iframe(
-                id='folium-map', width='95%', height='100%', style={'border': 'none'}
+                id='folium-map', width='90%', height='100%', style={'border': 'none'}
             )
-        ], style={'width': '80%', 'height': '95%', 'position': 'relative', 'overflow': 'hidden'}),
+        ], style={'width': '75%', 'height': '95%', 'position': 'relative', 'overflow': 'hidden'}),
         
         html.Div([
-            html.Div(
-                "AI Tracking Assistant", 
-                style={
-                    'fontWeight': 'bold', 'padding': '10px', 'backgroundColor': '#007bff', 
-                    'color': 'white', 'textAlign': 'center', 'borderRadius': '4px 4px 0 0'
-                }
-            ),
+            # 1. CHAT HEADER CONTAINER
+            html.Div([
+                html.Div(
+                    "AI Tracking Assistant", 
+                    style={'fontWeight': 'bold', 'color': 'white'}
+                ),
+                html.Button(
+                    "🗑️ Reset Chat", id='chat-reset-btn', n_clicks=0,
+                    style={
+                        'backgroundColor': '#dc3545', 'color': 'white', 
+                        'border': 'none', 'borderRadius': '4px', 'padding': '4px 8px', 
+                        'fontSize': '11px', 'cursor': 'pointer', 'fontWeight': 'bold'
+                    }
+                )
+            ], style={
+                'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center',
+                'padding': '10px', 'backgroundColor': '#007bff', 'borderRadius': '4px 4px 0 0',
+                'boxSizing': 'border-box'
+            }),
+            
+            # 2. CHAT HISTORY VIEWER CONTAINER (Keep completely empty for render_chat_log)
             html.Div(
                 id='chat-conversation-area', 
                 style={
@@ -277,10 +356,12 @@ app.layout = html.Div([
                     'backgroundColor': '#f1f3f5', 'fontSize': '13px'
                 }
             ),
+            
+            # 3. CHAT INPUT ACTIONS FOOTER BAR
             html.Div([
                 dcc.Input(
                     id='chat-user-input', type='text', 
-                    placeholder="e.g. 35.21, -116.64 name=Sensor X time=14:30 color=red lob=145",
+                    placeholder='e.g. 35.21, -116.64 name="Sensor X" time=14:30 color=red lob=95',
                     style={'flex': '1', 'padding': '0px', 'border': '1px solid #ccc', 'borderRadius': '4px'},
                     n_submit=0
                 ),
@@ -288,11 +369,36 @@ app.layout = html.Div([
                     "Send", id='chat-send-btn', n_clicks=0,
                     style={'padding': '8px 12px', 'marginLeft': '5px', 'backgroundColor': '#28a745', 'color': 'white', 'border': 'none', 'borderRadius': '4px', 'cursor': 'pointer'}
                 )
-            ], style={'display': 'flex', 'padding': '10px', 'backgroundColor': '#fff', 'borderTop': '1px solid #ddd'})
+            ], style={'display': 'flex', 'padding': '10px', 'backgroundColor': '#fff', 'borderTop': '1px solid #ddd'}),
+            
+            # 4. FIXED STANDALONE SCROLL INJECTOR (Placed as an independent sibling node)
+            html.Iframe(
+                srcDoc="""
+                <script>
+                    window.parent.document.addEventListener("DOMContentLoaded", function() {
+                        // Monitor the parent window layout directly 
+                        var checkExist = setInterval(function() {
+                            var target = window.parent.document.getElementById('chat-conversation-area');
+                            if (target) {
+                                clearInterval(checkExist);
+                                var observer = new MutationObserver(function() {
+                                    setTimeout(function() {
+                                        target.scrollTop = target.scrollHeight;
+                                    }, 20);
+                                });
+                                observer.observe(target, { childList: true, subtree: true });
+                            }
+                        }, 100);
+                    });
+                </script>
+                """,
+                style={'display': 'none'}
+            )
+            
         ], style={
-            'width': '23%', 'height': '95%', 'display': 'flex', 'flexDirection': 'column', 
+            'width': '30.5%', 'height': '95%', 'display': 'flex', 'flexDirection': 'column', 
             'borderLeft': '0px solid #ddd', 'boxSizing': 'border-box', 'fontFamily': 'sans-serif',
-            'overflow': 'hidden', 'marginLeft': '-105px'
+            'overflow': 'hidden', 'marginLeft': '-142px'
         })
     ], style={
         'flex': '1', 'width': '100vw', 'display': 'flex', 'flexDirection': 'row', 'overflow': 'hidden', 'boxSizing': 'border-box'
@@ -302,68 +408,134 @@ app.layout = html.Div([
     'margin': '0', 'padding': '0', 'overflow': 'hidden', 'boxSizing': 'border-box'
 })
 
+@app.callback(
+    [Output('active-handle-store', 'data'),
+     Output('active-handle-selector', 'value')],
+    [Input('active-handle-selector', 'value'),
+     Input('time-slider', 'value'),
+     Input('date-tabs', 'value')],
+    [State('active-handle-store', 'data'),
+     State('play-interval', 'disabled'),
+     State('slider-mode-toggle', 'value')]
+)
+def track_highlighted_handle(selected_handle, current_val, selected_date, store_data, is_disabled, mode):
+    ctx = callback_context
+    trigger_id = ctx.triggered[0]['prop_id'].split('.')[0] if ctx.triggered else None
+    store_data = store_data or {'handle': 0, 'prev_val': None}
+
+    if trigger_id == 'date-tabs' or mode == 'SINGLE':
+        return {'handle': 0, 'prev_val': current_val}, 0
+
+    # User explicitly clicked Start Marker or End Marker
+    if trigger_id == 'active-handle-selector':
+        return {'handle': selected_handle, 'prev_val': current_val}, selected_handle
+
+    # User dragged one of the handles manually while paused
+    active_handle = store_data.get('handle', 0)
+    prev_val = store_data.get('prev_val')
+
+    if is_disabled and isinstance(current_val, list) and len(current_val) == 2 and isinstance(prev_val, list) and len(prev_val) == 2:
+        if current_val[0] != prev_val[0] and current_val[1] == prev_val[1]:
+            active_handle = 0
+        elif current_val[1] != prev_val[1] and current_val[0] == prev_val[0]:
+            active_handle = 1
+
+    return {'handle': active_handle, 'prev_val': current_val}, active_handle
+
+@app.callback(
+    Output('slider-wrapper-container', 'children'),
+    [Input('slider-mode-toggle', 'value'),
+     Input('date-tabs', 'value')]
+)
+def render_dynamic_slider_component(mode, selected_date):
+    total_range, marks = lookup_timeline_scale(selected_date)
+    
+    # Force the strict type structures explicitly at the moment of creation
+    if mode == 'SINGLE':
+        return dcc.Slider(
+            id='time-slider', 
+            min=0, 
+            max=total_range, 
+            step=1, 
+            value=0,
+            marks=marks
+        )
+    else:
+        return dcc.RangeSlider(
+            id='time-slider', 
+            min=0, 
+            max=total_range, 
+            step=1, 
+            value=[0, total_range],
+            marks=marks
+        )
 
 @app.callback(
     [Output('play-button', 'children'),
      Output('play-interval', 'disabled')],
     [Input('play-button', 'n_clicks'),
      Input('time-slider', 'value')],
-    [State('time-slider', 'max')]
+    [State('time-slider', 'max'),
+     State('play-interval', 'disabled'),
+     State('active-handle-store', 'data')]
 )
-def toggle_playback(n_clicks, current_range, max_val):
-    if n_clicks == 0:
-        return "▶ Play", True
-    if current_range[0] >= current_range[1]:
-        return "▶ Play", True
-    if n_clicks % 2 == 1:
-        return "⏸ Pause", False
-    else:
-        return "▶ Play", True
-
-
-@app.callback(
-    [Output('time-slider', 'max'), 
-     Output('time-slider', 'marks'), 
-     Output('time-slider', 'value')],
-    [Input('date-tabs', 'value'),
-     Input('play-interval', 'n_intervals')],
-    [State('time-slider', 'value')]
-)
-def update_slider_mechanics(selected_date, n_intervals, current_range):
+def toggle_playback(n_clicks, current_slider_val, max_val, is_disabled, store_data):
     ctx = callback_context
     trigger_id = ctx.triggered[0]['prop_id'].split('.')[0] if ctx.triggered else None
-    
-    total_range, marks = lookup_timeline_scale(selected_date)
-    
-    if trigger_id == 'date-tabs' or trigger_id is None:
-        return total_range, marks, [0, total_range]
-        
-    if trigger_id == 'play-interval':
-        low_handle = int(current_range[0]) + 1
-        high_handle = int(current_range[1])
-        
-        if low_handle >= high_handle:
-            low_handle = high_handle
-            
-        return total_range, marks, [low_handle, high_handle]
-        
-    return total_range, marks, current_range
 
+    if not trigger_id or current_slider_val is None:
+        return "▶ Play", True
+
+    active_handle = (store_data or {}).get('handle', 0)
+    at_end = False
+
+    if isinstance(current_slider_val, list) and len(current_slider_val) >= 2:
+        if active_handle == 0 and current_slider_val[0] >= current_slider_val[1]:
+            at_end = True
+        elif active_handle == 1 and max_val is not None and current_slider_val[1] >= max_val:
+            at_end = True
+    else:
+        if max_val is not None and current_slider_val >= max_val:
+            at_end = True
+
+    if trigger_id == 'time-slider':
+        if at_end:
+            return "▶ Play", True
+        return ("▶ Play", True) if is_disabled else ("⏸ Pause", False)
+
+    if trigger_id == 'play-button':
+        if is_disabled:
+            if at_end:
+                return "▶ Play", True
+            return "⏸ Pause", False
+        return "▶ Play", True
+
+    return "▶ Play", True
 
 @app.callback(
     [Output('chat-history-store', 'data'),
      Output('bot-features-store', 'data'),
      Output('chat-user-input', 'value')],
     [Input('chat-send-btn', 'n_clicks'),
-     Input('chat-user-input', 'n_submit')],
+     Input('chat-user-input', 'n_submit'),
+     Input('chat-reset-btn', 'n_clicks')],
     [State('chat-user-input', 'value'),
      State('chat-history-store', 'data'),
      State('bot-features-store', 'data'),
      State('date-tabs', 'value')]
 )
-def process_chatbot_intelligence(clicks, sub, text, history, features, current_date):
+def process_chatbot_intelligence(clicks, sub, reset_clicks, text, history, features, current_date):
     ctx = callback_context
-    if not ctx.triggered or not text:
+    if not ctx.triggered:
+        return history, features, text
+
+    # FIXED HERE: Correctly index the triggered list element down to its property string identifier
+    trigger_id = ctx.triggered[0]['prop_id'].split('.')[0] if ctx.triggered else None
+
+    if trigger_id == 'chat-reset-btn':
+        return [], features, ""
+
+    if not text:
         return history, features, text
 
     user_msg = text.strip()
@@ -375,24 +547,59 @@ def process_chatbot_intelligence(clicks, sub, text, history, features, current_d
 
     history.append({"speaker": "user", "text": user_msg})
 
-    # 1. Geographic Coordinate Parsing 
+    delete_match = re.search(r'delete\s*=\s*([^\s]+)', user_msg, re.IGNORECASE)
+    if delete_match:
+        target_to_delete = delete_match.group(1).strip()
+        time_match_del = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', user_msg, re.IGNORECASE)
+        
+        if target_to_delete.lower() == 'all':
+            features[current_date] = {}
+            bot_response = f"🗑️ **Cleared all custom coordinates** on **{current_date}**."
+        elif target_to_delete in features[current_date]:
+            if time_match_del:
+                del_hour = int(time_match_del.group(1))
+                del_minute = int(time_match_del.group(2))
+                target_time_str = f"{del_hour:02d}:{del_minute:02d}"
+                
+                nodes = features[current_date][target_to_delete]
+                original_count = len(nodes)
+                updated_nodes = [node for node in nodes if node.get("time_label") != target_time_str]
+                
+                if len(updated_nodes) < original_count:
+                    if not updated_nodes:
+                        del features[current_date][target_to_delete]
+                        bot_response = f"🗑️ Removed final coordinate point from **{target_to_delete}**."
+                    else:
+                        features[current_date][target_to_delete] = updated_nodes
+                        bot_response = f"🗑️ Removed point at **{target_time_str}** from **{target_to_delete}**."
+                else:
+                    bot_response = f"❌ No point found at **{target_time_str}**."
+            else:
+                del features[current_date][target_to_delete]
+                bot_response = f"🗑️ Removed entire track **{target_to_delete}**."
+        else:
+            bot_response = f"❌ Track **'{target_to_delete}'** not found on **{current_date}**."
+            
+        history.append({"speaker": "assistant", "text": bot_response})
+        return history, features, ""
+
     coord_pattern = r'(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)'
     coord_match = re.search(coord_pattern, user_msg)
     
-    # 2. Token Extraction
-    name_match = re.search(r'name\s*=\s*([^\s]+)', user_msg, re.IGNORECASE)
+    # FIXED HERE: Isolated regex grouping boundaries to avoid dropping quotes into string names
+    name_match = re.search(r'name\s*=\s*(?:["“”]([^"“”]+)["“”]|([^\s]+))', user_msg, re.IGNORECASE)
     lob_match = re.search(r'lob\s*=\s*(\d+)', user_msg, re.IGNORECASE)
     time_match = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', user_msg, re.IGNORECASE)
     color_match = re.search(r'color\s*=\s*([^\s]+)', user_msg, re.IGNORECASE)
     
     if name_match:
-        label = name_match.group(1).strip()
+        label = name_match.group(1) if name_match.group(1) is not None else name_match.group(2)
+        label = label.strip().strip('"').strip('“').strip('”')
     else:
         label = f"AI-Sensor-{len(features[current_date]) + 1}"
         
     lob_val = float(lob_match.group(1)) if lob_match else None
     
-    # Standard Folium-supported map icon color matrix
     valid_folium_colors = [
         'red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 
         'darkblue', 'darkgreen', 'cadetblue', 'pink', 'lightblue', 'lightgreen', 
@@ -410,9 +617,9 @@ def process_chatbot_intelligence(clicks, sub, text, history, features, current_d
             unrecognized_color_entered = True
 
     if not coord_match:
-        bot_response = "❌ Could not parse geographic coordinates. Use format: `35.219, -116.648`"
+        bot_response = "❌ Could not parse coordinates. Use: `35.219, -116.648`"
     elif not time_match:
-        bot_response = "⚠️ **Missing Required Timestamp!** Provide a track time: `time=HH:MM`"
+        bot_response = "⚠️ **Missing Timestamp!** Provide a track time: `time=HH:MM`"
     else:
         lat = float(coord_match.group(1))
         lon = float(coord_match.group(2))
@@ -422,59 +629,47 @@ def process_chatbot_intelligence(clicks, sub, text, history, features, current_d
         calculated_minutes = target_hour * 60 + target_minute
         time_str = f"{target_hour:02d}:{target_minute:02d}"
 
-        # 3. CRITICAL: RangeSlider Timeline Bounds Check
         day_cache = GLOBAL_DATA_CACHE[current_date]
         day_min = day_cache["min_minute"]
         day_max = day_cache["max_minute"]
         
         if calculated_minutes < day_min or calculated_minutes > day_max:
-            # Convert cache bounds back to human-readable format for the error message
             min_h, min_m = day_min // 60, day_min % 60
             max_h, max_m = day_max // 60, day_max % 60
-            
-            # HALT EXECUTION: Format a clear error feedback response
-            bot_response = (
-                f"❌ **Timeline Range Error!** The entered time (**{time_str}**) falls outside the valid "
-                f"sensor slider boundaries for **{current_date}**.\n\n"
-                f"🕒 **Allowed Window:** `{min_h:02d}:{min_m:02d}` to `{max_h:02d}:{max_m:02d}`.\n"
-                f"Please verify your coordinate telemetry timestamps and try again."
-            )
+            bot_response = f"❌ **Timeline Error!** Window: `{min_h:02d}:{min_m:02d}` to `{max_h:02d}:{max_m:02d}`."
         else:
-            # Code block executes successfully only if it passes the boundary checks
             new_node = {
-                "lat": lat, 
-                "lon": lon, 
-                "lob": lob_val,
+                "lat": lat, "lon": lon, "lob": lob_val,
                 "normalized_minutes": calculated_minutes,
-                "time_label": time_str,
-                "color": chosen_color 
+                "time_label": time_str, "color": chosen_color 
             }
-            
             if label not in features[current_date]:
                 features[current_date][label] = []
-                
             features[current_date][label].append(new_node)
             features[current_date][label] = sorted(features[current_date][label], key=lambda x: x["normalized_minutes"])
             
+            # Restore your original descriptive conditional feedback messages
             node_count = len(features[current_date][label])
-            
             if node_count > 1:
                 bot_response = f"📈 Extended track **{label}** using color **'{chosen_color}'**."
             else:
                 bot_response = f"📍 Added point to **{label}** at {time_str} with theme color **'{chosen_color}'**."
                 
+            # ─── RESTORED COLOR VERIFICATION WARNING MESSAGE ───────────────────
             if unrecognized_color_entered:
                 bot_response += (
                     f"\n\n⚠️ **Note:** The entered color `'{input_color}'` is unrecognized. "
                     f"Defaulted to **'darkgreen'**. Try using one of these supported choices next time:\n"
                     f"`{', '.join(valid_folium_colors)}`"
                 )
+            # ───────────────────────────────────────────────────────────────────
                 
             if lob_val is not None:
                 bot_response += f"\n\nOrientation Line of Bearing set to **{lob_val}°**."
 
     history.append({"speaker": "assistant", "text": bot_response})
     return history, features, ""
+
 
 @app.callback(
     Output('chat-conversation-area', 'children'),
@@ -498,8 +693,63 @@ def render_chat_log(history):
                 'wordBreak': 'break-word', 'boxShadow': '1px 1px 2px rgba(0,0,0,0.05)'
             }
         ))
+        
+    # ─── NATIVE BROWSER ENGINE AUTO-SCROLL ─────────────────────────────
+    # Append a self-executing iframe directly into the message array list.
+    # It fires once right when the new text card mounts, completely isolated from Dash's state tree.
+    elements.append(html.Iframe(
+        srcDoc="""
+        <script>
+            setTimeout(function() {
+                var target = window.parent.document.getElementById('chat-conversation-area');
+                if (target) {
+                    target.scrollTop = target.scrollHeight;
+                }
+            }, 20);
+        </script>
+        """,
+        style={'display': 'none'}
+    ))
+    # ───────────────────────────────────────────────────────────────────
+    
     return html.Div(elements, style={'display': 'flex', 'flexDirection': 'column'})
 
+@app.callback(
+    [Output('time-slider', 'max'), 
+     Output('time-slider', 'marks'), 
+     Output('time-slider', 'value')],
+    [Input('date-tabs', 'value'),
+     Input('play-interval', 'n_intervals')],
+    [State('slider-mode-toggle', 'value'),
+     State('time-slider', 'value'),
+     State('active-handle-store', 'data')]
+)
+def update_slider_mechanics(selected_date, n_intervals, mode, current_val, store_data):
+    ctx = callback_context
+    trigger_id = ctx.triggered[0]['prop_id'].split('.')[0] if ctx.triggered else None
+    total_range, marks = lookup_timeline_scale(selected_date)
+    
+    if trigger_id == 'date-tabs' or trigger_id is None or trigger_id == '':
+        return total_range, marks, (0 if mode == 'SINGLE' else [0, total_range])
+        
+    if trigger_id == 'play-interval':
+        if mode == 'SINGLE':
+            curr = int(current_val) if isinstance(current_val, (int, float)) else 0
+            return total_range, marks, min(curr + 1, total_range)
+        else:
+            if isinstance(current_val, list) and len(current_val) == 2:
+                low_handle = int(current_val[0])
+                high_handle = int(current_val[1])
+                active_handle = (store_data or {}).get('handle', 0)
+
+                if active_handle == 0:
+                    low_handle = min(low_handle + 1, high_handle)
+                else:
+                    high_handle = min(high_handle + 1, total_range)
+                return total_range, marks, [low_handle, high_handle]
+            return total_range, marks, [0, total_range]
+        
+    return total_range, marks, (0 if mode == 'SINGLE' else [0, total_range])
 
 @app.callback(
     Output('folium-map', 'srcDoc'),
@@ -508,14 +758,19 @@ def render_chat_log(history):
      Input('bot-features-store', 'data')]
 )
 def update_map(selected_date, slider_range_window, bot_features):
+    if slider_range_window is None:
+        return ""
     try:
         my_map = None
         day_cache = GLOBAL_DATA_CACHE[selected_date]
-        
         start_minute_offset = day_cache["min_minute"]
         
-        min_cutoff = start_minute_offset + int(slider_range_window[0])
-        max_cutoff = start_minute_offset + int(slider_range_window[1])
+        if isinstance(slider_range_window, list):
+            min_cutoff = start_minute_offset + int(slider_range_window[0])
+            max_cutoff = start_minute_offset + int(slider_range_window[1])
+        else:
+            min_cutoff = start_minute_offset
+            max_cutoff = start_minute_offset + int(slider_range_window)
         
         use_sensors = selected_date in ["18JUL", "21JUL", "23JUL", "24JUL"]
         name_ch1 = "Sensor 10" if use_sensors else "Raven 1"
@@ -532,49 +787,75 @@ def update_map(selected_date, slider_range_window, bot_features):
         
         active_legend_items = []
         
+        # 1. High Performance Vectorized Static File Slicing
         for layer_name, (color, parsed_list, is_rabbit) in layers_definition.items():
             if not parsed_list:
                 continue
                 
-            feature_group = folium.FeatureGroup(name=layer_name)
             combined_points = []
             latest_lob_val = "N/A"
             raw_lob_degrees = None
+            file_time_str = "N/A"
             
             for item in parsed_list:
                 df, lt, ln, lb = item
                 if df.empty:
                     continue
-                    
-                dt_col = 'normalized_minutes'
-                sliced_df = df[(df[dt_col] >= min_cutoff) & (df[dt_col] <= max_cutoff)]
+                
+                mask = (df['normalized_minutes'] >= min_cutoff) & (df['normalized_minutes'] <= max_cutoff)
+                sliced_df = df.loc[mask]
+                
                 if not sliced_df.empty:
-                    combined_points.extend(
-                        sliced_df[[lt, ln]].values.tolist()
-                    )
-                    if lb and not sliced_df[lb].dropna().empty:
-                        raw_lob_degrees = float(sliced_df[lb].iloc[0])
-                        latest_lob_val = f"{raw_lob_degrees}°"
+                    combined_points.extend(sliced_df[[lt, ln]].to_numpy().tolist())
+                    
+                    if 'normalized_minutes' in sliced_df.columns:
+                        last_mins = int(sliced_df['normalized_minutes'].iloc[-1])
+                        file_time_str = f"{last_mins // 60:02d}:{last_mins % 60:02d}"
+                        
+                    if lb:
+                        valid_lobs = sliced_df[lb].dropna()
+                        if not valid_lobs.empty:
+                            raw_lob_degrees = float(valid_lobs.iloc[-1])
+                            latest_lob_val = f"{raw_lob_degrees}°"
 
             if combined_points:
+                if len(combined_points) > 200:
+                    combined_points = combined_points[::len(combined_points)//100]
+
                 if my_map is None:
-                    my_map = folium.Map(location=combined_points[0], zoom_start=12)
+                    my_map = folium.Map(location=combined_points[0], zoom_start=12, prefer_canvas=True)
+                
+                feature_group = folium.FeatureGroup(name=layer_name)
                 
                 folium.PolyLine(
                     combined_points, color=color, weight=3, opacity=0.8, dash_array='5,5'
                 ).add_to(feature_group)
                 
-                popup_msg = f"<b>{layer_name}</b><br>LOB Abs Degree: {latest_lob_val}"
-                trailing_head = combined_points[0]
+                trailing_head = combined_points[-1]
                 
+                # UNIFIED POPUP LAYOUT: File Extracted Layers
+                trailing_head = combined_points[-1]
+                
+                # FIXED HERE: Unpacked distinct array variables to prevent list formatting crashes
+                t_lat = trailing_head[0]
+                t_lon = trailing_head[1]
+                
+                # UNIFIED POPUP LAYOUT: File Extracted Layers
                 if is_rabbit:
-                    folium.Marker(
-                        location=trailing_head, popup=popup_msg, icon=folium.Icon(color=color)
-                    ).add_to(feature_group)
+                    popup_msg = (
+                        f"<b>{layer_name}</b><br>"
+                        f"Coordinates: Lat: {t_lat:.5f}, Lon: {t_lon:.5f}<br>"
+                        f"Timestamp: {file_time_str}"
+                    )
+                    folium.Marker(location=trailing_head, popup=popup_msg, icon=folium.Icon(color=color)).add_to(feature_group)
                 else:
-                    folium.CircleMarker(
-                        location=trailing_head, radius=7, color=color, fill=True, popup=popup_msg
-                    ).add_to(feature_group)
+                    popup_msg = (
+                        f"<b>{layer_name}</b><br>"
+                        f"Coordinates: Lat: {t_lat:.5f}, Lon: {t_lon:.5f}<br>"
+                        f"Timestamp: {file_time_str}<br>"
+                        f"LOB Abs Degree: {latest_lob_val}"
+                    )
+                    folium.CircleMarker(location=trailing_head, radius=7, color=color, fill=True, popup=popup_msg).add_to(feature_group)
                     
                     if raw_lob_degrees is not None:
                         cone_length = 0.08  
@@ -583,138 +864,182 @@ def update_map(selected_date, slider_range_window, bot_features):
                         angle_left = math.radians(raw_lob_degrees - fov_half_angle)
                         angle_right = math.radians(raw_lob_degrees + fov_half_angle)
                         
-                        left_lat = trailing_head[0] + (cone_length * math.cos(angle_left))
-                        left_lon = trailing_head[1] + (cone_length * math.sin(angle_left))
+                        left_lat = t_lat + (cone_length * math.cos(angle_left))
+                        left_lon = t_lon + (cone_length * math.sin(angle_left))
                         
-                        right_lat = trailing_head[0] + (cone_length * math.cos(angle_right))
-                        right_lon = trailing_head[1] + (cone_length * math.sin(angle_right))
+                        right_lat = t_lat + (cone_length * math.cos(angle_right))
+                        right_lon = t_lon + (cone_length * math.sin(angle_right))
                         
-                        folium.PolyLine(
-                            [trailing_head, [left_lat, left_lon]],
-                            color=color, weight=2, opacity=0.6
-                        ).add_to(feature_group)
-                        
-                        folium.PolyLine(
-                            [trailing_head, [right_lat, right_lon]],
-                            color=color, weight=2, opacity=0.6
-                        ).add_to(feature_group)
-                    
-                    if latest_lob_val != "N/A":
-                        folium.Marker(
-                            location=[trailing_head[0] + 0.001, trailing_head[1]],
-                            icon=folium.DivIcon(
-                                html=f"""<div style="font-family: sans-serif; 
-                                             font-size: 11px; font-weight: bold; 
-                                             color: black; background-color: rgba(255,255,255,0.7);
-                                             padding: 2px 4px; border-radius: 3px;
-                                             border: 1px solid {color}; white-space: nowrap;">
-                                             {layer_name}: {latest_lob_val}
-                                         </div>"""
-                            )
-                        ).add_to(feature_group)
+                        folium.PolyLine([trailing_head, [left_lat, left_lon]], color=color, weight=2, opacity=0.6).add_to(feature_group)
+                        folium.PolyLine([trailing_head, [right_lat, right_lon]], color=color, weight=2, opacity=0.6).add_to(feature_group)
+                
+                if latest_lob_val != "N/A" and not is_rabbit:
+                    folium.Marker(
+                        # FIXED HERE: Correctly add the 0.004 latitude offset to the float variable t_lat
+                        location=[t_lat + 0.004, t_lon],
+                        icon=folium.DivIcon(
+                            html=f"""<div style="font-family: sans-serif; font-size: 11px; font-weight: bold; color: black; background-color: rgba(255,255,255,0.7); padding: 2px 4px; border-radius: 3px; border: 1px solid {color}; white-space: nowrap; margin-top: -12px;">{layer_name}: {latest_lob_val}</div>"""
+                        )
+                    ).add_to(feature_group)
                 
                 active_legend_items.append((layer_name, color))
                 feature_group.add_to(my_map)
 
+        # 2. Render Dynamic Chat Assistant Tracking Layers
         if bot_features and selected_date in bot_features:
             for b_lbl, nodes in bot_features[selected_date].items():
-                
-                visible_nodes = []
-                for node in nodes:
-                    b_mins = node.get("normalized_minutes", 0)
-                    if min_cutoff <= b_mins <= max_cutoff:
-                        visible_nodes.append(node)
-                        
+                visible_nodes = [n for n in nodes if min_cutoff <= n.get("normalized_minutes", 0) <= max_cutoff]
                 if not visible_nodes:
                     continue
                     
                 most_recent_node = visible_nodes[-1]
                 track_color = most_recent_node.get("color", "darkgreen")
-                
                 bot_fg = folium.FeatureGroup(name=b_lbl)
                 combined_points = [[n["lat"], n["lon"]] for n in visible_nodes]
                 
                 if my_map is None:
-                    my_map = folium.Map(location=combined_points[0], zoom_start=12)
+                    my_map = folium.Map(location=combined_points[0], zoom_start=12, prefer_canvas=True)
                 
                 if len(combined_points) > 1:
-                    folium.PolyLine(
-                        combined_points, color=track_color, weight=3, opacity=0.8, dash_array='5,5'
-                    ).add_to(bot_fg)
+                    folium.PolyLine(combined_points, color=track_color, weight=3, opacity=0.8, dash_array='5,5').add_to(bot_fg)
                 
-                b_lat = most_recent_node["lat"]
-                b_lon = most_recent_node["lon"]
-                b_lob = most_recent_node["lob"]
-                b_time = most_recent_node.get("time_label", "N/A")
+                b_lat, b_lon = most_recent_node["lat"], most_recent_node["lon"]
+                b_lob, b_time = most_recent_node["lob"], most_recent_node.get("time_label", "N/A")
                 
-                p_text = f"<b>{b_lbl}</b> (Current Position)<br>Timestamp: {b_time}"
-                if b_lob is not None:
-                    p_text += f"<br>LOB: {b_lob}°"
+                is_bot_rabbit = "rabbit" in b_lbl.lower()
+                latest_bot_lob_str = f"{b_lob}°" if b_lob is not None else "N/A"
                 
-                folium.Marker(
-                    location=[b_lat, b_lon],
-                    popup=p_text,
-                    icon=folium.Icon(color=track_color, icon='info-sign')
-                ).add_to(bot_fg)
-                
-                if b_lob is not None:
-                    cone_l = 0.08
-                    fov_h = 20.0
-                    ang_l = math.radians(b_lob - fov_h)
-                    ang_r = math.radians(b_lob + fov_h)
+                # UNIFIED POPUP LAYOUT: Chatbot-Added Layers
+                if is_bot_rabbit:
+                    popup_msg = (
+                        f"<b>{b_lbl}</b><br>"
+                        f"Coordinates: Lat: {b_lat:.5f}, Lon: {b_lon:.5f}<br>"
+                        f"Timestamp: {b_time}"
+                    )
+                    folium.Marker(location=[b_lat, b_lon], popup=popup_msg, icon=folium.Icon(color=track_color, icon='info-sign')).add_to(bot_fg)
+                else:
+                    popup_msg = (
+                        f"<b>{b_lbl}</b><br>"
+                        f"Coordinates: Lat: {b_lat:.5f}, Lon: {b_lon:.5f}<br>"
+                        f"Timestamp: {b_time}<br>"
+                        f"LOB Abs Degree: {latest_bot_lob_str}"
+                    )
+                    folium.CircleMarker(location=[b_lat, b_lon], radius=7, color=track_color, fill=True, popup=popup_msg).add_to(bot_fg)
                     
-                    folium.PolyLine([[b_lat, b_lon], [b_lat + (cone_l * math.cos(ang_l)), b_lon + (cone_l * math.sin(ang_l))]], color=track_color, weight=2).add_to(bot_fg)
-                    folium.PolyLine([[b_lat, b_lon], [b_lat + (cone_l * math.cos(ang_r)), b_lon + (cone_l * math.sin(ang_r))]], color=track_color, weight=2).add_to(bot_fg)
+                    if b_lob is not None:
+                        cone_l = 0.08
+                        fov_h = 20.0
+                        ang_l, ang_r = math.radians(b_lob - fov_h), math.radians(b_lob + fov_h)
+                        folium.PolyLine([[b_lat, b_lon], [b_lat + (cone_l * math.cos(ang_l)), b_lon + (cone_l * math.sin(ang_l))]], color=track_color, weight=2).add_to(bot_fg)
+                        folium.PolyLine([[b_lat, b_lon], [b_lat + (cone_l * math.cos(ang_r)), b_lon + (cone_l * math.sin(ang_r))]], color=track_color, weight=2).add_to(bot_fg)
+                
+                if not is_bot_rabbit:
+                    folium.Marker(
+                        location=[b_lat + 0.004, b_lon],
+                        icon=folium.DivIcon(
+                            html=f"""<div style="font-family: sans-serif; font-size: 11px; font-weight: bold; color: black; background-color: rgba(255,255,255,0.7); padding: 2px 4px; border-radius: 3px; border: 1px solid {track_color}; white-space: nowrap; margin-top: -12px;">{b_lbl}: {latest_bot_lob_str}</div>"""
+                        )
+                    ).add_to(bot_fg)
                 
                 bot_fg.add_to(my_map)
                 active_legend_items.append((b_lbl, track_color))
 
         if my_map is None:
-            my_map = folium.Map(location=[35.219, -116.648], zoom_start=12)
+            my_map = folium.Map(location=[35.219, -116.648], zoom_start=12, prefer_canvas=True)
 
         folium.LayerControl().add_to(my_map)
 
         box_height = 40 + (len(active_legend_items) * 22)
-        legend_rows_html = "".join([
-            f'<i style="background:{color}; width:10px; height:10px; '
-            f'float:left; margin-right:5px; margin-top:4px;"></i> {name}<br>'
-            for name, color in active_legend_items
-        ])
-
-        legend_html = (
-            f'<div style="position: fixed; bottom: 50px; left: 50px; '
-            f'width: 160px; height: {box_height}px; background-color: white; '
-            f'border:2px solid grey; z-index:9999; font-size:13px; '
-            f'padding: 10px; font-family: sans-serif; '
-            f'box-shadow: 2px 2px 5px rgba(0,0,0,0.2);">'
-            f'<b>Legend ({selected_date})</b><br>'
-            f'{legend_rows_html}'
-            f'</div>'
-        )
+        legend_rows_html = "".join([f'<i style="background:{c}; width:10px; height:10px; float:left; margin-right:5px; margin-top:4px;"></i> {n}<br>' for n, c in active_legend_items])
+        legend_html = f'<div style="position: fixed; bottom: 50px; left: 50px; width: 160px; height: {box_height}px; background-color: white; border:2px solid grey; z-index:9999; font-size:13px; padding: 10px; font-family: sans-serif; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);"><b>Legend ({selected_date})</b><br>{legend_rows_html}</div>'
         my_map.get_root().html.add_child(folium.Element(legend_html))
         
-        remove_scrollbars_css = """
-        <style>
-            html, body {
-                overflow: hidden !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100% !important;
-                height: 100% !important;
-            }
-            ::-webkit-scrollbar {
-                display: none !important;
-                width: 0 !important;
-                height: 0 !important;
-            }
-        </style>
-        """
+        remove_scrollbars_css = "<style>html, body { overflow: hidden !important; margin: 0 !important; padding: 0 !important; width: 100% !important; height: 100% !important; } ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }</style>"
         my_map.get_root().html.add_child(folium.Element(remove_scrollbars_css))
         
+        persistent_view_js = """
+        <style>
+            .folium-map { opacity: 0; }
+        </style>
+        <script>
+            (function() {
+                var hiddenLayers = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
+                var savedCenter = localStorage.getItem('dash_map_center');
+                var savedZoom = localStorage.getItem('dash_map_zoom');
+
+                function applySavedState() {
+                    var maps = Object.keys(window).filter(k => k.startsWith('map_'));
+                    if (maps.length === 0) return false;
+
+                    var mapObj = window[maps];
+                    var mapContainer = mapObj.getContainer();
+
+                    // 1. Instantly restore center and zoom before showing the map
+                    if (savedCenter && savedZoom) {
+                        mapObj.setView(JSON.parse(savedCenter), parseInt(savedZoom), {animate: false});
+                    }
+
+                    // 2. Instantly hide unchecked layers before revealing
+                    var labels = document.querySelectorAll('.leaflet-control-layers-overlays label');
+                    labels.forEach(function(label) {
+                        var name = label.textContent.trim();
+                        var checkbox = label.querySelector('input[type="checkbox"]');
+                        if (checkbox && hiddenLayers.includes(name) && checkbox.checked) {
+                            checkbox.click();
+                        }
+                    });
+
+                    // 3. Reveal the map now that the exact view and layers are set
+                    if (mapContainer) {
+                        mapContainer.style.opacity = '1';
+                    }
+
+                    // 4. Attach listeners to save future pan, zoom, and layer changes
+                    mapObj.on('moveend zoomend', function() {
+                        localStorage.setItem('dash_map_center', JSON.stringify(mapObj.getCenter()));
+                        localStorage.setItem('dash_map_zoom', mapObj.getZoom());
+                    });
+                    mapObj.on('overlayremove', function(e) {
+                        var current = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
+                        if (!current.includes(e.name)) {
+                            current.push(e.name);
+                            localStorage.setItem('dash_hidden_layers', JSON.stringify(current));
+                        }
+                    });
+                    mapObj.on('overlayadd', function(e) {
+                        var current = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
+                        current = current.filter(function(item) { return item !== e.name; });
+                        localStorage.setItem('dash_hidden_layers', JSON.stringify(current));
+                    });
+
+                    return true;
+                }
+
+                // Watch the DOM and run the exact millisecond Leaflet creates the map
+                var observer = new MutationObserver(function() {
+                    if (applySavedState()) {
+                        observer.disconnect();
+                    }
+                });
+                observer.observe(document.documentElement, { childList: true, subtree: true });
+
+                // Fallback check if the map was already created before the observer started
+                document.addEventListener("DOMContentLoaded", function() {
+                    if (applySavedState()) {
+                        observer.disconnect();
+                    } else {
+                        var maps = Object.keys(window).filter(k => k.startsWith('map_'));
+                        if (maps.length > 0) window[maps].getContainer().style.opacity = '1';
+                    }
+                });
+            })();
+        </script>
+        """
+        my_map.get_root().html.add_child(folium.Element(persistent_view_js))
         return my_map.get_root().render()
 
     except Exception as err:
-        return f"<h4>⚠️ Dashboard Integration Matrix Exception Error: {str(err)}</h4>"
+        return f"⚠️ Dashboard Integration Matrix Exception Error: {str(err)}"
 
 
 if __name__ == '__main__':
