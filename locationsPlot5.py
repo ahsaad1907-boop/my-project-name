@@ -195,7 +195,6 @@ app.layout = html.Div([
         children=html.Iframe(
             srcDoc="""
             <style>
-                /* Remove scrollbars from the main dashboard window layout */
                 html, body {
                     margin: 0 !important;
                     padding: 0 !important;
@@ -203,7 +202,6 @@ app.layout = html.Div([
                     width: 50% !important;
                     height: 50% !important;
                 }
-                /* Hide webkit scrollbars globally */
                 ::-webkit-scrollbar {
                     display: none !important;
                     width: 0 !important;
@@ -269,7 +267,6 @@ app.layout = html.Div([
                     'border': '1px solid #ccc', 'backgroundColor': '#f8f9fa'
                 }
             ),
-            # 1. MOVED FIRST: Slider Mode buttons
             html.Div([
                 html.Label("Slider Mode:", style={'fontWeight': 'bold', 'fontFamily': 'sans-serif', 'marginRight': '6px'}),
                 dcc.RadioItems(
@@ -286,7 +283,6 @@ app.layout = html.Div([
                 )
             ], style={'display': 'flex', 'alignItems': 'center'}),
 
-            # 2. MOVED SECOND: Start / End Marker buttons
             dcc.RadioItems(
                 id='active-handle-selector',
                 options=[
@@ -328,7 +324,6 @@ app.layout = html.Div([
         ], style={'width': '75%', 'height': '95%', 'position': 'relative', 'overflow': 'hidden'}),
         
         html.Div([
-            # 1. CHAT HEADER CONTAINER
             html.Div([
                 html.Div(
                     "AI Tracking Assistant", 
@@ -348,7 +343,6 @@ app.layout = html.Div([
                 'boxSizing': 'border-box'
             }),
             
-            # 2. CHAT HISTORY VIEWER CONTAINER (Keep completely empty for render_chat_log)
             html.Div(
                 id='chat-conversation-area', 
                 style={
@@ -357,7 +351,6 @@ app.layout = html.Div([
                 }
             ),
             
-            # 3. CHAT INPUT ACTIONS FOOTER BAR
             html.Div([
                 dcc.Input(
                     id='chat-user-input', type='text', 
@@ -371,12 +364,10 @@ app.layout = html.Div([
                 )
             ], style={'display': 'flex', 'padding': '10px', 'backgroundColor': '#fff', 'borderTop': '1px solid #ddd'}),
             
-            # 4. FIXED STANDALONE SCROLL INJECTOR (Placed as an independent sibling node)
             html.Iframe(
                 srcDoc="""
                 <script>
                     window.parent.document.addEventListener("DOMContentLoaded", function() {
-                        // Monitor the parent window layout directly 
                         var checkExist = setInterval(function() {
                             var target = window.parent.document.getElementById('chat-conversation-area');
                             if (target) {
@@ -396,7 +387,7 @@ app.layout = html.Div([
             )
             
         ], style={
-            'width': '30.5%', 'height': '95%', 'display': 'flex', 'flexDirection': 'column', 
+            'width': '27.5%', 'height': '95%', 'display': 'flex', 'flexDirection': 'column', 
             'borderLeft': '0px solid #ddd', 'boxSizing': 'border-box', 'fontFamily': 'sans-serif',
             'overflow': 'hidden', 'marginLeft': '-142px'
         })
@@ -426,11 +417,9 @@ def track_highlighted_handle(selected_handle, current_val, selected_date, store_
     if trigger_id == 'date-tabs' or mode == 'SINGLE':
         return {'handle': 0, 'prev_val': current_val}, 0
 
-    # User explicitly clicked Start Marker or End Marker
     if trigger_id == 'active-handle-selector':
         return {'handle': selected_handle, 'prev_val': current_val}, selected_handle
 
-    # User dragged one of the handles manually while paused
     active_handle = store_data.get('handle', 0)
     prev_val = store_data.get('prev_val')
 
@@ -450,7 +439,6 @@ def track_highlighted_handle(selected_handle, current_val, selected_date, store_
 def render_dynamic_slider_component(mode, selected_date):
     total_range, marks = lookup_timeline_scale(selected_date)
     
-    # Force the strict type structures explicitly at the moment of creation
     if mode == 'SINGLE':
         return dcc.Slider(
             id='time-slider', 
@@ -529,7 +517,6 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, text, history, featu
     if not ctx.triggered:
         return history, features, text
 
-    # FIXED HERE: Correctly index the triggered list element down to its property string identifier
     trigger_id = ctx.triggered[0]['prop_id'].split('.')[0] if ctx.triggered else None
 
     if trigger_id == 'chat-reset-btn':
@@ -586,7 +573,6 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, text, history, featu
     coord_pattern = r'(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)'
     coord_match = re.search(coord_pattern, user_msg)
     
-    # FIXED HERE: Isolated regex grouping boundaries to avoid dropping quotes into string names
     name_match = re.search(r'name\s*=\s*(?:["“”]([^"“”]+)["“”]|([^\s]+))', user_msg, re.IGNORECASE)
     lob_match = re.search(r'lob\s*=\s*(\d+)', user_msg, re.IGNORECASE)
     time_match = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', user_msg, re.IGNORECASE)
@@ -648,21 +634,18 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, text, history, featu
             features[current_date][label].append(new_node)
             features[current_date][label] = sorted(features[current_date][label], key=lambda x: x["normalized_minutes"])
             
-            # Restore your original descriptive conditional feedback messages
             node_count = len(features[current_date][label])
             if node_count > 1:
                 bot_response = f"📈 Extended track **{label}** using color **'{chosen_color}'**."
             else:
                 bot_response = f"📍 Added point to **{label}** at {time_str} with theme color **'{chosen_color}'**."
                 
-            # ─── RESTORED COLOR VERIFICATION WARNING MESSAGE ───────────────────
             if unrecognized_color_entered:
                 bot_response += (
                     f"\n\n⚠️ **Note:** The entered color `'{input_color}'` is unrecognized. "
                     f"Defaulted to **'darkgreen'**. Try using one of these supported choices next time:\n"
                     f"`{', '.join(valid_folium_colors)}`"
                 )
-            # ───────────────────────────────────────────────────────────────────
                 
             if lob_val is not None:
                 bot_response += f"\n\nOrientation Line of Bearing set to **{lob_val}°**."
@@ -694,9 +677,6 @@ def render_chat_log(history):
             }
         ))
         
-    # ─── NATIVE BROWSER ENGINE AUTO-SCROLL ─────────────────────────────
-    # Append a self-executing iframe directly into the message array list.
-    # It fires once right when the new text card mounts, completely isolated from Dash's state tree.
     elements.append(html.Iframe(
         srcDoc="""
         <script>
@@ -710,7 +690,6 @@ def render_chat_log(history):
         """,
         style={'display': 'none'}
     ))
-    # ───────────────────────────────────────────────────────────────────
     
     return html.Div(elements, style={'display': 'flex', 'flexDirection': 'column'})
 
@@ -787,7 +766,6 @@ def update_map(selected_date, slider_range_window, bot_features):
         
         active_legend_items = []
         
-        # 1. High Performance Vectorized Static File Slicing
         for layer_name, (color, parsed_list, is_rabbit) in layers_definition.items():
             if not parsed_list:
                 continue
@@ -833,14 +811,11 @@ def update_map(selected_date, slider_range_window, bot_features):
                 
                 trailing_head = combined_points[-1]
                 
-                # UNIFIED POPUP LAYOUT: File Extracted Layers
                 trailing_head = combined_points[-1]
                 
-                # FIXED HERE: Unpacked distinct array variables to prevent list formatting crashes
                 t_lat = trailing_head[0]
                 t_lon = trailing_head[1]
                 
-                # UNIFIED POPUP LAYOUT: File Extracted Layers
                 if is_rabbit:
                     popup_msg = (
                         f"<b>{layer_name}</b><br>"
@@ -875,7 +850,6 @@ def update_map(selected_date, slider_range_window, bot_features):
                 
                 if latest_lob_val != "N/A" and not is_rabbit:
                     folium.Marker(
-                        # FIXED HERE: Correctly add the 0.004 latitude offset to the float variable t_lat
                         location=[t_lat + 0.004, t_lon],
                         icon=folium.DivIcon(
                             html=f"""<div style="font-family: sans-serif; font-size: 11px; font-weight: bold; color: black; background-color: rgba(255,255,255,0.7); padding: 2px 4px; border-radius: 3px; border: 1px solid {color}; white-space: nowrap; margin-top: -12px;">{layer_name}: {latest_lob_val}</div>"""
@@ -885,7 +859,6 @@ def update_map(selected_date, slider_range_window, bot_features):
                 active_legend_items.append((layer_name, color))
                 feature_group.add_to(my_map)
 
-        # 2. Render Dynamic Chat Assistant Tracking Layers
         if bot_features and selected_date in bot_features:
             for b_lbl, nodes in bot_features[selected_date].items():
                 visible_nodes = [n for n in nodes if min_cutoff <= n.get("normalized_minutes", 0) <= max_cutoff]
@@ -909,7 +882,6 @@ def update_map(selected_date, slider_range_window, bot_features):
                 is_bot_rabbit = "rabbit" in b_lbl.lower()
                 latest_bot_lob_str = f"{b_lob}°" if b_lob is not None else "N/A"
                 
-                # UNIFIED POPUP LAYOUT: Chatbot-Added Layers
                 if is_bot_rabbit:
                     popup_msg = (
                         f"<b>{b_lbl}</b><br>"
@@ -974,12 +946,10 @@ def update_map(selected_date, slider_range_window, bot_features):
                     var mapObj = window[maps];
                     var mapContainer = mapObj.getContainer();
 
-                    // 1. Instantly restore center and zoom before showing the map
                     if (savedCenter && savedZoom) {
                         mapObj.setView(JSON.parse(savedCenter), parseInt(savedZoom), {animate: false});
                     }
 
-                    // 2. Instantly hide unchecked layers before revealing
                     var labels = document.querySelectorAll('.leaflet-control-layers-overlays label');
                     labels.forEach(function(label) {
                         var name = label.textContent.trim();
@@ -989,12 +959,10 @@ def update_map(selected_date, slider_range_window, bot_features):
                         }
                     });
 
-                    // 3. Reveal the map now that the exact view and layers are set
                     if (mapContainer) {
                         mapContainer.style.opacity = '1';
                     }
 
-                    // 4. Attach listeners to save future pan, zoom, and layer changes
                     mapObj.on('moveend zoomend', function() {
                         localStorage.setItem('dash_map_center', JSON.stringify(mapObj.getCenter()));
                         localStorage.setItem('dash_map_zoom', mapObj.getZoom());
@@ -1015,7 +983,6 @@ def update_map(selected_date, slider_range_window, bot_features):
                     return true;
                 }
 
-                // Watch the DOM and run the exact millisecond Leaflet creates the map
                 var observer = new MutationObserver(function() {
                     if (applySavedState()) {
                         observer.disconnect();
@@ -1023,7 +990,6 @@ def update_map(selected_date, slider_range_window, bot_features):
                 });
                 observer.observe(document.documentElement, { childList: true, subtree: true });
 
-                // Fallback check if the map was already created before the observer started
                 document.addEventListener("DOMContentLoaded", function() {
                     if (applySavedState()) {
                         observer.disconnect();
