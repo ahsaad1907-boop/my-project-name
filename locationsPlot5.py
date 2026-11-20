@@ -5,6 +5,9 @@ import math
 import pandas as pd
 import folium
 from dash import Dash, dcc, html, Input, Output, State, callback_context
+import json
+import base64
+import io
 
 USER_HOME = os.path.expanduser("~")
 DATA_ROOT = os.path.join(USER_HOME, "Downloads", "PCC6_DATA")
@@ -38,12 +41,18 @@ def load_clean_file(full_path):
         lon_col = "Longitude" if "Longitude" in df.columns else "lon_dd"
         
         if lat_col not in df.columns or lon_col not in df.columns:
-            return pd.DataFrame(), None, None, None
+            return pd.DataFrame(), None, None, None, None
             
-        lob_col = None
-        for col in df.columns:
-            if "lob" in col.lower() and "deg" in col.lower():
-                lob_col = col
+        lob_col = next((c for c in df.columns if "lob" in c.lower() and "deg" in c.lower()), None)
+        
+        # Detect frequency column (prefer cluster MHz, fall back to raw MHz)
+        freq_col = None
+        for target in ["freq_cluster_mhz", "freq_raw_mhz"]:
+            for c in df.columns:
+                if c.lower().strip() == target:
+                    freq_col = c
+                    break
+            if freq_col:
                 break
                 
         time_col = None
@@ -59,11 +68,9 @@ def load_clean_file(full_path):
             filename = os.path.basename(full_path)
             match_fn = re.search(r'[T_](\d{2})(\d{2})\d{2}', filename)
             if match_fn:
-                df['normalized_minutes'] = (
-                    int(match_fn.group(1)) * 60 + int(match_fn.group(2))
-                )
+                df['normalized_minutes'] = int(match_fn.group(1)) * 60 + int(match_fn.group(2))
             else:
-                return pd.DataFrame(), None, None, None
+                return pd.DataFrame(), None, None, None, None
         else:
             df['normalized_minutes'] = df[time_col].apply(parse_time_to_minutes)
 
@@ -73,10 +80,12 @@ def load_clean_file(full_path):
         
         if lob_col:
             df[lob_col] = pd.to_numeric(df[lob_col], errors="coerce")
+        if freq_col:
+            df[freq_col] = pd.to_numeric(df[freq_col], errors="coerce")
             
-        return df, lat_col, lon_col, lob_col
+        return df, lat_col, lon_col, lob_col, freq_col
     except Exception:
-        return pd.DataFrame(), None, None, None
+        return pd.DataFrame(), None, None, None, None
 
 
 def discover_tracking_lists(base_dir, keywords, exclude_keywords=None):
@@ -139,7 +148,7 @@ for date_key, path_directory in DATES_CONFIG.items():
     all_minute_vals = []
     for cached_list in [r1_parsed, r2_parsed, v1_parsed, v2_parsed, v3_parsed]:
         for packed in cached_list:
-            df, lat_c, lon_c, lob_c = packed
+            df, lat_c, lon_c, lob_c, freq_c = packed
             if not df.empty:
                 all_minute_vals.extend(df['normalized_minutes'].tolist())
                 
@@ -165,24 +174,24 @@ for date_key, path_directory in DATES_CONFIG.items():
 print("Cache verification ready. Initializing web layout server....")
 
 
-def lookup_timeline_scale(selected_date):
+def lookup_timeline_scale(selected_date, is_dark=False):
     day_cache = GLOBAL_DATA_CACHE[selected_date]
     m_start = day_cache["min_minute"]
     m_end = day_cache["max_minute"]
     
-    total_range = m_end - m_start
-    total_range = max(1, total_range)
+    total_range = max(1, m_end - m_start)
+    text_color = '#f8f9fa' if is_dark else '#212529'
     
     marks = {}
     for step in range(0, total_range + 1, 60):
         total_m = m_start + step
         h = total_m // 60
         m = total_m % 60
-        marks[step] = f"{h:02d}:{m:02d}"
+        marks[step] = {'label': f"{h:02d}:{m:02d}", 'style': {'color': text_color}}
         
     h_end = m_end // 60
     m_end_inner = m_end % 60
-    marks[total_range] = f"{h_end:02d}:{m_end_inner:02d}"
+    marks[total_range] = {'label': f"{h_end:02d}:{m_end_inner:02d}", 'style': {'color': text_color}}
     
     return total_range, marks
 
@@ -215,6 +224,8 @@ app.layout = html.Div([
     dcc.Store(id='chat-history-store', data=[]),
     dcc.Store(id='bot-features-store', data={}),
     dcc.Store(id='active-handle-store', data={'handle': 0, 'prev_val': None}),
+    dcc.Store(id='live-map-payload', data={}),
+    html.Div(id='postmessage-bridge', style={'display': 'none'}),
     html.Button(id='handle-0-focus-btn', n_clicks=0, style={'display': 'none'}),
     html.Button(id='handle-1-focus-btn', n_clicks=0, style={'display': 'none'}),
     html.Iframe(
@@ -245,12 +256,24 @@ app.layout = html.Div([
         """
     ),
     
-    html.H1(
-        "Sensor Tracking Dashboard", 
-        style={
-            'textAlign': 'center', 'fontFamily': 'sans-serif', 'margin': '10px 0'
-        }
-    ),
+    html.Div([
+        html.H1(
+            "Sensor Tracking Dashboard", 
+            id="dashboard-title",
+            style={'textAlign': 'center', 'fontFamily': 'sans-serif', 'margin': '0', 'flex': '1'}
+        ),
+        html.Button(
+            "🌙 Dark Mode", id="dark-mode-btn", n_clicks=0,
+            style={
+                'padding': '6px 12px', 'fontFamily': 'sans-serif', 'fontWeight': 'bold',
+                'cursor': 'pointer', 'borderRadius': '4px', 'border': '1px solid #ccc',
+                'backgroundColor': '#212529', 'color': 'white', 'marginRight': '15px'
+            }
+        )
+    ], id="header-bar", style={
+        'display': 'flex', 'alignItems': 'center', 'justifyContent': 'space-between',
+        'padding': '10px 0'
+    }),
     dcc.Tabs(
         id="date-tabs", value="15JUL", 
         children=[dcc.Tab(label=date, value=date) for date in DATES_CONFIG.keys()],
@@ -268,7 +291,7 @@ app.layout = html.Div([
                 }
             ),
             html.Div([
-                html.Label("Slider Mode:", style={'fontWeight': 'bold', 'fontFamily': 'sans-serif', 'marginRight': '6px'}),
+                html.Label("Slider Mode:", id="slider-mode-label", style={'fontWeight': 'bold', 'fontFamily': 'sans-serif', 'marginRight': '6px'}),
                 dcc.RadioItems(
                     id='slider-mode-toggle',
                     options=[
@@ -352,17 +375,31 @@ app.layout = html.Div([
             ),
             
             html.Div([
+                dcc.Upload(
+                    id='chat-file-upload',
+                    children=html.Button(
+                        "📎",
+                        title="Upload .csv or .txt file with coordinates/sensors",
+                        style={
+                            'padding': '6px 10px', 'marginRight': '5px',
+                            'backgroundColor': '#6c757d', 'color': 'white',
+                            'border': 'none', 'borderRadius': '4px', 'cursor': 'pointer'
+                        }
+                    ),
+                    accept='.csv,.txt',
+                    multiple=False
+                ),
                 dcc.Input(
                     id='chat-user-input', type='text', 
-                    placeholder='e.g. 35.21, -116.64 name="Sensor X" time=14:30 color=red lob=95',
-                    style={'flex': '1', 'padding': '0px', 'border': '1px solid #ccc', 'borderRadius': '4px'},
+                    placeholder='e.g. 35.21, -116.64 name="Sensor X" time=14:30 lob=145',
+                    style={'flex': '1', 'padding': '6px', 'border': '1px solid #ccc', 'borderRadius': '4px'},
                     n_submit=0
                 ),
                 html.Button(
                     "Send", id='chat-send-btn', n_clicks=0,
                     style={'padding': '8px 12px', 'marginLeft': '5px', 'backgroundColor': '#28a745', 'color': 'white', 'border': 'none', 'borderRadius': '4px', 'cursor': 'pointer'}
                 )
-            ], style={'display': 'flex', 'padding': '10px', 'backgroundColor': '#fff', 'borderTop': '1px solid #ddd'}),
+            ], id="chat-input-bar", style={'display': 'flex', 'alignItems': 'center', 'padding': '10px', 'backgroundColor': '#fff', 'borderTop': '1px solid #ddd'}),
             
             html.Iframe(
                 srcDoc="""
@@ -400,6 +437,181 @@ app.layout = html.Div([
 })
 
 @app.callback(
+    [Output('dark-mode-btn', 'children'),           # 1
+     Output('dark-mode-btn', 'style'),              # 2
+     Output('main-layout', 'style'),                # 3
+     Output('dashboard-title', 'style'),            # 4
+     Output('controls-container', 'style'),         # 5
+     Output('play-button', 'style'),                # 6
+     Output('slider-mode-label', 'style'),          # 7
+     Output('slider-mode-toggle', 'labelStyle'),    # 8
+     Output('active-handle-selector', 'labelStyle'),# 9
+     Output('chat-conversation-area', 'style'),     # 10
+     Output('chat-input-bar', 'style'),             # 11
+     Output('chat-user-input', 'style'),            # 12
+     Output('date-tabs', 'colors'),                 # 13
+     Output('date-tabs', 'children')],              # 14 <-- ADD THIS OUTPUT
+    [Input('dark-mode-btn', 'n_clicks')]
+)
+def toggle_dark_mode(n_clicks):
+    is_dark = (n_clicks or 0) % 2 == 1
+
+    if is_dark:
+        btn_label = "☀️ Light Mode"
+        btn_style = {
+            'padding': '6px 12px', 'fontFamily': 'sans-serif', 'fontWeight': 'bold',
+            'cursor': 'pointer', 'borderRadius': '4px', 'border': '1px solid #555',
+            'backgroundColor': '#f8f9fa', 'color': '#212529', 'marginRight': '15px'
+        }
+        main_style = {
+            'display': 'flex',
+            'flexDirection': 'column',
+            'position': 'fixed',
+            'top': '0',
+            'left': '0',
+            'right': '0',
+            'bottom': '0',
+            'margin': '0',
+            'padding': '0',
+            'overflow': 'hidden',
+            'boxSizing': 'border-box',
+            'backgroundColor': '#121212'
+        }
+        title_style = {
+            'textAlign': 'center', 'fontFamily': 'sans-serif', 'margin': '0',
+            'flex': '1', 'color': '#f8f9fa'
+        }
+        controls_style = {
+            'width': '96%', 'margin': 'auto', 'padding': '15px 0 10px 0',
+            'display': 'flex', 'alignItems': 'center', 'boxSizing': 'border-box'
+        }
+        play_style = {
+            'marginRight': '15px', 'fontWeight': 'bold', 'padding': '5px 15px',
+            'fontFamily': 'sans-serif', 'cursor': 'pointer', 'borderRadius': '4px',
+            'border': '1px solid #555', 'backgroundColor': '#2b3035', 'color': '#f8f9fa'
+        }
+        slider_label_style = {
+            'fontWeight': 'bold', 'fontFamily': 'sans-serif',
+            'marginRight': '6px', 'color': '#f8f9fa'
+        }
+        mode_label_style = {
+            'marginRight': '6px', 'display': 'inline-flex', 'alignItems': 'center',
+            'cursor': 'pointer', 'color': '#f8f9fa'
+        }
+        handle_label_style = {
+            'display': 'flex', 'alignItems': 'center', 'marginBottom': '2px',
+            'cursor': 'pointer', 'color': '#f8f9fa'
+        }
+        chat_area_style = {
+            'flex': '1', 'overflowY': 'auto', 'padding': '10px',
+            'backgroundColor': '#1e1e1e', 'color': '#e9ecef', 'fontSize': '13px'
+        }
+        chat_bar_style = {
+            'display': 'flex', 'padding': '10px',
+            'backgroundColor': '#252526', 'borderTop': '1px solid #3c3c3c'
+        }
+        input_style = {
+            'flex': '1', 'padding': '6px', 'border': '1px solid #555', 'borderRadius': '4px',
+            'backgroundColor': '#333333', 'color': '#ffffff'
+        }
+        tab_colors = {'border': '#3c3c3c', 'primary': '#0d6efd', 'background': '#1e1e1e'}
+        tab_style = {
+            'backgroundColor': '#1e1e1e', 'color': '#ced4da',
+            'borderColor': '#3c3c3c', 'padding': '10px'
+        }
+        tab_selected_style = {
+            'backgroundColor': '#2b3035', 'color': '#ffffff',
+            'borderColor': '#3c3c3c', 'borderTop': '2px solid #0d6efd',
+            'fontWeight': 'bold', 'padding': '10px'
+        }
+    else:
+        btn_label = "🌙 Dark Mode"
+        btn_style = {
+            'padding': '6px 12px', 'fontFamily': 'sans-serif', 'fontWeight': 'bold',
+            'cursor': 'pointer', 'borderRadius': '4px', 'border': '1px solid #ccc',
+            'backgroundColor': '#212529', 'color': 'white', 'marginRight': '15px'
+        }
+        main_style = {
+            'display': 'flex', 'flexDirection': 'column', 'height': '98vh', 'width': '99vw',
+            'margin': '0', 'padding': '0', 'overflow': 'hidden', 'boxSizing': 'border-box',
+            'backgroundColor': '#ffffff'
+        }
+        title_style = {
+            'textAlign': 'center', 'fontFamily': 'sans-serif', 'margin': '0',
+            'flex': '1', 'color': '#212529'
+        }
+        controls_style = {
+            'width': '96%', 'margin': 'auto', 'padding': '15px 0 10px 0',
+            'display': 'flex', 'alignItems': 'center', 'boxSizing': 'border-box'
+        }
+        play_style = {
+            'marginRight': '15px', 'fontWeight': 'bold', 'padding': '5px 15px',
+            'fontFamily': 'sans-serif', 'cursor': 'pointer', 'borderRadius': '4px',
+            'border': '1px solid #ccc', 'backgroundColor': '#f8f9fa', 'color': '#212529'
+        }
+        slider_label_style = {
+            'fontWeight': 'bold', 'fontFamily': 'sans-serif',
+            'marginRight': '6px', 'color': '#212529'
+        }
+        mode_label_style = {
+            'marginRight': '6px', 'display': 'inline-flex', 'alignItems': 'center',
+            'cursor': 'pointer', 'color': '#212529'
+        }
+        handle_label_style = {
+            'display': 'flex', 'alignItems': 'center', 'marginBottom': '2px',
+            'cursor': 'pointer', 'color': '#212529'
+        }
+        chat_area_style = {
+            'flex': '1', 'overflowY': 'auto', 'padding': '10px',
+            'backgroundColor': '#f1f3f5', 'color': '#212529', 'fontSize': '13px'
+        }
+        chat_bar_style = {
+            'display': 'flex', 'padding': '10px',
+            'backgroundColor': '#fff', 'borderTop': '1px solid #ddd'
+        }
+        input_style = {
+            'flex': '1', 'padding': '6px', 'border': '1px solid #ccc', 'borderRadius': '4px',
+            'backgroundColor': '#ffffff', 'color': '#212529'
+        }
+        tab_colors = {'border': '#d6d6d6', 'primary': '#1975FA', 'background': '#f9f9f9'}
+        tab_style = {
+            'backgroundColor': '#f9f9f9', 'color': '#212529',
+            'borderColor': '#d6d6d6', 'padding': '10px'
+        }
+        tab_selected_style = {
+            'backgroundColor': '#ffffff', 'color': '#212529',
+            'borderColor': '#d6d6d6', 'borderTop': '2px solid #1975FA',
+            'fontWeight': 'bold', 'padding': '10px'
+        }
+
+    tab_children = [
+        dcc.Tab(
+            label=date,
+            value=date,
+            style=tab_style,
+            selected_style=tab_selected_style
+        )
+        for date in DATES_CONFIG.keys()
+    ]
+
+    return (
+        btn_label,          # 1
+        btn_style,          # 2
+        main_style,         # 3
+        title_style,        # 4
+        controls_style,     # 5
+        play_style,         # 6
+        slider_label_style, # 7
+        mode_label_style,   # 8
+        handle_label_style, # 9
+        chat_area_style,    # 10
+        chat_bar_style,     # 11
+        input_style,        # 12
+        tab_colors,         # 13
+        tab_children        # 14
+    )
+
+@app.callback(
     [Output('active-handle-store', 'data'),
      Output('active-handle-selector', 'value')],
     [Input('active-handle-selector', 'value'),
@@ -434,28 +646,21 @@ def track_highlighted_handle(selected_handle, current_val, selected_date, store_
 @app.callback(
     Output('slider-wrapper-container', 'children'),
     [Input('slider-mode-toggle', 'value'),
-     Input('date-tabs', 'value')]
+     Input('date-tabs', 'value'),
+     Input('dark-mode-btn', 'n_clicks')]
 )
-def render_dynamic_slider_component(mode, selected_date):
-    total_range, marks = lookup_timeline_scale(selected_date)
-    
+def render_dynamic_slider_component(mode, selected_date, dark_clicks):
+    is_dark = (dark_clicks or 0) % 2 == 1
+    total_range, marks = lookup_timeline_scale(selected_date, is_dark=is_dark)
     if mode == 'SINGLE':
         return dcc.Slider(
-            id='time-slider', 
-            min=0, 
-            max=total_range, 
-            step=1, 
-            value=0,
-            marks=marks
+            id='time-slider', min=0, max=total_range, step=1, value=0,
+            marks=marks, updatemode='mouseup'
         )
     else:
         return dcc.RangeSlider(
-            id='time-slider', 
-            min=0, 
-            max=total_range, 
-            step=1, 
-            value=[0, total_range],
-            marks=marks
+            id='time-slider', min=0, max=total_range, step=1, value=[0, total_range],
+            marks=marks, updatemode='mouseup'
         )
 
 @app.callback(
@@ -503,98 +708,252 @@ def toggle_playback(n_clicks, current_slider_val, max_val, is_disabled, store_da
 @app.callback(
     [Output('chat-history-store', 'data'),
      Output('bot-features-store', 'data'),
-     Output('chat-user-input', 'value')],
+     Output('chat-user-input', 'value'),
+     Output('chat-file-upload', 'contents')],
     [Input('chat-send-btn', 'n_clicks'),
      Input('chat-user-input', 'n_submit'),
-     Input('chat-reset-btn', 'n_clicks')],
-    [State('chat-user-input', 'value'),
+     Input('chat-reset-btn', 'n_clicks'),
+     Input('chat-file-upload', 'contents')],
+    [State('chat-file-upload', 'filename'),
+     State('chat-user-input', 'value'),
      State('chat-history-store', 'data'),
      State('bot-features-store', 'data'),
      State('date-tabs', 'value')]
 )
-def process_chatbot_intelligence(clicks, sub, reset_clicks, text, history, features, current_date):
+def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upload_filename, text, history, features, current_date):
     ctx = callback_context
     if not ctx.triggered:
-        return history, features, text
+        return history, features, text, None
 
     trigger_id = ctx.triggered[0]['prop_id'].split('.')[0] if ctx.triggered else None
 
     if trigger_id == 'chat-reset-btn':
-        return [], features, ""
+        return [], features, "", None
 
-    if not text:
-        return history, features, text
-
-    user_msg = text.strip()
     history = history or []
     features = features or {}
-    
     if current_date not in features:
         features[current_date] = {}
 
-    history.append({"speaker": "user", "text": user_msg})
-
-    delete_match = re.search(r'delete\s*=\s*([^\s]+)', user_msg, re.IGNORECASE)
-    if delete_match:
-        target_to_delete = delete_match.group(1).strip()
-        time_match_del = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', user_msg, re.IGNORECASE)
-        
-        if target_to_delete.lower() == 'all':
-            features[current_date] = {}
-            bot_response = f"🗑️ **Cleared all custom coordinates** on **{current_date}**."
-        elif target_to_delete in features[current_date]:
-            if time_match_del:
-                del_hour = int(time_match_del.group(1))
-                del_minute = int(time_match_del.group(2))
-                target_time_str = f"{del_hour:02d}:{del_minute:02d}"
-                
-                nodes = features[current_date][target_to_delete]
-                original_count = len(nodes)
-                updated_nodes = [node for node in nodes if node.get("time_label") != target_time_str]
-                
-                if len(updated_nodes) < original_count:
-                    if not updated_nodes:
-                        del features[current_date][target_to_delete]
-                        bot_response = f"🗑️ Removed final coordinate point from **{target_to_delete}**."
-                    else:
-                        features[current_date][target_to_delete] = updated_nodes
-                        bot_response = f"🗑️ Removed point at **{target_time_str}** from **{target_to_delete}**."
-                else:
-                    bot_response = f"❌ No point found at **{target_time_str}**."
-            else:
-                del features[current_date][target_to_delete]
-                bot_response = f"🗑️ Removed entire track **{target_to_delete}**."
-        else:
-            bot_response = f"❌ Track **'{target_to_delete}'** not found on **{current_date}**."
-            
-        history.append({"speaker": "assistant", "text": bot_response})
-        return history, features, ""
-
-    coord_pattern = r'(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)'
-    coord_match = re.search(coord_pattern, user_msg)
-    
-    name_match = re.search(r'name\s*=\s*(?:["“”]([^"“”]+)["“”]|([^\s]+))', user_msg, re.IGNORECASE)
-    lob_match = re.search(r'lob\s*=\s*(\d+)', user_msg, re.IGNORECASE)
-    time_match = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', user_msg, re.IGNORECASE)
-    color_match = re.search(r'color\s*=\s*([^\s]+)', user_msg, re.IGNORECASE)
-    
-    if name_match:
-        label = name_match.group(1) if name_match.group(1) is not None else name_match.group(2)
-        label = label.strip().strip('"').strip('“').strip('”')
-    else:
-        label = f"AI-Sensor-{len(features[current_date]) + 1}"
-        
-    lob_val = float(lob_match.group(1)) if lob_match else None
-    
+    day_cache = GLOBAL_DATA_CACHE[current_date]
+    day_min, day_max = day_cache["min_minute"], day_cache["max_minute"]
     valid_folium_colors = [
-        'red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 
-        'darkblue', 'darkgreen', 'cadetblue', 'pink', 'lightblue', 'lightgreen', 
+        'red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige',
+        'darkblue', 'darkgreen', 'cadetblue', 'pink', 'lightblue', 'lightgreen',
         'gray', 'black', 'lightgray'
     ]
-    
-    unrecognized_color_entered = False
+
+    # ─── CASE A: FILE UPLOADED (.CSV OR .TXT) ───────────────────────────────
+    if trigger_id == 'chat-file-upload' and upload_contents:
+        history.append({"speaker": "user", "text": f"📎 Uploaded file: **{upload_filename}**"})
+        try:
+            _, content_string = upload_contents.split(',', 1)
+            decoded_text = base64.b64decode(content_string).decode('utf-8', errors='replace')
+
+            added_count = 0
+            skipped_count = 0
+            updated_tracks = set()
+
+            if upload_filename and upload_filename.lower().endswith('.csv'):
+                df = pd.read_csv(io.StringIO(decoded_text))
+                cols_lower = {c.lower().strip(): c for c in df.columns}
+
+                lat_col = next((cols_lower[k] for k in ['lat', 'latitude', 'lat_dd'] if k in cols_lower), None)
+                lon_col = next((cols_lower[k] for k in ['lon', 'lng', 'longitude', 'lon_dd'] if k in cols_lower), None)
+                time_col = next((cols_lower[k] for k in ['time', 'timestamp', 'gps_date_time', 'sys_date_time'] if k in cols_lower), None)
+                name_col = next((cols_lower[k] for k in ['name', 'sensor', 'label', 'id'] if k in cols_lower), None)
+                color_col = next((cols_lower[k] for k in ['color', 'colour'] if k in cols_lower), None)
+                lob_col = next(
+                    (orig for low, orig in cols_lower.items() if "lob" in low and "deg" in low),
+                    next((orig for low, orig in cols_lower.items() if "lob" in low or "bearing" in low), None)
+                )
+
+                if not lat_col or not lon_col or not time_col:
+                    bot_response = "❌ **CSV Format Error:** File must include `lat` (or `Latitude`), `lon` (or `Longitude`), and `time` (`HH:MM`) columns."
+                    history.append({"speaker": "assistant", "text": bot_response})
+                    return history, features, "", None
+
+                base_filename = os.path.splitext(upload_filename)[0].strip()
+
+                # ─── 1. DETECT RABBIT VS SENSOR BEFORE ROW LOOP ─────────────
+                fn_lower = upload_filename.lower()
+                is_rabbit_file = (
+                    any(k in fn_lower for k in ["rabbit", "events_list", "eventslist"])
+                    or lob_col is None
+                )
+                # ───────────────────────────────────────────────────────────
+
+                for idx, row in df.iterrows():
+                    try:
+                        lat = float(row[lat_col])
+                        lon = float(row[lon_col])
+                        t_raw = str(row[time_col]).strip()
+                        t_match = re.search(r'(\d{1,2})[:_](\d{2})', t_raw)
+                        if not t_match:
+                            skipped_count += 1
+                            continue
+
+                        calc_min = int(t_match.group(1)) * 60 + int(t_match.group(2))
+                        if calc_min < day_min or calc_min > day_max:
+                            skipped_count += 1
+                            continue
+
+                        time_str = f"{int(t_match.group(1)):02d}:{int(t_match.group(2)):02d}"
+
+                        if name_col and pd.notna(row[name_col]) and str(row[name_col]).strip():
+                            label = str(row[name_col]).strip()
+                        else:
+                            label = base_filename
+
+                        raw_color = str(row[color_col]).strip().lower() if (color_col and pd.notna(row[color_col])) else "darkgreen"
+                        chosen_color = raw_color if raw_color in valid_folium_colors else "darkgreen"
+
+                        raw_lob = pd.to_numeric(row[lob_col], errors='coerce') if lob_col else None
+                        lob_val = float(raw_lob) if (raw_lob is not None and pd.notna(raw_lob)) else None
+
+                        freq_col = next(
+                            (cols_lower[k] for k in ['freq_cluster_mhz', 'freq_raw_mhz', 'freq', 'frequency'] if k in cols_lower),
+                            None
+                        )
+
+                        # Inside the row loop:
+                        raw_freq = pd.to_numeric(row[freq_col], errors='coerce') if freq_col else None
+                        freq_val = float(raw_freq) if (raw_freq is not None and pd.notna(raw_freq)) else None
+                        if not is_rabbit_file and freq_val is not None:
+                            chosen_color = get_frequency_color(freq_val)
+
+                        features[current_date].setdefault(label, []).append({
+                            "lat": lat, "lon": lon, "lob": lob_val, "freq": freq_val,
+                            "normalized_minutes": calc_min, "time_label": time_str,
+                            "color": chosen_color, "is_rabbit": is_rabbit_file
+                        })
+
+                        updated_tracks.add(label)
+                        added_count += 1
+                    except Exception:
+                        skipped_count += 1
+
+            else:
+                # Plain .txt file: parse each line using the same chat command syntax
+                for line in decoded_text.splitlines():
+                    line = line.strip()
+                    if not line:
+                        continue
+                    c_match = re.search(r'(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)', line)
+                    t_match = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', line, re.IGNORECASE)
+                    if not c_match or not t_match:
+                        skipped_count += 1
+                        continue
+
+                    calc_min = int(t_match.group(1)) * 60 + int(t_match.group(2))
+                    if calc_min < day_min or calc_min > day_max:
+                        skipped_count += 1
+                        continue
+
+                    lat, lon = float(c_match.group(1)), float(c_match.group(2))
+                    time_str = f"{int(t_match.group(1)):02d}:{int(t_match.group(2)):02d}"
+                    n_match = re.search(r'name\s*=\s*(?:"([^"]+)"|([^\s]+))', line, re.IGNORECASE)
+                    label = (n_match.group(1) or n_match.group(2)).strip() if n_match else f"TXT-Sensor-{len(features[current_date]) + 1}"
+                    col_match = re.search(r'color\s*=\s*([^\s]+)', line, re.IGNORECASE)
+                    raw_col = col_match.group(1).strip().lower() if col_match else "darkgreen"
+                    chosen_color = raw_col if raw_col in valid_folium_colors else "darkgreen"
+                    l_match = re.search(r'lob\s*=\s*(\d+(?:\.\d+)?)', line, re.IGNORECASE)
+                    lob_val = float(l_match.group(1)) if l_match else None
+
+                    features[current_date].setdefault(label, []).append({
+                        "lat": lat, "lon": lon, "lob": lob_val,
+                        "normalized_minutes": calc_min, "time_label": time_str, "color": chosen_color
+                    })
+                    updated_tracks.add(label)
+                    added_count += 1
+
+            for lbl in updated_tracks:
+                features[current_date][lbl] = sorted(features[current_date][lbl], key=lambda x: x["normalized_minutes"])
+
+            # ─── 3. UPDATE RABBIT VS SENSOR SUMMARY COUNTS ─────────────────
+            if added_count > 0:
+                rabbit_tracks = [
+                    t for t in updated_tracks
+                    if any(n.get("is_rabbit") for n in features[current_date].get(t, []))
+                    or any(k in t.lower() for k in ["rabbit", "events_list", "eventslist"])
+                ]
+                sensor_tracks = [t for t in updated_tracks if t not in rabbit_tracks]
+
+                summary_parts = []
+                if rabbit_tracks:
+                    summary_parts.append(f"**{len(rabbit_tracks)}** rabbit(s)")
+                if sensor_tracks:
+                    summary_parts.append(f"**{len(sensor_tracks)}** sensor(s)")
+
+                bot_response = (
+                    f"✅ Imported **{added_count}** coordinate point(s) across {' and '.join(summary_parts)} "
+                    f"(`{', '.join(sorted(updated_tracks))}`) onto **{current_date}**."
+                )
+                if skipped_count > 0:
+                    bot_response += f"\n\n⚠️ Skipped **{skipped_count}** row(s) due to missing fields or timestamps outside **{current_date}**'s slider range."
+            else:
+                min_h, min_m = day_min // 60, day_min % 60
+                max_h, max_m = day_max // 60, day_max % 60
+                bot_response = (
+                    f"❌ No valid coordinates imported from **{upload_filename}**.\n"
+                    f"Ensure timestamps fall within **{current_date}**'s active window (`{min_h:02d}:{min_m:02d}` – `{max_h:02d}:{max_m:02d}`)."
+                )
+
+        except Exception as err:
+            bot_response = f"❌ Error reading **{upload_filename}**: {str(err)}"
+
+        history.append({"speaker": "assistant", "text": bot_response})
+        return history, features, "", None
+
+    # ─── CASE B: STANDARD TEXT MESSAGE ──────────────────────────────────────
+    if not text or not text.strip():
+        return history, features, text, None
+
+    user_msg = text.strip()
+    history.append({"speaker": "user", "text": user_msg})
+
+    delete_match = re.search(r'delete\s*=\s*(?:"([^"]+)"|([^\s]+))', user_msg, re.IGNORECASE)
+    if delete_match:
+        target_to_delete = (delete_match.group(1) or delete_match.group(2)).strip()
+        time_match_del = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', user_msg, re.IGNORECASE)
+
+        if target_to_delete.lower() == 'all':
+            features[current_date] = {}
+            bot_response = f"🗑️ **Cleared all custom coordinates** and tracks plotted on **{current_date}**."
+        elif target_to_delete in features[current_date]:
+            if time_match_del:
+                target_time_str = f"{int(time_match_del.group(1)):02d}:{int(time_match_del.group(2)):02d}"
+                nodes = features[current_date][target_to_delete]
+                updated_nodes = [n for n in nodes if n.get("time_label") != target_time_str]
+                if len(updated_nodes) < len(nodes):
+                    if not updated_nodes:
+                        del features[current_date][target_to_delete]
+                        bot_response = f"🗑️ Removed final node at **{target_time_str}** from **{target_to_delete}**. Track deleted."
+                    else:
+                        features[current_date][target_to_delete] = updated_nodes
+                        bot_response = f"🗑️ Removed coordinate node at **{target_time_str}** from track **{target_to_delete}**."
+                else:
+                    bot_response = f"❌ Found track **{target_to_delete}**, but no coordinate point exists at **{target_time_str}**."
+            else:
+                del features[current_date][target_to_delete]
+                bot_response = f"🗑️ Removed entire track **{target_to_delete}** from the map context."
+        else:
+            bot_response = f"❌ Track **'{target_to_delete}'** not found on **{current_date}**."
+
+        history.append({"speaker": "assistant", "text": bot_response})
+        return history, features, "", None
+
+    coord_match = re.search(r'(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)', user_msg)
+    name_match = re.search(r'name\s*=\s*(?:"([^"]+)"|([^\s]+))', user_msg, re.IGNORECASE)
+    lob_match = re.search(r'lob\s*=\s*(\d+(?:\.\d+)?)', user_msg, re.IGNORECASE)
+    time_match = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', user_msg, re.IGNORECASE)
+    color_match = re.search(r'color\s*=\s*([^\s]+)', user_msg, re.IGNORECASE)
+
+    label = (name_match.group(1) or name_match.group(2)).strip() if name_match else f"AI-Sensor-{len(features[current_date]) + 1}"
+    lob_val = float(lob_match.group(1)) if lob_match else None
     chosen_color = 'darkgreen'
-    
+    unrecognized_color_entered = False
+
     if color_match:
         input_color = color_match.group(1).strip().lower()
         if input_color in valid_folium_colors:
@@ -603,94 +962,87 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, text, history, featu
             unrecognized_color_entered = True
 
     if not coord_match:
-        bot_response = "❌ Could not parse coordinates. Use: `35.219, -116.648`"
+        bot_response = "❌ Could not parse coordinates. Use: `35.21, -116.64 name=\"Sensor X\" time=14:30` or upload a `.csv`/`.txt` file with 📎."
     elif not time_match:
-        bot_response = "⚠️ **Missing Timestamp!** Provide a track time: `time=HH:MM`"
+        bot_response = "⚠️ **Missing Required Timestamp!** Provide track time: `time=HH:MM`"
     else:
-        lat = float(coord_match.group(1))
-        lon = float(coord_match.group(2))
-        
-        target_hour = int(time_match.group(1))
-        target_minute = int(time_match.group(2))
-        calculated_minutes = target_hour * 60 + target_minute
-        time_str = f"{target_hour:02d}:{target_minute:02d}"
+        lat, lon = float(coord_match.group(1)), float(coord_match.group(2))
+        calculated_minutes = int(time_match.group(1)) * 60 + int(time_match.group(2))
+        time_str = f"{int(time_match.group(1)):02d}:{int(time_match.group(2)):02d}"
 
-        day_cache = GLOBAL_DATA_CACHE[current_date]
-        day_min = day_cache["min_minute"]
-        day_max = day_cache["max_minute"]
-        
         if calculated_minutes < day_min or calculated_minutes > day_max:
             min_h, min_m = day_min // 60, day_min % 60
             max_h, max_m = day_max // 60, day_max % 60
-            bot_response = f"❌ **Timeline Error!** Window: `{min_h:02d}:{min_m:02d}` to `{max_h:02d}:{max_m:02d}`."
+            bot_response = (
+                f"❌ **Timeline Range Error!** Time (**{time_str}**) falls outside **{current_date}**'s "
+                f"allowed window (`{min_h:02d}:{min_m:02d}` to `{max_h:02d}:{max_m:02d}`)."
+            )
         else:
-            new_node = {
+            features[current_date].setdefault(label, []).append({
                 "lat": lat, "lon": lon, "lob": lob_val,
-                "normalized_minutes": calculated_minutes,
-                "time_label": time_str, "color": chosen_color 
-            }
-            if label not in features[current_date]:
-                features[current_date][label] = []
-            features[current_date][label].append(new_node)
+                "normalized_minutes": calculated_minutes, "time_label": time_str, "color": chosen_color
+            })
             features[current_date][label] = sorted(features[current_date][label], key=lambda x: x["normalized_minutes"])
-            
+
             node_count = len(features[current_date][label])
-            if node_count > 1:
-                bot_response = f"📈 Extended track **{label}** using color **'{chosen_color}'**."
-            else:
-                bot_response = f"📍 Added point to **{label}** at {time_str} with theme color **'{chosen_color}'**."
-                
+            bot_response = (
+                f"📈 Extended track **{label}** using color **'{chosen_color}'**."
+                if node_count > 1 else
+                f"📍 Added point to **{label}** at {time_str} with theme color **'{chosen_color}'**."
+            )
             if unrecognized_color_entered:
                 bot_response += (
                     f"\n\n⚠️ **Note:** The entered color `'{input_color}'` is unrecognized. "
-                    f"Defaulted to **'darkgreen'**. Try using one of these supported choices next time:\n"
-                    f"`{', '.join(valid_folium_colors)}`"
+                    f"Defaulted to **'darkgreen'**. Supported choices:\n`{', '.join(valid_folium_colors)}`"
                 )
-                
             if lob_val is not None:
                 bot_response += f"\n\nOrientation Line of Bearing set to **{lob_val}°**."
 
     history.append({"speaker": "assistant", "text": bot_response})
-    return history, features, ""
+    return history, features, "", None
 
 
 @app.callback(
     Output('chat-conversation-area', 'children'),
-    Input('chat-history-store', 'data')
+    [Input('chat-history-store', 'data'),
+     Input('dark-mode-btn', 'n_clicks')]
 )
-def render_chat_log(history):
+def render_chat_log(history, dark_clicks):
+    is_dark = (dark_clicks or 0) % 2 == 1
+
     if not history:
-        return [html.Div("Hello! Provide standard coordinate sequences to render dynamic geo-markers directly on the map viewport canvas layer.", style={'color': '#6c757d', 'fontStyle': 'italic'})]
+        placeholder_color = '#adb5bd' if is_dark else '#6c757d'
+        return [html.Div(
+            "Hello! Provide standard coordinate sequences to render dynamic markers.",
+            style={'color': placeholder_color, 'fontStyle': 'italic'}
+        )]
     
     elements = []
     for msg in history:
         is_user = msg['speaker'] == 'user'
-        bg_color = '#e2e3e5' if is_user else '#d1ecf1'
-        align = 'flex-end' if is_user else 'flex-start'
         
+        if is_dark:
+            bg_color = '#3a3b3c' if is_user else '#1e3a5f'
+            text_color = '#f8f9fa'
+        else:
+            bg_color = '#e2e3e5' if is_user else '#d1ecf1'
+            text_color = '#212529'
+            
+        align = 'flex-end' if is_user else 'flex-start'
         elements.append(html.Div(
             dcc.Markdown(msg['text']),
             style={
-                'alignSelf': align, 'backgroundColor': bg_color, 'padding': '8px 12px',
-                'borderRadius': '6px', 'margin': '4px 0', 'maxWidth': '85%',
-                'wordBreak': 'break-word', 'boxShadow': '1px 1px 2px rgba(0,0,0,0.05)'
+                'alignSelf': align,
+                'backgroundColor': bg_color,
+                'color': text_color,
+                'padding': '8px 12px',
+                'borderRadius': '6px',
+                'margin': '4px 0',
+                'maxWidth': '85%',
+                'wordBreak': 'break-word'
             }
         ))
         
-    elements.append(html.Iframe(
-        srcDoc="""
-        <script>
-            setTimeout(function() {
-                var target = window.parent.document.getElementById('chat-conversation-area');
-                if (target) {
-                    target.scrollTop = target.scrollHeight;
-                }
-            }, 20);
-        </script>
-        """,
-        style={'display': 'none'}
-    ))
-    
     return html.Div(elements, style={'display': 'flex', 'flexDirection': 'column'})
 
 @app.callback(
@@ -701,12 +1053,14 @@ def render_chat_log(history):
      Input('play-interval', 'n_intervals')],
     [State('slider-mode-toggle', 'value'),
      State('time-slider', 'value'),
-     State('active-handle-store', 'data')]
+     State('active-handle-store', 'data'),
+     State('dark-mode-btn', 'n_clicks')]
 )
-def update_slider_mechanics(selected_date, n_intervals, mode, current_val, store_data):
+def update_slider_mechanics(selected_date, n_intervals, mode, current_val, store_data, dark_clicks):
+    is_dark = (dark_clicks or 0) % 2 == 1
     ctx = callback_context
     trigger_id = ctx.triggered[0]['prop_id'].split('.')[0] if ctx.triggered else None
-    total_range, marks = lookup_timeline_scale(selected_date)
+    total_range, marks = lookup_timeline_scale(selected_date, is_dark=is_dark)
     
     if trigger_id == 'date-tabs' or trigger_id is None or trigger_id == '':
         return total_range, marks, (0 if mode == 'SINGLE' else [0, total_range])
@@ -733,280 +1087,377 @@ def update_slider_mechanics(selected_date, n_intervals, mode, current_val, store
 @app.callback(
     Output('folium-map', 'srcDoc'),
     [Input('date-tabs', 'value'),
+     Input('dark-mode-btn', 'n_clicks')]
+)
+def update_map(selected_date, dark_clicks):
+    is_dark = (dark_clicks or 0) % 2 == 1
+    legend_bg = "#212529" if is_dark else "white"
+    legend_fg = "#f8f9fa" if is_dark else "black"
+    legend_border = "#555" if is_dark else "grey"
+
+    # Keyless OpenStreetMap tiles for both themes; dark mode applies a clean CSS invert filter to the map tiles only
+    my_map = folium.Map(
+        location=[35.219, -116.648],
+        zoom_start=12,
+        tiles="OpenStreetMap",
+        prefer_canvas=True
+    )
+
+    dark_tile_css = (
+        ".leaflet-tile-pane { filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%); }"
+        if is_dark else ""
+    )
+
+    remove_scrollbars_css = f"""
+    <style>
+        html, body {{ overflow: hidden !important; margin: 0 !important; padding: 0 !important; width: 100% !important; height: 100% !important; }}
+        ::-webkit-scrollbar {{ display: none !important; }}
+        {dark_tile_css}
+    </style>
+    """
+    my_map.get_root().html.add_child(folium.Element(remove_scrollbars_css))
+
+    live_listener_js = f"""
+    <div id="dynamic-legend" style="position: fixed; bottom: 50px; left: 50px; width: 165px; background-color: {legend_bg}; color: {legend_fg}; border: 2px solid {legend_border}; z-index: 9999; font-size: 13px; padding: 10px; font-family: sans-serif; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);">
+        <b>Legend ({selected_date})</b><br><span style="color: gray;">Loading...</span>
+    </div>
+    <script>
+        var layerRegistry = {{}};
+        var layerControl = null;
+        var hasCentered = false;
+
+        function getMap() {{
+            var maps = Object.keys(window).filter(function(k) {{ return k.startsWith('map_'); }});
+            return maps.length > 0 ? window[maps] : null;
+        }}
+
+        function renderPayload(payload) {{
+            var mapObj = getMap();
+            if (!mapObj || !payload || !payload.layers) return;
+
+            if (!layerControl) {{
+                layerControl = L.control.layers(null, {{}}).addTo(mapObj);
+                var savedCenter = localStorage.getItem('dash_map_center');
+                var savedZoom = localStorage.getItem('dash_map_zoom');
+                if (savedCenter && savedZoom) {{
+                    mapObj.setView(JSON.parse(savedCenter), parseInt(savedZoom), {{animate: false}});
+                    hasCentered = true;
+                }}
+                mapObj.on('moveend zoomend', function() {{
+                    localStorage.setItem('dash_map_center', JSON.stringify(mapObj.getCenter()));
+                    localStorage.setItem('dash_map_zoom', mapObj.getZoom());
+                }});
+            }}
+
+            var hiddenLayers = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
+            var activeNames = payload.layers.map(function(l) {{ return l.name; }});
+
+            Object.keys(layerRegistry).forEach(function(existingName) {{
+                if (!activeNames.includes(existingName)) {{
+                    layerControl.removeLayer(layerRegistry[existingName]);
+                    mapObj.removeLayer(layerRegistry[existingName]);
+                    delete layerRegistry[existingName];
+                }}
+            }});
+
+            var legendRows = [];
+            var seenLegend = {{}};
+
+            payload.layers.forEach(function(layer) {{
+                if (!layerRegistry[layer.name]) {{
+                    var fg = L.layerGroup();
+                    layerRegistry[layer.name] = fg;
+                    layerControl.addOverlay(fg, layer.name);
+                    if (!hiddenLayers.includes(layer.name)) {{
+                        fg.addTo(mapObj);
+                    }}
+                }} else {{
+                    layerRegistry[layer.name].clearLayers();
+                }}
+
+                var targetGroup = layerRegistry[layer.name];
+
+                if (layer.points && layer.points.length > 0) {{
+                    if (!hasCentered) {{
+                        mapObj.setView(layer.points, 12, {{animate: false}});
+                        hasCentered = true;
+                    }}
+                    if (layer.points.length > 1) {{
+                        L.polyline(layer.points, {{color: layer.color, weight: 3, opacity: 0.8, dashArray: '5,5'}}).addTo(targetGroup);
+                    }}
+                    var head = layer.points[layer.points.length - 1];
+                    L.circleMarker(head, {{
+                        radius: layer.is_rabbit ? 8 : 7,
+                        color: layer.color,
+                        fillColor: layer.color,
+                        fillOpacity: 0.9
+                    }}).bindPopup(layer.popup).addTo(targetGroup);
+
+                    if (layer.cones) {{
+                        layer.cones.forEach(function(coneLine) {{
+                            L.polyline(coneLine, {{color: layer.color, weight: 2, opacity: 0.65}}).addTo(targetGroup);
+                        }});
+                    }}
+                    legendRows.push('<i style="background:' + layer.color + '; width:10px; height:10px; display:inline-block; margin-right:6px;"></i>' + layer.name);
+                }}
+
+                if (layer.points && layer.points.length > 0 && layer.is_rabbit) {{
+                    var cleanName = String(layer.name).trim();
+                }}
+            }});
+
+            if (payload.freq_legend) {{
+                Object.keys(payload.freq_legend).sort().forEach(function(fLabel) {{
+                    var cleanFreq = String(fLabel).trim();
+                    if (!seenLegend[cleanFreq]) {{
+                        seenLegend[cleanFreq] = true;
+                        var fColor = payload.freq_legend[fLabel];
+                        legendRows.push(
+                            '<i style="background:' + fColor +
+                            '; width:10px; height:10px; display:inline-block; margin-right:6px;"></i>' +
+                            cleanFreq
+                        );
+                    }}
+                }});
+            }}
+            document.getElementById('dynamic-legend').innerHTML =
+                '<b>Legend (' + payload.date + ')</b><br>' + legendRows.join('<br>');
+        }}
+
+        window.addEventListener('message', function(event) {{
+            if (event.data && event.data.type === 'UPDATE_MAP_LAYERS') {{
+                window._latestPayload = event.data.payload;
+                renderPayload(event.data.payload);
+            }}
+        }});
+
+        window.addEventListener('load', function() {{
+            var mapObj = getMap();
+            if (mapObj) {{
+                mapObj.on('overlayremove', function(e) {{
+                    var cur = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
+                    if (!cur.includes(e.name)) {{
+                        cur.push(e.name);
+                        localStorage.setItem('dash_hidden_layers', JSON.stringify(cur));
+                    }}
+                }});
+                mapObj.on('overlayadd', function(e) {{
+                    var cur = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
+                    localStorage.setItem('dash_hidden_layers', JSON.stringify(cur.filter(function(x) {{ return x !== e.name; }})));
+                }});
+            }}
+            if (window._latestPayload) {{
+                renderPayload(window._latestPayload);
+            }}
+        }});
+    </script>
+    """
+    my_map.get_root().html.add_child(folium.Element(live_listener_js))
+    return my_map.get_root().render()
+
+FREQ_COLOR_PALETTE = [
+    "#ff7f0e",  # Vivid Orange
+    "#2ca02c",  # Emerald Green
+    "#9467bd",  # Purple
+    "#17becf",  # Cyan
+    "#e377c2",  # Pink/Magenta
+    "#bcbd22",  # Olive/Lime
+    "#ffbb78",  # Amber
+    "#98df8a",  # Mint
+    "#c5b0d5",  # Lavender
+    "#f7b6d2",  # Rose
+]
+
+def get_frequency_color(freq_val):
+    if freq_val is None or pd.isna(freq_val):
+        return "#808080"
+    bucket = int(round(float(freq_val) * 10))
+    return FREQ_COLOR_PALETTE[bucket % len(FREQ_COLOR_PALETTE)]
+
+@app.callback(
+    Output('live-map-payload', 'data'),
+    [Input('date-tabs', 'value'),
      Input('time-slider', 'value'),
      Input('bot-features-store', 'data')]
 )
-def update_map(selected_date, slider_range_window, bot_features):
+def compute_live_map_data(selected_date, slider_range_window, bot_features):
     if slider_range_window is None:
-        return ""
-    try:
-        my_map = None
-        day_cache = GLOBAL_DATA_CACHE[selected_date]
-        start_minute_offset = day_cache["min_minute"]
-        
-        if isinstance(slider_range_window, list):
-            min_cutoff = start_minute_offset + int(slider_range_window[0])
-            max_cutoff = start_minute_offset + int(slider_range_window[1])
-        else:
-            min_cutoff = start_minute_offset
-            max_cutoff = start_minute_offset + int(slider_range_window)
-        
-        use_sensors = selected_date in ["18JUL", "21JUL", "23JUL", "24JUL"]
-        name_ch1 = "Sensor 10" if use_sensors else "Raven 1"
-        name_ch2 = "Sensor 11" if use_sensors else "Raven 2"
-        name_ch3 = "Sensor 12" if use_sensors else "Raven 3"
-        
-        layers_definition = {
-            "Rabbit 1": ('blue', day_cache["r1_rabbit"], True),
-            "Rabbit 2": ('red', day_cache["r2_rabbit"], True),
-            name_ch1: ('orange', day_cache["v1_sensor"], False),
-            name_ch2: ('green', day_cache["v2_sensor"], False),
-            name_ch3: ('purple', day_cache["v3_sensor"], False)
-        }
-        
-        active_legend_items = []
-        
-        for layer_name, (color, parsed_list, is_rabbit) in layers_definition.items():
-            if not parsed_list:
+        return {"date": selected_date, "layers": []}
+
+    day_cache = GLOBAL_DATA_CACHE[selected_date]
+    start_min = day_cache["min_minute"]
+
+    if isinstance(slider_range_window, list) and len(slider_range_window) >= 2:
+        min_cutoff = start_min + int(slider_range_window[0])
+        max_cutoff = start_min + int(slider_range_window[1])
+    else:
+        val = slider_range_window[0] if isinstance(slider_range_window, list) else slider_range_window
+        min_cutoff = start_min
+        max_cutoff = start_min + int(val)
+
+    use_sensors = selected_date in ["18JUL", "21JUL", "23JUL", "24JUL"]
+    layers_def = [
+        ("Rabbit 1", "blue", day_cache["r1_rabbit"], True),
+        ("Rabbit 2", "red", day_cache["r2_rabbit"], True),
+        ("Sensor 10" if use_sensors else "Raven 1", "orange", day_cache["v1_sensor"], False),
+        ("Sensor 11" if use_sensors else "Raven 2", "green", day_cache["v2_sensor"], False),
+        ("Sensor 12" if use_sensors else "Raven 3", "purple", day_cache["v3_sensor"], False),
+    ]
+
+    output_layers = []
+    freq_legend_entries = {}
+
+    for name, default_color, parsed_list, is_rabbit in layers_def:
+        pts, raw_lob, latest_min, latest_freq = [], None, None, None
+        for item in (parsed_list or []):
+            df, lt, ln, lb, fq = item
+            if df.empty:
                 continue
-                
-            combined_points = []
-            latest_lob_val = "N/A"
-            raw_lob_degrees = None
-            file_time_str = "N/A"
-            
-            for item in parsed_list:
-                df, lt, ln, lb = item
-                if df.empty:
-                    continue
-                
-                mask = (df['normalized_minutes'] >= min_cutoff) & (df['normalized_minutes'] <= max_cutoff)
-                sliced_df = df.loc[mask]
-                
-                if not sliced_df.empty:
-                    combined_points.extend(sliced_df[[lt, ln]].to_numpy().tolist())
-                    
-                    if 'normalized_minutes' in sliced_df.columns:
-                        last_mins = int(sliced_df['normalized_minutes'].iloc[-1])
-                        file_time_str = f"{last_mins // 60:02d}:{last_mins % 60:02d}"
-                        
-                    if lb:
-                        valid_lobs = sliced_df[lb].dropna()
-                        if not valid_lobs.empty:
-                            raw_lob_degrees = float(valid_lobs.iloc[-1])
-                            latest_lob_val = f"{raw_lob_degrees}°"
+            sliced = df.loc[(df['normalized_minutes'] >= min_cutoff) & (df['normalized_minutes'] <= max_cutoff)]
+            if not sliced.empty:
+                pts.extend(sliced[[lt, ln]].to_numpy().tolist())
+                latest_min = int(sliced['normalized_minutes'].iloc[-1])
+                if lb and not sliced[lb].dropna().empty:
+                    raw_lob = float(sliced[lb].dropna().iloc[-1])
+                if fq and not sliced[fq].dropna().empty:
+                    latest_freq = float(sliced[fq].dropna().iloc[-1])
 
-            if combined_points:
-                if len(combined_points) > 200:
-                    combined_points = combined_points[::len(combined_points)//100]
+        if pts:
+            if len(pts) > 200:
+                pts = pts[::len(pts)//100]
+            head = pts[-1]
+            time_str = f"{(latest_min // 60) % 24:02d}:{latest_min % 60:02d}" if latest_min is not None else "N/A"
+            cones = []
 
-                if my_map is None:
-                    my_map = folium.Map(location=combined_points[0], zoom_start=12, prefer_canvas=True)
-                
-                feature_group = folium.FeatureGroup(name=layer_name)
-                
-                folium.PolyLine(
-                    combined_points, color=color, weight=3, opacity=0.8, dash_array='5,5'
-                ).add_to(feature_group)
-                
-                trailing_head = combined_points[-1]
-                
-                trailing_head = combined_points[-1]
-                
-                t_lat = trailing_head[0]
-                t_lon = trailing_head[1]
-                
-                if is_rabbit:
-                    popup_msg = (
-                        f"<b>{layer_name}</b><br>"
-                        f"Coordinates: Lat: {t_lat:.5f}, Lon: {t_lon:.5f}<br>"
-                        f"Timestamp: {file_time_str}"
-                    )
-                    folium.Marker(location=trailing_head, popup=popup_msg, icon=folium.Icon(color=color)).add_to(feature_group)
-                else:
-                    popup_msg = (
-                        f"<b>{layer_name}</b><br>"
-                        f"Coordinates: Lat: {t_lat:.5f}, Lon: {t_lon:.5f}<br>"
-                        f"Timestamp: {file_time_str}<br>"
-                        f"LOB Abs Degree: {latest_lob_val}"
-                    )
-                    folium.CircleMarker(location=trailing_head, radius=7, color=color, fill=True, popup=popup_msg).add_to(feature_group)
-                    
-                    if raw_lob_degrees is not None:
-                        cone_length = 0.08  
-                        fov_half_angle = 25.0  
-                        
-                        angle_left = math.radians(raw_lob_degrees - fov_half_angle)
-                        angle_right = math.radians(raw_lob_degrees + fov_half_angle)
-                        
-                        left_lat = t_lat + (cone_length * math.cos(angle_left))
-                        left_lon = t_lon + (cone_length * math.sin(angle_left))
-                        
-                        right_lat = t_lat + (cone_length * math.cos(angle_right))
-                        right_lon = t_lon + (cone_length * math.sin(angle_right))
-                        
-                        folium.PolyLine([trailing_head, [left_lat, left_lon]], color=color, weight=2, opacity=0.6).add_to(feature_group)
-                        folium.PolyLine([trailing_head, [right_lat, right_lon]], color=color, weight=2, opacity=0.6).add_to(feature_group)
-                
-                if latest_lob_val != "N/A" and not is_rabbit:
-                    folium.Marker(
-                        location=[t_lat + 0.004, t_lon],
-                        icon=folium.DivIcon(
-                            html=f"""<div style="font-family: sans-serif; font-size: 11px; font-weight: bold; color: black; background-color: rgba(255,255,255,0.7); padding: 2px 4px; border-radius: 3px; border: 1px solid {color}; white-space: nowrap; margin-top: -12px;">{layer_name}: {latest_lob_val}</div>"""
-                        )
-                    ).add_to(feature_group)
-                
-                active_legend_items.append((layer_name, color))
-                feature_group.add_to(my_map)
+            if is_rabbit:
+                layer_color = default_color
+                popup_html = (
+                    f"<b>{name}</b><br>"
+                    f"Time: {time_str}<br>"
+                    f"Lat: {head[0]:.6f}<br>"
+                    f"Lon: {head[1]:.6f}"
+                )
+            else:
+                layer_color = get_frequency_color(latest_freq)
+                freq_label = f"{latest_freq:.2f} MHz" if latest_freq is not None else "Unknown Freq"
+                freq_legend_entries[freq_label] = layer_color
 
-        if bot_features and selected_date in bot_features:
-            for b_lbl, nodes in bot_features[selected_date].items():
-                visible_nodes = [n for n in nodes if min_cutoff <= n.get("normalized_minutes", 0) <= max_cutoff]
-                if not visible_nodes:
-                    continue
-                    
-                most_recent_node = visible_nodes[-1]
-                track_color = most_recent_node.get("color", "darkgreen")
-                bot_fg = folium.FeatureGroup(name=b_lbl)
-                combined_points = [[n["lat"], n["lon"]] for n in visible_nodes]
-                
-                if my_map is None:
-                    my_map = folium.Map(location=combined_points[0], zoom_start=12, prefer_canvas=True)
-                
-                if len(combined_points) > 1:
-                    folium.PolyLine(combined_points, color=track_color, weight=3, opacity=0.8, dash_array='5,5').add_to(bot_fg)
-                
-                b_lat, b_lon = most_recent_node["lat"], most_recent_node["lon"]
-                b_lob, b_time = most_recent_node["lob"], most_recent_node.get("time_label", "N/A")
-                
-                is_bot_rabbit = "rabbit" in b_lbl.lower()
-                latest_bot_lob_str = f"{b_lob}°" if b_lob is not None else "N/A"
-                
-                if is_bot_rabbit:
-                    popup_msg = (
-                        f"<b>{b_lbl}</b><br>"
-                        f"Coordinates: Lat: {b_lat:.5f}, Lon: {b_lon:.5f}<br>"
-                        f"Timestamp: {b_time}"
-                    )
-                    folium.Marker(location=[b_lat, b_lon], popup=popup_msg, icon=folium.Icon(color=track_color, icon='info-sign')).add_to(bot_fg)
-                else:
-                    popup_msg = (
-                        f"<b>{b_lbl}</b><br>"
-                        f"Coordinates: Lat: {b_lat:.5f}, Lon: {b_lon:.5f}<br>"
-                        f"Timestamp: {b_time}<br>"
-                        f"LOB Abs Degree: {latest_bot_lob_str}"
-                    )
-                    folium.CircleMarker(location=[b_lat, b_lon], radius=7, color=track_color, fill=True, popup=popup_msg).add_to(bot_fg)
-                    
-                    if b_lob is not None:
-                        cone_l = 0.08
-                        fov_h = 20.0
-                        ang_l, ang_r = math.radians(b_lob - fov_h), math.radians(b_lob + fov_h)
-                        folium.PolyLine([[b_lat, b_lon], [b_lat + (cone_l * math.cos(ang_l)), b_lon + (cone_l * math.sin(ang_l))]], color=track_color, weight=2).add_to(bot_fg)
-                        folium.PolyLine([[b_lat, b_lon], [b_lat + (cone_l * math.cos(ang_r)), b_lon + (cone_l * math.sin(ang_r))]], color=track_color, weight=2).add_to(bot_fg)
-                
-                if not is_bot_rabbit:
-                    folium.Marker(
-                        location=[b_lat + 0.004, b_lon],
-                        icon=folium.DivIcon(
-                            html=f"""<div style="font-family: sans-serif; font-size: 11px; font-weight: bold; color: black; background-color: rgba(255,255,255,0.7); padding: 2px 4px; border-radius: 3px; border: 1px solid {track_color}; white-space: nowrap; margin-top: -12px;">{b_lbl}: {latest_bot_lob_str}</div>"""
-                        )
-                    ).add_to(bot_fg)
-                
-                bot_fg.add_to(my_map)
-                active_legend_items.append((b_lbl, track_color))
+                if raw_lob is not None:
+                    for offset in (-25.0, 25.0):
+                        rad = math.radians(raw_lob + offset)
+                        cones.append([head, [head[0] + 0.08 * math.cos(rad), head[1] + 0.08 * math.sin(rad)]])
+                lob_text = f"{raw_lob}°" if raw_lob is not None else "N/A"
+                popup_html = (
+                    f"<b>{name}</b><br>"
+                    f"Time: {time_str}<br>"
+                    f"Frequency: {freq_label}<br>"
+                    f"LOB Abs Degree: {lob_text}<br>"
+                    f"Lat: {head[0]:.6f}<br>"
+                    f"Lon: {head[1]:.6f}"
+                )
 
-        if my_map is None:
-            my_map = folium.Map(location=[35.219, -116.648], zoom_start=12, prefer_canvas=True)
+            output_layers.append({
+                "name": name,
+                "color": layer_color,
+                "is_rabbit": is_rabbit,
+                "points": pts,
+                "cones": cones,
+                "popup": popup_html,
+                "legend_label": name if is_rabbit else None
+            })
 
-        folium.LayerControl().add_to(my_map)
+    if bot_features and selected_date in bot_features:
+        for b_lbl, nodes in bot_features[selected_date].items():
+            vis = [n for n in nodes if min_cutoff <= n.get("normalized_minutes", 0) <= max_cutoff]
+            if not vis:
+                continue
+            last = vis[-1]
+            pts = [[n["lat"], n["lon"]] for n in vis]
+            is_rabbit_track = (
+                bool(last.get("is_rabbit"))
+                or any(k in b_lbl.lower() for k in ["rabbit", "events_list", "eventslist"])
+            )
 
-        box_height = 40 + (len(active_legend_items) * 22)
-        legend_rows_html = "".join([f'<i style="background:{c}; width:10px; height:10px; float:left; margin-right:5px; margin-top:4px;"></i> {n}<br>' for n, c in active_legend_items])
-        legend_html = f'<div style="position: fixed; bottom: 50px; left: 50px; width: 160px; height: {box_height}px; background-color: white; border:2px solid grey; z-index:9999; font-size:13px; padding: 10px; font-family: sans-serif; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);"><b>Legend ({selected_date})</b><br>{legend_rows_html}</div>'
-        my_map.get_root().html.add_child(folium.Element(legend_html))
-        
-        remove_scrollbars_css = "<style>html, body { overflow: hidden !important; margin: 0 !important; padding: 0 !important; width: 100% !important; height: 100% !important; } ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }</style>"
-        my_map.get_root().html.add_child(folium.Element(remove_scrollbars_css))
-        
-        persistent_view_js = """
-        <style>
-            .folium-map { opacity: 0; }
-        </style>
+            valid_lobs = [float(n["lob"]) for n in vis if n.get("lob") is not None]
+            latest_lob = valid_lobs[-1] if valid_lobs else None
+            cones = []
+
+            if is_rabbit_track:
+                popup_html = (
+                    f"<b>{b_lbl}</b><br>"
+                    f"Time: {last.get('time_label', 'N/A')}<br>"
+                    f"Lat: {last['lat']:.6f}<br>"
+                    f"Lon: {last['lon']:.6f}"
+                )
+            else:
+                if latest_lob is not None:
+                    for offset in (-25.0, 25.0):
+                        rad = math.radians(latest_lob + offset)
+                        cones.append([
+                            [last["lat"], last["lon"]],
+                            [last["lat"] + 0.08 * math.cos(rad), last["lon"] + 0.08 * math.sin(rad)]
+                        ])
+                lob_text = f"{latest_lob}°" if latest_lob is not None else "N/A"
+                popup_html = (
+                    f"<b>{b_lbl}</b><br>"
+                    f"Time: {last.get('time_label', 'N/A')}<br>"
+                    f"LOB Abs Degree: {lob_text}<br>"
+                    f"Lat: {last['lat']:.6f}<br>"
+                    f"Lon: {last['lon']:.6f}"
+                )
+
+            output_layers.append({
+                "name": b_lbl,
+                "color": last.get("color", "darkgreen"),
+                "is_rabbit": is_rabbit_track,
+                "points": pts,
+                "cones": cones,
+                "popup": popup_html
+            })
+
+            valid_freqs = [float(n["freq"]) for n in vis if n.get("freq") is not None]
+            latest_freq = valid_freqs[-1] if valid_freqs else None
+
+            if not is_rabbit_track and latest_freq is not None:
+                track_color = get_frequency_color(latest_freq)
+                freq_label = f"{latest_freq:.2f} MHz"
+                freq_legend_entries[freq_label] = track_color
+            else:
+                track_color = last.get("color", "darkgreen")
+                freq_label = "N/A"
+
+    return {"date": selected_date, "layers": output_layers}
+
+@app.callback(
+    Output('postmessage-bridge', 'children'),
+    [Input('live-map-payload', 'data'),
+     Input('folium-map', 'srcDoc')]
+)
+def push_payload_to_iframe(payload, _):
+    if not payload or not payload.get("layers"):
+        return ""
+    encoded = json.dumps(payload)
+    return html.Iframe(
+        srcDoc=f"""
         <script>
-            (function() {
-                var hiddenLayers = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
-                var savedCenter = localStorage.getItem('dash_map_center');
-                var savedZoom = localStorage.getItem('dash_map_zoom');
-
-                function applySavedState() {
-                    var maps = Object.keys(window).filter(k => k.startsWith('map_'));
-                    if (maps.length === 0) return false;
-
-                    var mapObj = window[maps];
-                    var mapContainer = mapObj.getContainer();
-
-                    if (savedCenter && savedZoom) {
-                        mapObj.setView(JSON.parse(savedCenter), parseInt(savedZoom), {animate: false});
-                    }
-
-                    var labels = document.querySelectorAll('.leaflet-control-layers-overlays label');
-                    labels.forEach(function(label) {
-                        var name = label.textContent.trim();
-                        var checkbox = label.querySelector('input[type="checkbox"]');
-                        if (checkbox && hiddenLayers.includes(name) && checkbox.checked) {
-                            checkbox.click();
-                        }
-                    });
-
-                    if (mapContainer) {
-                        mapContainer.style.opacity = '1';
-                    }
-
-                    mapObj.on('moveend zoomend', function() {
-                        localStorage.setItem('dash_map_center', JSON.stringify(mapObj.getCenter()));
-                        localStorage.setItem('dash_map_zoom', mapObj.getZoom());
-                    });
-                    mapObj.on('overlayremove', function(e) {
-                        var current = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
-                        if (!current.includes(e.name)) {
-                            current.push(e.name);
-                            localStorage.setItem('dash_hidden_layers', JSON.stringify(current));
-                        }
-                    });
-                    mapObj.on('overlayadd', function(e) {
-                        var current = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
-                        current = current.filter(function(item) { return item !== e.name; });
-                        localStorage.setItem('dash_hidden_layers', JSON.stringify(current));
-                    });
-
-                    return true;
-                }
-
-                var observer = new MutationObserver(function() {
-                    if (applySavedState()) {
-                        observer.disconnect();
-                    }
-                });
-                observer.observe(document.documentElement, { childList: true, subtree: true });
-
-                document.addEventListener("DOMContentLoaded", function() {
-                    if (applySavedState()) {
-                        observer.disconnect();
-                    } else {
-                        var maps = Object.keys(window).filter(k => k.startsWith('map_'));
-                        if (maps.length > 0) window[maps].getContainer().style.opacity = '1';
-                    }
-                });
-            })();
+            (function() {{
+                var data = {encoded};
+                var attempts = 0;
+                var timer = setInterval(function() {{
+                    attempts++;
+                    var mapFrame = window.parent.document.getElementById('folium-map');
+                    if (mapFrame && mapFrame.contentWindow && typeof mapFrame.contentWindow.renderPayload === 'function') {{
+                        mapFrame.contentWindow.postMessage({{type: 'UPDATE_MAP_LAYERS', payload: data}}, '*');
+                        clearInterval(timer);
+                    }} else if (attempts > 40) {{
+                        clearInterval(timer);
+                    }}
+                }}, 50);
+            }})();
         </script>
-        """
-        my_map.get_root().html.add_child(folium.Element(persistent_view_js))
-        return my_map.get_root().render()
-
-    except Exception as err:
-        return f"⚠️ Dashboard Integration Matrix Exception Error: {str(err)}"
-
+        """,
+        style={'display': 'none'}
+    )
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=8055)
