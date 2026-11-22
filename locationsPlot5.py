@@ -1308,23 +1308,37 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
     freq_legend_entries = {}
 
     for name, default_color, parsed_list, is_rabbit in layers_def:
-        pts, raw_lob, latest_min, latest_freq = [], None, None, None
+        timed_pts, raw_lob, latest_min, latest_freq = [], None, None, None
         for item in (parsed_list or []):
             df, lt, ln, lb, fq = item
             if df.empty:
                 continue
             sliced = df.loc[(df['normalized_minutes'] >= min_cutoff) & (df['normalized_minutes'] <= max_cutoff)]
             if not sliced.empty:
-                pts.extend(sliced[[lt, ln]].to_numpy().tolist())
-                latest_min = int(sliced['normalized_minutes'].iloc[-1])
-                if lb and not sliced[lb].dropna().empty:
-                    raw_lob = float(sliced[lb].dropna().iloc[-1])
-                if fq and not sliced[fq].dropna().empty:
-                    latest_freq = float(sliced[fq].dropna().iloc[-1])
+                # Pair every coordinate with its timestamp so multi-file tracks stay strictly chronological
+                for m_val, lat_v, lon_v in zip(
+                    sliced['normalized_minutes'].to_numpy(),
+                    sliced[lt].to_numpy(),
+                    sliced[ln].to_numpy()
+                ):
+                    timed_pts.append((float(m_val), float(lat_v), float(lon_v)))
+
+                last_row_min = int(sliced['normalized_minutes'].iloc[-1])
+                if latest_min is None or last_row_min >= latest_min:
+                    latest_min = last_row_min
+                    if lb and not sliced[lb].dropna().empty:
+                        raw_lob = float(sliced[lb].dropna().iloc[-1])
+                    if fq and not sliced[fq].dropna().empty:
+                        latest_freq = float(sliced[fq].dropna().iloc[-1])
+
+        # Sort chronologically across all files for this sensor/rabbit
+        timed_pts.sort(key=lambda x: x)
+        pts = [[lat_v, lon_v] for _, lat_v, lon_v in timed_pts]
 
         if pts:
-            if len(pts) > 200:
-                pts = pts[::len(pts)//100]
+            # Use a fixed step size (every 2nd point) instead of a shifting divisor so existing trail geometry never morphs
+            if len(pts) > 400:
+                pts = pts[::2] + ([pts[-1]] if len(pts) % 2 == 0 else [])
             head = pts[-1]
             time_str = f"{(latest_min // 60) % 24:02d}:{latest_min % 60:02d}" if latest_min is not None else "N/A"
             cones = []
