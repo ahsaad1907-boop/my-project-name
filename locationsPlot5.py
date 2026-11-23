@@ -45,7 +45,6 @@ def load_clean_file(full_path):
             
         lob_col = next((c for c in df.columns if "lob" in c.lower() and "deg" in c.lower()), None)
         
-        # Detect frequency column (prefer cluster MHz, fall back to raw MHz)
         freq_col = None
         for target in ["freq_cluster_mhz", "freq_raw_mhz"]:
             for c in df.columns:
@@ -225,7 +224,9 @@ app.layout = html.Div([
     dcc.Store(id='bot-features-store', data={}),
     dcc.Store(id='active-handle-store', data={'handle': 0, 'prev_val': None}),
     dcc.Store(id='live-map-payload', data={}),
-    html.Div(id='postmessage-bridge', style={'display': 'none'}),
+    html.Div(id='map-json-carrier', style={'display': 'none'}),
+    html.Div(id='map-theme-carrier', children='light', style={'display': 'none'}),
+    html.Div(id='map-style-carrier', children='Street', style={'display': 'none'}),
     html.Button(id='handle-0-focus-btn', n_clicks=0, style={'display': 'none'}),
     html.Button(id='handle-1-focus-btn', n_clicks=0, style={'display': 'none'}),
     html.Iframe(
@@ -268,6 +269,16 @@ app.layout = html.Div([
                 'padding': '6px 12px', 'fontFamily': 'sans-serif', 'fontWeight': 'bold',
                 'cursor': 'pointer', 'borderRadius': '4px', 'border': '1px solid #ccc',
                 'backgroundColor': '#212529', 'color': 'white', 'marginRight': '15px'
+            }
+        ),
+        html.Button(
+            "🗺️ Map: Street",
+            id='map-style-btn',
+            n_clicks=0,
+            style={
+                'padding': '6px 12px', 'fontFamily': 'sans-serif', 'fontWeight': 'bold',
+                'cursor': 'pointer', 'borderRadius': '4px', 'border': '1px solid #ccc',
+                'backgroundColor': '#f8f9fa', 'color': '#212529', 'marginRight': '10px'
             }
         )
     ], id="header-bar", style={
@@ -437,20 +448,46 @@ app.layout = html.Div([
 })
 
 @app.callback(
-    [Output('dark-mode-btn', 'children'),           # 1
-     Output('dark-mode-btn', 'style'),              # 2
-     Output('main-layout', 'style'),                # 3
-     Output('dashboard-title', 'style'),            # 4
-     Output('controls-container', 'style'),         # 5
-     Output('play-button', 'style'),                # 6
-     Output('slider-mode-label', 'style'),          # 7
-     Output('slider-mode-toggle', 'labelStyle'),    # 8
-     Output('active-handle-selector', 'labelStyle'),# 9
-     Output('chat-conversation-area', 'style'),     # 10
-     Output('chat-input-bar', 'style'),             # 11
-     Output('chat-user-input', 'style'),            # 12
-     Output('date-tabs', 'colors'),                 # 13
-     Output('date-tabs', 'children')],              # 14 <-- ADD THIS OUTPUT
+    [Output('map-style-btn', 'children'),
+     Output('map-style-carrier', 'children')],
+    Input('map-style-btn', 'n_clicks')
+)
+def cycle_map_style(n_clicks):
+    styles = ["Street", "Satellite", "Topographic"]
+    chosen = styles[(n_clicks or 0) % len(styles)]
+    return f"🗺️ Map: {chosen}", chosen
+
+@app.callback(
+    Output('map-json-carrier', 'children'),
+    Input('live-map-payload', 'data')
+)
+def write_payload_to_carrier(payload):
+    if not payload:
+        return ""
+    return json.dumps(payload)
+
+@app.callback(
+    Output('map-theme-carrier', 'children'),
+    Input('dark-mode-btn', 'n_clicks')
+)
+def write_theme_to_carrier(dark_clicks):
+    return "dark" if (dark_clicks or 0) % 2 == 1 else "light"
+
+@app.callback(
+    [Output('dark-mode-btn', 'children'),
+     Output('dark-mode-btn', 'style'),
+     Output('main-layout', 'style'),
+     Output('dashboard-title', 'style'),
+     Output('controls-container', 'style'),
+     Output('play-button', 'style'),
+     Output('slider-mode-label', 'style'),
+     Output('slider-mode-toggle', 'labelStyle'),
+     Output('active-handle-selector', 'labelStyle'),
+     Output('chat-conversation-area', 'style'),
+     Output('chat-input-bar', 'style'),
+     Output('chat-user-input', 'style'),
+     Output('date-tabs', 'colors'),
+     Output('date-tabs', 'children')],
     [Input('dark-mode-btn', 'n_clicks')]
 )
 def toggle_dark_mode(n_clicks):
@@ -595,20 +632,20 @@ def toggle_dark_mode(n_clicks):
     ]
 
     return (
-        btn_label,          # 1
-        btn_style,          # 2
-        main_style,         # 3
-        title_style,        # 4
-        controls_style,     # 5
-        play_style,         # 6
-        slider_label_style, # 7
-        mode_label_style,   # 8
-        handle_label_style, # 9
-        chat_area_style,    # 10
-        chat_bar_style,     # 11
-        input_style,        # 12
-        tab_colors,         # 13
-        tab_children        # 14
+        btn_label,
+        btn_style,
+        main_style,
+        title_style,
+        controls_style,
+        play_style,
+        slider_label_style,
+        mode_label_style,
+        handle_label_style,
+        chat_area_style,
+        chat_bar_style,
+        input_style,
+        tab_colors,
+        tab_children
     )
 
 @app.callback(
@@ -743,7 +780,6 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
         'gray', 'black', 'lightgray'
     ]
 
-    # ─── CASE A: FILE UPLOADED (.CSV OR .TXT) ───────────────────────────────
     if trigger_id == 'chat-file-upload' and upload_contents:
         history.append({"speaker": "user", "text": f"📎 Uploaded file: **{upload_filename}**"})
         try:
@@ -775,13 +811,11 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
 
                 base_filename = os.path.splitext(upload_filename)[0].strip()
 
-                # ─── 1. DETECT RABBIT VS SENSOR BEFORE ROW LOOP ─────────────
                 fn_lower = upload_filename.lower()
                 is_rabbit_file = (
                     any(k in fn_lower for k in ["rabbit", "events_list", "eventslist"])
                     or lob_col is None
                 )
-                # ───────────────────────────────────────────────────────────
 
                 for idx, row in df.iterrows():
                     try:
@@ -816,7 +850,6 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
                             None
                         )
 
-                        # Inside the row loop:
                         raw_freq = pd.to_numeric(row[freq_col], errors='coerce') if freq_col else None
                         freq_val = float(raw_freq) if (raw_freq is not None and pd.notna(raw_freq)) else None
                         if not is_rabbit_file and freq_val is not None:
@@ -834,7 +867,6 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
                         skipped_count += 1
 
             else:
-                # Plain .txt file: parse each line using the same chat command syntax
                 for line in decoded_text.splitlines():
                     line = line.strip()
                     if not line:
@@ -870,7 +902,6 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
             for lbl in updated_tracks:
                 features[current_date][lbl] = sorted(features[current_date][lbl], key=lambda x: x["normalized_minutes"])
 
-            # ─── 3. UPDATE RABBIT VS SENSOR SUMMARY COUNTS ─────────────────
             if added_count > 0:
                 rabbit_tracks = [
                     t for t in updated_tracks
@@ -905,16 +936,25 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
         history.append({"speaker": "assistant", "text": bot_response})
         return history, features, "", None
 
-    # ─── CASE B: STANDARD TEXT MESSAGE ──────────────────────────────────────
     if not text or not text.strip():
         return history, features, text, None
 
-    user_msg = text.strip()
+    user_msg = (
+        text.strip()
+        .replace("“", '"')
+        .replace("”", '"')
+        .replace("‘", "'")
+        .replace("’", "'")
+    )
     history.append({"speaker": "user", "text": user_msg})
 
-    delete_match = re.search(r'delete\s*=\s*(?:"([^"]+)"|([^\s]+))', user_msg, re.IGNORECASE)
+    delete_match = re.search(
+        r'delete\s*=\s*(?:"([^"]+)"|\'([^\']+)\'|([^\s]+))',
+        user_msg,
+        re.IGNORECASE
+    )
     if delete_match:
-        target_to_delete = (delete_match.group(1) or delete_match.group(2)).strip()
+        target_to_delete = next(g for g in delete_match.groups() if g is not None).strip()
         time_match_del = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', user_msg, re.IGNORECASE)
 
         if target_to_delete.lower() == 'all':
@@ -944,7 +984,15 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
         return history, features, "", None
 
     coord_match = re.search(r'(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)', user_msg)
-    name_match = re.search(r'name\s*=\s*(?:"([^"]+)"|([^\s]+))', user_msg, re.IGNORECASE)
+    name_match = re.search(
+        r'name\s*=\s*(?:"([^"]+)"|\'([^\']+)\'|([^\s]+))',
+        user_msg,
+        re.IGNORECASE
+    )
+    if name_match:
+        label = next(g for g in name_match.groups() if g is not None).strip()
+    else:
+        label = f"AI-Sensor-{len(features[current_date]) + 1}"
     lob_match = re.search(r'lob\s*=\s*(\d+(?:\.\d+)?)', user_msg, re.IGNORECASE)
     time_match = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', user_msg, re.IGNORECASE)
     color_match = re.search(r'color\s*=\s*([^\s]+)', user_msg, re.IGNORECASE)
@@ -1086,57 +1134,165 @@ def update_slider_mechanics(selected_date, n_intervals, mode, current_val, store
 
 @app.callback(
     Output('folium-map', 'srcDoc'),
-    [Input('date-tabs', 'value'),
-     Input('dark-mode-btn', 'n_clicks')]
+    Input('date-tabs', 'id'),
+    State('date-tabs', 'value')
 )
-def update_map(selected_date, dark_clicks):
-    is_dark = (dark_clicks or 0) % 2 == 1
-    legend_bg = "#212529" if is_dark else "white"
-    legend_fg = "#f8f9fa" if is_dark else "black"
-    legend_border = "#555" if is_dark else "grey"
-
-    # Keyless OpenStreetMap tiles for both themes; dark mode applies a clean CSS invert filter to the map tiles only
+def update_map(_, initial_date):
     my_map = folium.Map(
         location=[35.219, -116.648],
         zoom_start=12,
-        tiles="OpenStreetMap",
-        prefer_canvas=True
+        tiles=None,
+        prefer_canvas=True,
+        fade_animation=False
     )
 
-    dark_tile_css = (
-        ".leaflet-tile-pane { filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%); }"
-        if is_dark else ""
-    )
+    t_street = folium.TileLayer("OpenStreetMap", name="Street", control=False).add_to(my_map)
+    t_sat = folium.TileLayer("Esri.WorldImagery", name="Satellite", control=False).add_to(my_map)
+    t_topo = folium.TileLayer("OpenTopoMap", name="Topographic", control=False).add_to(my_map)
 
-    remove_scrollbars_css = f"""
+    js_street = t_street.get_name()
+    js_sat = t_sat.get_name()
+    js_topo = t_topo.get_name()
+
+    base_css = """
     <style>
-        html, body {{ overflow: hidden !important; margin: 0 !important; padding: 0 !important; width: 100% !important; height: 100% !important; }}
-        ::-webkit-scrollbar {{ display: none !important; }}
-        {dark_tile_css}
+        html, body { overflow: hidden !important; margin: 0 !important; padding: 0 !important; width: 100% !important; height: 100% !important; }
+        ::-webkit-scrollbar { display: none !important; }
+        .leaflet-tile-pane { transition: filter 0.15s ease; }
     </style>
     """
-    my_map.get_root().html.add_child(folium.Element(remove_scrollbars_css))
+    my_map.get_root().html.add_child(folium.Element(base_css))
 
     live_listener_js = f"""
-    <div id="dynamic-legend" style="position: fixed; bottom: 50px; left: 50px; width: 165px; background-color: {legend_bg}; color: {legend_fg}; border: 2px solid {legend_border}; z-index: 9999; font-size: 13px; padding: 10px; font-family: sans-serif; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);">
-        <b>Legend ({selected_date})</b><br><span style="color: gray;">Loading...</span>
+    <div id="dynamic-legend" style="position: fixed; bottom: 50px; left: 50px; width: 175px; background-color: white; color: black; border: 2px solid grey; z-index: 9999; font-size: 13px; padding: 10px; font-family: sans-serif; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);">
+        <b>Legend ({initial_date})</b><br><span style="color: gray;">Loading...</span>
     </div>
     <script>
         var layerRegistry = {{}};
         var layerControl = null;
+        var intersectionGroup = null;
         var hasCentered = false;
+        var currentActiveBase = 'Street';
 
+        function applyVisualFilters() {{
+            var themeEl = window.parent.document.getElementById('map-theme-carrier');
+            var isDark = themeEl && (themeEl.textContent.trim() === 'dark');
+
+            var tilePane = document.querySelector('.leaflet-tile-pane');
+            if (tilePane) {{
+                var useInvert = isDark && (currentActiveBase !== 'Satellite');
+                tilePane.style.filter = useInvert
+                    ? 'invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%)'
+                    : 'none';
+            }}
+
+            var legendEl = document.getElementById('dynamic-legend');
+            if (legendEl) {{
+                legendEl.style.backgroundColor = isDark ? '#212529' : 'white';
+                legendEl.style.color = isDark ? '#f8f9fa' : 'black';
+                legendEl.style.borderColor = isDark ? '#555' : 'grey';
+            }}
+        }}
+
+        function applyMapTheme(themeStr) {{
+            applyVisualFilters();
+        }}
+
+        function applyMapStyle(styleName, force) {{
+            var mapObj = getMap();
+            if (!mapObj) return;
+            if (!force && currentActiveBase === styleName) return;
+
+            var styleMap = {{
+                'Street': typeof {js_street} !== 'undefined' ? {js_street} : null,
+                'Satellite': typeof {js_sat} !== 'undefined' ? {js_sat} : null,
+                'Topographic': typeof {js_topo} !== 'undefined' ? {js_topo} : null
+            }};
+
+            if (!styleMap[styleName]) return;
+            currentActiveBase = styleName;
+
+            Object.keys(styleMap).forEach(function(key) {{
+                var lyr = styleMap[key];
+                if (!lyr) return;
+                if (!mapObj.hasLayer(lyr)) {{
+                    lyr.addTo(mapObj);
+                }}
+                lyr.setOpacity(key === styleName ? 1.0 : 0.0);
+                if (key === styleName) {{
+                    lyr.bringToBack();
+                }}
+            }});
+
+            applyVisualFilters();
+        }}
+        
         function getMap() {{
             var maps = Object.keys(window).filter(function(k) {{ return k.startsWith('map_'); }});
-            return maps.length > 0 ? window[maps] : null;
+            return maps.length > 0 ? window[maps.at(0)] : null;
+        }}
+
+        function applyMapTheme(themeStr) {{
+            var isDark = (themeStr === 'dark');
+            var tilePane = document.querySelector('.leaflet-tile-pane');
+            if (tilePane) {{
+                var useInvert = isDark && (currentActiveBase !== 'Satellite');
+                tilePane.style.filter = useInvert
+                    ? 'invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%)'
+                    : 'none';
+            }}
+            var legendEl = document.getElementById('dynamic-legend');
+            if (legendEl) {{
+                legendEl.style.backgroundColor = isDark ? '#212529' : 'white';
+                legendEl.style.color = isDark ? '#f8f9fa' : 'black';
+                legendEl.style.borderColor = isDark ? '#555' : 'grey';
+            }}
         }}
 
         function renderPayload(payload) {{
             var mapObj = getMap();
             if (!mapObj || !payload || !payload.layers) return;
 
+            var hiddenLayers = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
+
             if (!layerControl) {{
-                layerControl = L.control.layers(null, {{}}).addTo(mapObj);
+                var osmLayer = null;
+                mapObj.eachLayer(function(l) {{
+                    if (l instanceof L.TileLayer) {{
+                        osmLayer = l;
+                    }}
+                }});
+
+                var satelliteLayer = L.tileLayer(
+                    'https://arcgisonline.com{{z}}/{{y}}/{{x}}',
+                    {{ attribution: 'Tiles &copy; Esri', maxZoom: 19 }}
+                );
+
+                var topoLayer = L.tileLayer(
+                    'https://{{s}}.tile.opentopomap.org/{{z}}/{{x}}/{{y}}.png',
+                    {{ attribution: 'Map data: &copy; OpenTopoMap', maxZoom: 17 }}
+                );
+
+                var terrainLayer = L.tileLayer(
+                    'https://arcgisonline.com{{z}}/{{y}}/{{x}}',
+                    {{ attribution: 'Tiles &copy; Esri', maxZoom: 19 }}
+                );
+
+                baseLayers = {{
+                    'Street Map': osmLayer,
+                    'Satellite': satelliteLayer,
+                    'Terrain': terrainLayer,
+                    'Topographic': topoLayer
+                }};
+
+                layerControl = L.control.layers(baseLayers, {{}}).addTo(mapObj);
+
+                mapObj.on('baselayerchange', function(e) {{
+                    currentActiveBase = e.name;
+                    var themeEl = window.parent.document.getElementById('map-theme-carrier');
+                    applyMapTheme(themeEl ? themeEl.textContent.trim() : 'light');
+                }});
+
                 var savedCenter = localStorage.getItem('dash_map_center');
                 var savedZoom = localStorage.getItem('dash_map_zoom');
                 if (savedCenter && savedZoom) {{
@@ -1147,9 +1303,50 @@ def update_map(selected_date, dark_clicks):
                     localStorage.setItem('dash_map_center', JSON.stringify(mapObj.getCenter()));
                     localStorage.setItem('dash_map_zoom', mapObj.getZoom());
                 }});
+                mapObj.on('overlayremove', function(e) {{
+                    var cur = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
+                    if (!cur.includes(e.name)) {{
+                        cur.push(e.name);
+                        localStorage.setItem('dash_hidden_layers', JSON.stringify(cur));
+                    }}
+                }});
+                mapObj.on('overlayadd', function(e) {{
+                    var cur = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
+                    localStorage.setItem('dash_hidden_layers', JSON.stringify(cur.filter(function(x) {{ return x !== e.name; }})));
+                }});
             }}
 
-            var hiddenLayers = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
+            if (!intersectionGroup) {{
+                intersectionGroup = L.layerGroup();
+                layerControl.addOverlay(intersectionGroup, 'LOB Intersections');
+                if (!hiddenLayers.includes('LOB Intersections')) {{
+                    intersectionGroup.addTo(mapObj);
+                }}
+            }} else {{
+                intersectionGroup.clearLayers();
+            }}
+
+            if (payload.intersections && payload.intersections.length > 0) {{
+                payload.intersections.forEach(function(hit) {{
+                    L.polygon(hit.polygon, {{
+                        color: hit.color,
+                        weight: 2,
+                        dashArray: '4, 4',
+                        opacity: 0.9,
+                        fillColor: hit.color,
+                        fillOpacity: 0.28
+                    }}).bindPopup(hit.popup).addTo(intersectionGroup);
+
+                    L.circleMarker(hit.center, {{
+                        radius: 4,
+                        color: '#ffffff',
+                        weight: 1.5,
+                        fillColor: hit.color,
+                        fillOpacity: 1.0
+                    }}).bindPopup(hit.popup).addTo(intersectionGroup);
+                }});
+            }}
+
             var activeNames = payload.layers.map(function(l) {{ return l.name; }});
 
             Object.keys(layerRegistry).forEach(function(existingName) {{
@@ -1179,13 +1376,18 @@ def update_map(selected_date, dark_clicks):
 
                 if (layer.points && layer.points.length > 0) {{
                     if (!hasCentered) {{
-                        mapObj.setView(layer.points, 12, {{animate: false}});
+                        mapObj.setView(layer.points.at(0), 12, {{animate: false}});
                         hasCentered = true;
                     }}
                     if (layer.points.length > 1) {{
-                        L.polyline(layer.points, {{color: layer.color, weight: 3, opacity: 0.8, dashArray: '5,5'}}).addTo(targetGroup);
+                        L.polyline(layer.points, {{
+                            color: layer.color,
+                            weight: 3,
+                            opacity: 0.8,
+                            dashArray: '5,5'
+                        }}).addTo(targetGroup);
                     }}
-                    var head = layer.points[layer.points.length - 1];
+                    var head = layer.points.at(-1);
                     L.circleMarker(head, {{
                         radius: layer.is_rabbit ? 8 : 7,
                         color: layer.color,
@@ -1195,14 +1397,25 @@ def update_map(selected_date, dark_clicks):
 
                     if (layer.cones) {{
                         layer.cones.forEach(function(coneLine) {{
-                            L.polyline(coneLine, {{color: layer.color, weight: 2, opacity: 0.65}}).addTo(targetGroup);
+                            L.polyline(coneLine, {{
+                                color: layer.color,
+                                weight: 2,
+                                opacity: 0.65
+                            }}).addTo(targetGroup);
                         }});
                     }}
-                    legendRows.push('<i style="background:' + layer.color + '; width:10px; height:10px; display:inline-block; margin-right:6px;"></i>' + layer.name);
-                }}
 
-                if (layer.points && layer.points.length > 0 && layer.is_rabbit) {{
-                    var cleanName = String(layer.name).trim();
+                    if (layer.is_rabbit) {{
+                        var cleanName = String(layer.name).trim();
+                        if (!seenLegend[cleanName]) {{
+                            seenLegend[cleanName] = true;
+                            legendRows.push(
+                                '<i style="background:' + layer.color +
+                                '; width:10px; height:10px; display:inline-block; margin-right:6px;"></i>' +
+                                cleanName
+                            );
+                        }}
+                    }}
                 }}
             }});
 
@@ -1220,59 +1433,192 @@ def update_map(selected_date, dark_clicks):
                     }}
                 }});
             }}
+
             document.getElementById('dynamic-legend').innerHTML =
                 '<b>Legend (' + payload.date + ')</b><br>' + legendRows.join('<br>');
         }}
 
-        window.addEventListener('message', function(event) {{
-            if (event.data && event.data.type === 'UPDATE_MAP_LAYERS') {{
-                window._latestPayload = event.data.payload;
-                renderPayload(event.data.payload);
-            }}
-        }});
+        function syncFromParent() {{
+            var pDoc = window.parent.document;
+            var jsonEl = pDoc.getElementById('map-json-carrier');
+            var themeEl = pDoc.getElementById('map-theme-carrier');
 
-        window.addEventListener('load', function() {{
-            var mapObj = getMap();
-            if (mapObj) {{
-                mapObj.on('overlayremove', function(e) {{
-                    var cur = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
-                    if (!cur.includes(e.name)) {{
-                        cur.push(e.name);
-                        localStorage.setItem('dash_hidden_layers', JSON.stringify(cur));
-                    }}
-                }});
-                mapObj.on('overlayadd', function(e) {{
-                    var cur = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
-                    localStorage.setItem('dash_hidden_layers', JSON.stringify(cur.filter(function(x) {{ return x !== e.name; }})));
-                }});
+            if (themeEl) {{
+                applyMapTheme(themeEl.textContent.trim());
             }}
-            if (window._latestPayload) {{
-                renderPayload(window._latestPayload);
+            if (jsonEl && jsonEl.textContent) {{
+                try {{
+                    renderPayload(JSON.parse(jsonEl.textContent));
+                }} catch (e) {{}}
             }}
-        }});
+        }}
+
+     window.addEventListener('load', function() {{
+         var pDoc = window.parent.document;
+         var jsonEl = pDoc.getElementById('map-json-carrier');
+         var themeEl = pDoc.getElementById('map-theme-carrier');
+         var styleEl = pDoc.getElementById('map-style-carrier');
+
+         if (styleEl && styleEl.textContent) {{
+             applyMapStyle(styleEl.textContent.trim(), true);
+         }}
+         syncFromParent();
+
+         if (jsonEl) {{
+             new MutationObserver(syncFromParent).observe(jsonEl, {{ childList: true, characterData: true, subtree: true }});
+         }}
+         if (themeEl) {{
+             new MutationObserver(syncFromParent).observe(themeEl, {{ childList: true, characterData: true, subtree: true }});
+         }}
+         if (styleEl) {{
+             new MutationObserver(function() {{
+                 applyMapStyle(styleEl.textContent.trim(), true);
+             }}).observe(styleEl, {{ childList: true, characterData: true, subtree: true }});
+         }}
+     }});
     </script>
     """
     my_map.get_root().html.add_child(folium.Element(live_listener_js))
     return my_map.get_root().render()
 
 FREQ_COLOR_PALETTE = [
-    "#ff7f0e",  # Vivid Orange
-    "#2ca02c",  # Emerald Green
-    "#9467bd",  # Purple
-    "#17becf",  # Cyan
-    "#e377c2",  # Pink/Magenta
-    "#bcbd22",  # Olive/Lime
-    "#ffbb78",  # Amber
-    "#98df8a",  # Mint
-    "#c5b0d5",  # Lavender
-    "#f7b6d2",  # Rose
+    "#ff7f0e",
+    "#2ca02c",
+    "#9467bd",
+    "#17becf",
+    "#e377c2",
+    "#bcbd22",
+    "#ffbb78",
+    "#98df8a",
+    "#c5b0d5",
+    "#f7b6d2",
 ]
 
 def get_frequency_color(freq_val):
     if freq_val is None or pd.isna(freq_val):
-        return "#808080"
-    bucket = int(round(float(freq_val) * 10))
-    return FREQ_COLOR_PALETTE[bucket % len(FREQ_COLOR_PALETTE)]
+        return "#808080", "Unknown Freq"
+
+    f = float(freq_val)
+    if f < 100:
+        return "#00bcd4", "< 100 MHz"
+    elif f <= 200:
+        return "#2ca02c", "100 – 200 MHz"
+    elif f <= 300:
+        return "#ffff00", "200 – 300 MHz"
+    elif f <= 500:
+        return "#ff7f0e", "300 – 500 MHz"
+    elif f <= 900:
+        return "#ff0000", "500 – 900 MHz"
+    elif f <= 1500:
+        return "#AE1818", "900 – 1500 MHz"
+    else:
+        return "#800080", "> 1500 MHz"
+
+def compute_lob_intersection_ellipse(s1, s2, angular_err_deg=4.0, max_range_km=18.0, num_pts=36):
+    """
+    Computes the forward intersection point between two sensor LOB rays and builds
+    a rotated [lat, lon] uncertainty ellipse around that intersection.
+    s1, s2: dicts with keys 'lat', 'lon', 'lob', 'color', 'name', 'freq_band'
+    """
+    lat1, lon1, b1 = s1["lat"], s1["lon"], math.radians(s1["lob"])
+    lat2, lon2, b2 = s2["lat"], s2["lon"], math.radians(s2["lob"])
+
+    ref_lat = 0.5 * (lat1 + lat2)
+    cos_lat = max(0.1, math.cos(math.radians(ref_lat)))
+    km_per_deg_lat = 111.32
+    km_per_deg_lon = 111.32 * cos_lat
+
+    # Sensor positions in local km (x = East, y = North)
+    x1, y1 = 0.0, 0.0
+    x2 = (lon2 - lon1) * km_per_deg_lon
+    y2 = (lat2 - lat1) * km_per_deg_lat
+
+    # Unit direction vectors along each bearing (clockwise from North)
+    dx1, dy1 = math.sin(b1), math.cos(b1)
+    dx2, dy2 = math.sin(b2), math.cos(b2)
+
+    # Solve P1 + t1*D1 = P2 + t2*D2
+    denom = dx1 * dy2 - dy1 * dx2
+    if abs(denom) < 0.08:  # Rays are nearly parallel (< ~4.5 deg apart) -> unstable intersection
+        return None
+
+    t1 = ((x2 - x1) * dy2 - (y2 - y1) * dx2) / denom
+    t2 = ((x2 - x1) * dy1 - (y2 - y1) * dx1) / denom
+
+    # Must intersect in front of both sensors (positive ray distance) and within max_range_km
+    if t1 <= 0.05 or t2 <= 0.05 or t1 > max_range_km or t2 > max_range_km:
+        return None
+
+    ix_km = x1 + t1 * dx1
+    iy_km = y1 + t1 * dy1
+
+    int_lat = lat1 + (iy_km / km_per_deg_lat)
+    int_lon = lon1 + (ix_km / km_per_deg_lon)
+
+    # Estimate cross-range error widths from angular uncertainty (sigma = r * tan(err))
+    err_rad = math.radians(angular_err_deg)
+    w1 = max(0.08, t1 * math.tan(err_rad))
+    w2 = max(0.08, t2 * math.tan(err_rad))
+
+    # Build 2x2 information matrix (sum of normal-direction precisions perpendicular to each LOB)
+    # Normal to ray i is (-dy_i, dx_i)
+    nx1, ny1 = -dy1, dx1
+    nx2, ny2 = -dy2, dx2
+
+    inv_var1 = 1.0 / (w1 * w1)
+    inv_var2 = 1.0 / (w2 * w2)
+
+    i_xx = inv_var1 * nx1 * nx1 + inv_var2 * nx2 * nx2
+    i_xy = inv_var1 * nx1 * ny1 + inv_var2 * nx2 * ny2
+    i_yy = inv_var1 * ny1 * ny1 + inv_var2 * ny2 * ny2
+
+    det = i_xx * i_yy - i_xy * i_xy
+    if det <= 1e-12:
+        return None
+
+    # Invert information matrix -> 2x2 position covariance matrix (km^2)
+    c_xx = i_yy / det
+    c_xy = -i_xy / det
+    c_yy = i_xx / det
+
+    # Eigenvalues & orientation angle of covariance ellipse (95% confidence scale ~ 2.45)
+    trace = c_xx + c_yy
+    disc = math.sqrt(max(0.0, (c_xx - c_yy) ** 2 + 4.0 * c_xy * c_xy))
+    eig1 = max(0.005, 0.5 * (trace + disc))
+    eig2 = max(0.005, 0.5 * (trace - disc))
+
+    scale_95 = 2.0
+    semi_major_km = min(3.5, scale_95 * math.sqrt(eig1))
+    semi_minor_km = min(2.0, scale_95 * math.sqrt(eig2))
+    angle_rad = 0.5 * math.atan2(2.0 * c_xy, c_xx - c_yy)
+
+    polygon_pts = []
+    for k in range(num_pts):
+        theta = 2.0 * math.pi * k / num_pts
+        u = semi_major_km * math.cos(theta)
+        v = semi_minor_km * math.sin(theta)
+
+        rx_km = u * math.cos(angle_rad) - v * math.sin(angle_rad)
+        ry_km = u * math.sin(angle_rad) + v * math.cos(angle_rad)
+
+        pt_lat = int_lat + (ry_km / km_per_deg_lat)
+        pt_lon = int_lon + (rx_km / km_per_deg_lon)
+        polygon_pts.append([round(pt_lat, 6), round(pt_lon, 6)])
+
+    return {
+        "center": [round(int_lat, 6), round(int_lon, 6)],
+        "polygon": polygon_pts,
+        "color": s1["color"],
+        "freq_band": s1["freq_band"],
+        "popup": (
+            f"<b>LOB Intersection</b><br>"
+            f"Sensors: {s1['name']} × {s2['name']}<br>"
+            f"Band: {s1['freq_band']}<br>"
+            f"Lat: {int_lat:.6f}<br>"
+            f"Lon: {int_lon:.6f}<br>"
+            f"Error Axes: {semi_major_km:.2f} km × {semi_minor_km:.2f} km"
+        )
+    }
 
 @app.callback(
     Output('live-map-payload', 'data'),
@@ -1281,17 +1627,22 @@ def get_frequency_color(freq_val):
      Input('bot-features-store', 'data')]
 )
 def compute_live_map_data(selected_date, slider_range_window, bot_features):
-    if slider_range_window is None:
-        return {"date": selected_date, "layers": []}
+    ctx = callback_context
+    trigger_id = ctx.triggered_id
 
     day_cache = GLOBAL_DATA_CACHE[selected_date]
     start_min = day_cache["min_minute"]
+    end_min = day_cache["max_minute"]
 
-    if isinstance(slider_range_window, list) and len(slider_range_window) >= 2:
-        min_cutoff = start_min + int(slider_range_window[0])
-        max_cutoff = start_min + int(slider_range_window[1])
+    if trigger_id == 'date-tabs' or slider_range_window is None:
+        min_cutoff = start_min
+        max_cutoff = end_min
+    elif isinstance(slider_range_window, list) and len(slider_range_window) >= 2:
+        low_val, high_val = slider_range_window[:2]
+        min_cutoff = start_min + int(low_val)
+        max_cutoff = start_min + int(high_val)
     else:
-        val = slider_range_window[0] if isinstance(slider_range_window, list) else slider_range_window
+        val = slider_range_window[-1] if isinstance(slider_range_window, list) else slider_range_window
         min_cutoff = start_min
         max_cutoff = start_min + int(val)
 
@@ -1306,6 +1657,7 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
 
     output_layers = []
     freq_legend_entries = {}
+    active_lob_sensors = []
 
     for name, default_color, parsed_list, is_rabbit in layers_def:
         timed_pts, raw_lob, latest_min, latest_freq = [], None, None, None
@@ -1315,7 +1667,6 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                 continue
             sliced = df.loc[(df['normalized_minutes'] >= min_cutoff) & (df['normalized_minutes'] <= max_cutoff)]
             if not sliced.empty:
-                # Pair every coordinate with its timestamp so multi-file tracks stay strictly chronological
                 for m_val, lat_v, lon_v in zip(
                     sliced['normalized_minutes'].to_numpy(),
                     sliced[lt].to_numpy(),
@@ -1331,15 +1682,18 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                     if fq and not sliced[fq].dropna().empty:
                         latest_freq = float(sliced[fq].dropna().iloc[-1])
 
-        # Sort chronologically across all files for this sensor/rabbit
-        timed_pts.sort(key=lambda x: x)
-        pts = [[lat_v, lon_v] for _, lat_v, lon_v in timed_pts]
+        timed_pts.sort()
+        pts = []
+        for _, lat_v, lon_v in timed_pts:
+            if lat_v == 0.0 or lon_v == 0.0:
+                continue
+            if not pts or pts[-1] != [lat_v, lon_v]:
+                pts.append([lat_v, lon_v])
 
         if pts:
-            # Use a fixed step size (every 2nd point) instead of a shifting divisor so existing trail geometry never morphs
             if len(pts) > 400:
                 pts = pts[::2] + ([pts[-1]] if len(pts) % 2 == 0 else [])
-            head = pts[-1]
+            head_lat, head_lon = pts[-1]
             time_str = f"{(latest_min // 60) % 24:02d}:{latest_min % 60:02d}" if latest_min is not None else "N/A"
             cones = []
 
@@ -1348,26 +1702,38 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                 popup_html = (
                     f"<b>{name}</b><br>"
                     f"Time: {time_str}<br>"
-                    f"Lat: {head[0]:.6f}<br>"
-                    f"Lon: {head[1]:.6f}"
+                    f"Lat: {head_lat:.6f}<br>"
+                    f"Lon: {head_lon:.6f}"
                 )
             else:
-                layer_color = get_frequency_color(latest_freq)
-                freq_label = f"{latest_freq:.2f} MHz" if latest_freq is not None else "Unknown Freq"
-                freq_legend_entries[freq_label] = layer_color
+                layer_color, band_label = get_frequency_color(latest_freq)
+                freq_legend_entries[band_label] = layer_color
+                exact_freq_str = f"{latest_freq:.2f} MHz" if latest_freq is not None else "N/A"
 
                 if raw_lob is not None:
                     for offset in (-25.0, 25.0):
                         rad = math.radians(raw_lob + offset)
-                        cones.append([head, [head[0] + 0.08 * math.cos(rad), head[1] + 0.08 * math.sin(rad)]])
+                        cones.append([
+                            [head_lat, head_lon],
+                            [head_lat + 0.25 * math.cos(rad), head_lon + 0.25 * math.sin(rad)]
+                        ])
+                    active_lob_sensors.append({
+                        "name": name,
+                        "lat": head_lat,
+                        "lon": head_lon,
+                        "lob": raw_lob,
+                        "color": layer_color,
+                        "freq_band": band_label
+                    })
+
                 lob_text = f"{raw_lob}°" if raw_lob is not None else "N/A"
                 popup_html = (
                     f"<b>{name}</b><br>"
                     f"Time: {time_str}<br>"
-                    f"Frequency: {freq_label}<br>"
+                    f"Frequency: {exact_freq_str} ({band_label})<br>"
                     f"LOB Abs Degree: {lob_text}<br>"
-                    f"Lat: {head[0]:.6f}<br>"
-                    f"Lon: {head[1]:.6f}"
+                    f"Lat: {head_lat:.6f}<br>"
+                    f"Lon: {head_lon:.6f}"
                 )
 
             output_layers.append({
@@ -1394,9 +1760,12 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
 
             valid_lobs = [float(n["lob"]) for n in vis if n.get("lob") is not None]
             latest_lob = valid_lobs[-1] if valid_lobs else None
+            valid_freqs = [float(n["freq"]) for n in vis if n.get("freq") is not None]
+            latest_freq = valid_freqs[-1] if valid_freqs else None
             cones = []
 
             if is_rabbit_track:
+                track_color = last.get("color", "darkgreen")
                 popup_html = (
                     f"<b>{b_lbl}</b><br>"
                     f"Time: {last.get('time_label', 'N/A')}<br>"
@@ -1404,6 +1773,15 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                     f"Lon: {last['lon']:.6f}"
                 )
             else:
+                if latest_freq is not None:
+                    track_color, band_label = get_frequency_color(latest_freq)
+                    freq_legend_entries[band_label] = track_color
+                    freq_line = f"<br>Frequency: {latest_freq:.2f} MHz ({band_label})"
+                else:
+                    track_color = last.get("color", "darkgreen")
+                    band_label = "Custom Sensor"
+                    freq_line = ""
+
                 if latest_lob is not None:
                     for offset in (-25.0, 25.0):
                         rad = math.radians(latest_lob + offset)
@@ -1411,10 +1789,21 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                             [last["lat"], last["lon"]],
                             [last["lat"] + 0.08 * math.cos(rad), last["lon"] + 0.08 * math.sin(rad)]
                         ])
+                    # Register custom/uploaded sensor for LOB intersection ellipses
+                    active_lob_sensors.append({
+                        "name": b_lbl,
+                        "lat": float(last["lat"]),
+                        "lon": float(last["lon"]),
+                        "lob": float(latest_lob),
+                        "color": track_color,
+                        "freq_band": band_label
+                    })
+
                 lob_text = f"{latest_lob}°" if latest_lob is not None else "N/A"
                 popup_html = (
                     f"<b>{b_lbl}</b><br>"
-                    f"Time: {last.get('time_label', 'N/A')}<br>"
+                    f"Time: {last.get('time_label', 'N/A')}"
+                    f"{freq_line}<br>"
                     f"LOB Abs Degree: {lob_text}<br>"
                     f"Lat: {last['lat']:.6f}<br>"
                     f"Lon: {last['lon']:.6f}"
@@ -1422,56 +1811,32 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
 
             output_layers.append({
                 "name": b_lbl,
-                "color": last.get("color", "darkgreen"),
+                "color": track_color,
                 "is_rabbit": is_rabbit_track,
                 "points": pts,
                 "cones": cones,
-                "popup": popup_html
+                "popup": popup_html,
+                "legend_label": b_lbl if is_rabbit_track else None
             })
 
-            valid_freqs = [float(n["freq"]) for n in vis if n.get("freq") is not None]
-            latest_freq = valid_freqs[-1] if valid_freqs else None
+    intersections = []
+    for i in range(len(active_lob_sensors)):
+        for j in range(i + 1, len(active_lob_sensors)):
+            s1 = active_lob_sensors[i]
+            s2 = active_lob_sensors[j]
+            hit = compute_lob_intersection_ellipse(s1, s2, angular_err_deg=5.0, max_range_km=150.0)
+            if hit:
+                # Use shared band color if same band, otherwise highlight cross-band intersection in gold/amber
+                if s1["freq_band"] != s2["freq_band"]:
+                    hit["color"] = "#ffc107"
+                intersections.append(hit)
 
-            if not is_rabbit_track and latest_freq is not None:
-                track_color = get_frequency_color(latest_freq)
-                freq_label = f"{latest_freq:.2f} MHz"
-                freq_legend_entries[freq_label] = track_color
-            else:
-                track_color = last.get("color", "darkgreen")
-                freq_label = "N/A"
-
-    return {"date": selected_date, "layers": output_layers}
-
-@app.callback(
-    Output('postmessage-bridge', 'children'),
-    [Input('live-map-payload', 'data'),
-     Input('folium-map', 'srcDoc')]
-)
-def push_payload_to_iframe(payload, _):
-    if not payload or not payload.get("layers"):
-        return ""
-    encoded = json.dumps(payload)
-    return html.Iframe(
-        srcDoc=f"""
-        <script>
-            (function() {{
-                var data = {encoded};
-                var attempts = 0;
-                var timer = setInterval(function() {{
-                    attempts++;
-                    var mapFrame = window.parent.document.getElementById('folium-map');
-                    if (mapFrame && mapFrame.contentWindow && typeof mapFrame.contentWindow.renderPayload === 'function') {{
-                        mapFrame.contentWindow.postMessage({{type: 'UPDATE_MAP_LAYERS', payload: data}}, '*');
-                        clearInterval(timer);
-                    }} else if (attempts > 40) {{
-                        clearInterval(timer);
-                    }}
-                }}, 50);
-            }})();
-        </script>
-        """,
-        style={'display': 'none'}
-    )
+    return {
+        "date": selected_date,
+        "layers": output_layers,
+        "freq_legend": freq_legend_entries,
+        "intersections": intersections
+    }
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=8055)
