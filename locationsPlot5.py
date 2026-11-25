@@ -402,7 +402,7 @@ app.layout = html.Div([
                 ),
                 dcc.Input(
                     id='chat-user-input', type='text', 
-                    placeholder='e.g. 35.21, -116.64 name="Sensor X" time=14:30 lob=145',
+                    placeholder='e.g. name="Sensor X" lat=35.26 lon=-116.67 time=18:30 lob=145 freq=560',
                     style={'flex': '1', 'padding': '6px', 'border': '1px solid #ccc', 'borderRadius': '4px'},
                     n_submit=0
                 ),
@@ -453,7 +453,7 @@ app.layout = html.Div([
     Input('map-style-btn', 'n_clicks')
 )
 def cycle_map_style(n_clicks):
-    styles = ["Street", "Satellite", "Topographic"]
+    styles = ["Street", "Satellite", "Topographic", "Tilted 3D"]
     chosen = styles[(n_clicks or 0) % len(styles)]
     return f"🗺️ Map: {chosen}", chosen
 
@@ -704,25 +704,27 @@ def render_dynamic_slider_component(mode, selected_date, dark_clicks):
     [Output('play-button', 'children'),
      Output('play-interval', 'disabled')],
     [Input('play-button', 'n_clicks'),
-     Input('time-slider', 'value')],
+     Input('time-slider', 'value'),
+     Input('date-tabs', 'value')],
     [State('time-slider', 'max'),
      State('play-interval', 'disabled'),
      State('active-handle-store', 'data')]
 )
-def toggle_playback(n_clicks, current_slider_val, max_val, is_disabled, store_data):
+def toggle_playback(n_clicks, current_slider_val, selected_date, max_val, is_disabled, store_data):
     ctx = callback_context
-    trigger_id = ctx.triggered[0]['prop_id'].split('.')[0] if ctx.triggered else None
+    trigger_id = ctx.triggered_id
 
-    if not trigger_id or current_slider_val is None:
+    if not trigger_id or trigger_id == 'date-tabs' or current_slider_val is None:
         return "▶ Play", True
 
     active_handle = (store_data or {}).get('handle', 0)
     at_end = False
 
     if isinstance(current_slider_val, list) and len(current_slider_val) >= 2:
-        if active_handle == 0 and current_slider_val[0] >= current_slider_val[1]:
+        low_val, high_val = current_slider_val[:2]
+        if active_handle == 0 and low_val >= high_val:
             at_end = True
-        elif active_handle == 1 and max_val is not None and current_slider_val[1] >= max_val:
+        elif active_handle == 1 and max_val is not None and high_val >= max_val:
             at_end = True
     else:
         if max_val is not None and current_slider_val >= max_val:
@@ -749,37 +751,33 @@ def toggle_playback(n_clicks, current_slider_val, max_val, is_disabled, store_da
      Output('chat-file-upload', 'contents')],
     [Input('chat-send-btn', 'n_clicks'),
      Input('chat-user-input', 'n_submit'),
-     Input('chat-reset-btn', 'n_clicks'),
-     Input('chat-file-upload', 'contents')],
-    [State('chat-file-upload', 'filename'),
-     State('chat-user-input', 'value'),
+     Input('chat-file-upload', 'contents'),
+     Input('chat-reset-btn', 'n_clicks')],
+    [State('chat-user-input', 'value'),
+     State('chat-file-upload', 'filename'),
      State('chat-history-store', 'data'),
      State('bot-features-store', 'data'),
-     State('date-tabs', 'value')]
+     State('date-tabs', 'value')],
+    prevent_initial_call=True
 )
-def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upload_filename, text, history, features, current_date):
+def process_chatbot_intelligence(n_clicks, n_submit, upload_contents, reset_clicks, text, upload_filename, history, features, current_date):
     ctx = callback_context
     if not ctx.triggered:
-        return history, features, text, None
+        return history, features, "", None
 
-    trigger_id = ctx.triggered[0]['prop_id'].split('.')[0] if ctx.triggered else None
+    trigger_id = ctx.triggered_id
 
     if trigger_id == 'chat-reset-btn':
         return [], features, "", None
-
-    history = history or []
-    features = features or {}
-    if current_date not in features:
-        features[current_date] = {}
+    history = list(history) if history else []
+    features = dict(features) if features else {}
+    features.setdefault(current_date, {})
 
     day_cache = GLOBAL_DATA_CACHE[current_date]
-    day_min, day_max = day_cache["min_minute"], day_cache["max_minute"]
-    valid_folium_colors = [
-        'red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige',
-        'darkblue', 'darkgreen', 'cadetblue', 'pink', 'lightblue', 'lightgreen',
-        'gray', 'black', 'lightgray'
-    ]
+    day_min = day_cache["min_minute"]
+    day_max = day_cache["max_minute"]
 
+    # ─── CASE A: FILE UPLOADED (.CSV OR .TXT) ───────────────────────────────
     if trigger_id == 'chat-file-upload' and upload_contents:
         history.append({"speaker": "user", "text": f"📎 Uploaded file: **{upload_filename}**"})
         try:
@@ -798,10 +796,13 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
                 lon_col = next((cols_lower[k] for k in ['lon', 'lng', 'longitude', 'lon_dd'] if k in cols_lower), None)
                 time_col = next((cols_lower[k] for k in ['time', 'timestamp', 'gps_date_time', 'sys_date_time'] if k in cols_lower), None)
                 name_col = next((cols_lower[k] for k in ['name', 'sensor', 'label', 'id'] if k in cols_lower), None)
-                color_col = next((cols_lower[k] for k in ['color', 'colour'] if k in cols_lower), None)
                 lob_col = next(
                     (orig for low, orig in cols_lower.items() if "lob" in low and "deg" in low),
-                    next((orig for low, orig in cols_lower.items() if "lob" in low or "bearing" in low), None)
+                    next((orig for low, orig in cols_lower.items() if any(k in low for k in ["lob", "bearing", "aoa"])), None)
+                )
+                freq_col = next(
+                    (cols_lower[k] for k in ['freq_cluster_mhz', 'freq_raw_mhz', 'freq', 'frequency'] if k in cols_lower),
+                    None
                 )
 
                 if not lat_col or not lon_col or not time_col:
@@ -809,13 +810,21 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
                     history.append({"speaker": "assistant", "text": bot_response})
                     return history, features, "", None
 
-                base_filename = os.path.splitext(upload_filename)[0].strip()
-
+                root_name, _ = os.path.splitext(upload_filename)
+                base_filename = root_name.strip()
                 fn_lower = upload_filename.lower()
                 is_rabbit_file = (
                     any(k in fn_lower for k in ["rabbit", "events_list", "eventslist"])
                     or lob_col is None
                 )
+
+                if not is_rabbit_file and not freq_col:
+                    bot_response = (
+                        "❌ **Missing Frequency Column:** Sensor CSV uploads must include a frequency column "
+                        "(`freq_cluster_mhz`, `freq_raw_mhz`, `freq`, or `frequency`)."
+                    )
+                    history.append({"speaker": "assistant", "text": bot_response})
+                    return history, features, "", None
 
                 for idx, row in df.iterrows():
                     try:
@@ -839,62 +848,87 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
                         else:
                             label = base_filename
 
-                        raw_color = str(row[color_col]).strip().lower() if (color_col and pd.notna(row[color_col])) else "darkgreen"
-                        chosen_color = raw_color if raw_color in valid_folium_colors else "darkgreen"
-
                         raw_lob = pd.to_numeric(row[lob_col], errors='coerce') if lob_col else None
                         lob_val = float(raw_lob) if (raw_lob is not None and pd.notna(raw_lob)) else None
 
-                        freq_col = next(
-                            (cols_lower[k] for k in ['freq_cluster_mhz', 'freq_raw_mhz', 'freq', 'frequency'] if k in cols_lower),
-                            None
-                        )
-
                         raw_freq = pd.to_numeric(row[freq_col], errors='coerce') if freq_col else None
                         freq_val = float(raw_freq) if (raw_freq is not None and pd.notna(raw_freq)) else None
+
+                        if not is_rabbit_file and freq_val is None:
+                            skipped_count += 1
+                            continue
+
+                        chosen_color = "blue" if is_rabbit_file else "darkgreen"
                         if not is_rabbit_file and freq_val is not None:
-                            chosen_color = get_frequency_color(freq_val)
+                            chosen_color, _ = get_frequency_color(freq_val)
 
                         features[current_date].setdefault(label, []).append({
                             "lat": lat, "lon": lon, "lob": lob_val, "freq": freq_val,
                             "normalized_minutes": calc_min, "time_label": time_str,
                             "color": chosen_color, "is_rabbit": is_rabbit_file
                         })
-
                         updated_tracks.add(label)
                         added_count += 1
                     except Exception:
                         skipped_count += 1
 
             else:
-                for line in decoded_text.splitlines():
-                    line = line.strip()
-                    if not line:
+                root_name, _ = os.path.splitext(upload_filename or "Uploaded-Track")
+                base_filename = root_name.strip()
+
+                for raw_line in decoded_text.splitlines():
+                    line = (
+                        raw_line.strip()
+                        .replace("“", '"')
+                        .replace("”", '"')
+                        .replace("‘", "'")
+                        .replace("’", "'")
+                    )
+                    if not line or line.startswith("#"):
                         continue
-                    c_match = re.search(r'(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)', line)
-                    t_match = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', line, re.IGNORECASE)
-                    if not c_match or not t_match:
+
+                    lat_match = re.search(r'lat(?:itude)?\s*=\s*(-?\d+(?:\.\d+)?)', line, re.IGNORECASE)
+                    lon_match = re.search(r'lon(?:gitude)?\s*=\s*(-?\d+(?:\.\d+)?)', line, re.IGNORECASE)
+                    pair_match = re.search(r'(?<![=\d.-])(-?\d{1,3}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)', line)
+                    time_match = re.search(r'time\s*=\s*(\d{1,2}):(\d{2})', line, re.IGNORECASE)
+                    name_match = re.search(r'name\s*=\s*(?:"([^"]+)"|\'([^\']+)\'|([^\s]+))', line, re.IGNORECASE)
+                    lob_match = re.search(r'(?:lob|bearing)\s*=\s*(-?\d+(?:\.\d+)?)', line, re.IGNORECASE)
+                    freq_match = re.search(r'freq(?:uency)?\s*=\s*(\d+(?:\.\d+)?)', line, re.IGNORECASE)
+
+                    if not (((lat_match and lon_match) or pair_match) and time_match):
                         skipped_count += 1
                         continue
 
-                    calc_min = int(t_match.group(1)) * 60 + int(t_match.group(2))
+                    if lat_match and lon_match:
+                        lat = float(lat_match.group(1))
+                        lon = float(lon_match.group(1))
+                    else:
+                        lat = float(pair_match.group(1))
+                        lon = float(pair_match.group(2))
+
+                    calc_min = int(time_match.group(1)) * 60 + int(time_match.group(2))
                     if calc_min < day_min or calc_min > day_max:
                         skipped_count += 1
                         continue
 
-                    lat, lon = float(c_match.group(1)), float(c_match.group(2))
-                    time_str = f"{int(t_match.group(1)):02d}:{int(t_match.group(2)):02d}"
-                    n_match = re.search(r'name\s*=\s*(?:"([^"]+)"|([^\s]+))', line, re.IGNORECASE)
-                    label = (n_match.group(1) or n_match.group(2)).strip() if n_match else f"TXT-Sensor-{len(features[current_date]) + 1}"
-                    col_match = re.search(r'color\s*=\s*([^\s]+)', line, re.IGNORECASE)
-                    raw_col = col_match.group(1).strip().lower() if col_match else "darkgreen"
-                    chosen_color = raw_col if raw_col in valid_folium_colors else "darkgreen"
-                    l_match = re.search(r'lob\s*=\s*(\d+(?:\.\d+)?)', line, re.IGNORECASE)
-                    lob_val = float(l_match.group(1)) if l_match else None
+                    time_str = f"{int(time_match.group(1)):02d}:{int(time_match.group(2)):02d}"
+                    label = next((g for g in name_match.groups() if g is not None), base_filename).strip() if name_match else base_filename
+                    lob_val = float(lob_match.group(1)) if lob_match else None
+                    freq_val = float(freq_match.group(1)) if freq_match else None
+
+                    is_rabbit_entry = any(k in label.lower() for k in ["rabbit", "events_list", "eventslist"])
+                    if not is_rabbit_entry and freq_val is None:
+                        skipped_count += 1
+                        continue
+
+                    chosen_color = "blue" if is_rabbit_entry else "darkgreen"
+                    if not is_rabbit_entry and freq_val is not None:
+                        chosen_color, _ = get_frequency_color(freq_val)
 
                     features[current_date].setdefault(label, []).append({
-                        "lat": lat, "lon": lon, "lob": lob_val,
-                        "normalized_minutes": calc_min, "time_label": time_str, "color": chosen_color
+                        "lat": lat, "lon": lon, "lob": lob_val, "freq": freq_val,
+                        "normalized_minutes": calc_min, "time_label": time_str,
+                        "color": chosen_color, "is_rabbit": is_rabbit_entry
                     })
                     updated_tracks.add(label)
                     added_count += 1
@@ -921,21 +955,20 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
                     f"(`{', '.join(sorted(updated_tracks))}`) onto **{current_date}**."
                 )
                 if skipped_count > 0:
-                    bot_response += f"\n\n⚠️ Skipped **{skipped_count}** row(s) due to missing fields or timestamps outside **{current_date}**'s slider range."
+                    bot_response += f"\n\n⚠️ Skipped **{skipped_count}** row(s) due to missing fields (`freq` required for sensors) or timestamps outside **{current_date}**'s slider range."
             else:
-                min_h, min_m = day_min // 60, day_min % 60
-                max_h, max_m = day_max // 60, day_max % 60
                 bot_response = (
-                    f"❌ No valid coordinates imported from **{upload_filename}**.\n"
-                    f"Ensure timestamps fall within **{current_date}**'s active window (`{min_h:02d}:{min_m:02d}` – `{max_h:02d}:{max_m:02d}`)."
+                    f"⚠️ No valid rows were imported from `{upload_filename}`. "
+                    f"Ensure sensor rows include `freq` and timestamps fall within **{current_date}**'s slider range."
                 )
 
-        except Exception as err:
-            bot_response = f"❌ Error reading **{upload_filename}**: {str(err)}"
+        except Exception as e:
+            bot_response = f"❌ **Upload Error:** Could not parse `{upload_filename}` ({str(e)})."
 
         history.append({"speaker": "assistant", "text": bot_response})
         return history, features, "", None
 
+    # ─── CASE B: STANDARD TEXT MESSAGE ──────────────────────────────────────
     if not text or not text.strip():
         return history, features, text, None
 
@@ -948,104 +981,112 @@ def process_chatbot_intelligence(clicks, sub, reset_clicks, upload_contents, upl
     )
     history.append({"speaker": "user", "text": user_msg})
 
-    delete_match = re.search(
-        r'delete\s*=\s*(?:"([^"]+)"|\'([^\']+)\'|([^\s]+))',
-        user_msg,
-        re.IGNORECASE
-    )
+    # 1. Check for delete command (e.g., delete="Sensor Alpha" or delete=all)
+    delete_match = re.search(r'delete\s*=\s*(?:"([^"]+)"|\'([^\']+)\'|([^\s]+))', user_msg, re.IGNORECASE)
     if delete_match:
-        target_to_delete = next(g for g in delete_match.groups() if g is not None).strip()
-        time_match_del = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', user_msg, re.IGNORECASE)
-
-        if target_to_delete.lower() == 'all':
+        target = next(g for g in delete_match.groups() if g is not None).strip()
+        if target.lower() == "all":
+            count = len(features[current_date])
             features[current_date] = {}
-            bot_response = f"🗑️ **Cleared all custom coordinates** and tracks plotted on **{current_date}**."
-        elif target_to_delete in features[current_date]:
-            if time_match_del:
-                target_time_str = f"{int(time_match_del.group(1)):02d}:{int(time_match_del.group(2)):02d}"
-                nodes = features[current_date][target_to_delete]
-                updated_nodes = [n for n in nodes if n.get("time_label") != target_time_str]
-                if len(updated_nodes) < len(nodes):
-                    if not updated_nodes:
-                        del features[current_date][target_to_delete]
-                        bot_response = f"🗑️ Removed final node at **{target_time_str}** from **{target_to_delete}**. Track deleted."
-                    else:
-                        features[current_date][target_to_delete] = updated_nodes
-                        bot_response = f"🗑️ Removed coordinate node at **{target_time_str}** from track **{target_to_delete}**."
-                else:
-                    bot_response = f"❌ Found track **{target_to_delete}**, but no coordinate point exists at **{target_time_str}**."
-            else:
-                del features[current_date][target_to_delete]
-                bot_response = f"🗑️ Removed entire track **{target_to_delete}** from the map context."
+            bot_response = f"🗑️ Cleared all **{count}** custom track(s) from **{current_date}**."
+        elif target in features[current_date]:
+            del features[current_date][target]
+            bot_response = f"🗑️ Removed **{target}** from **{current_date}**."
         else:
-            bot_response = f"❌ Track **'{target_to_delete}'** not found on **{current_date}**."
+            matched_key = next((k for k in features[current_date] if k.lower() == target.lower()), None)
+            if matched_key:
+                del features[current_date][matched_key]
+                bot_response = f"🗑️ Removed **{matched_key}** from **{current_date}**."
+            else:
+                bot_response = f"⚠️ No custom track named **`{target}`** found on **{current_date}**."
 
         history.append({"speaker": "assistant", "text": bot_response})
         return history, features, "", None
 
-    coord_match = re.search(r'(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)', user_msg)
-    name_match = re.search(
-        r'name\s*=\s*(?:"([^"]+)"|\'([^\']+)\'|([^\s]+))',
-        user_msg,
-        re.IGNORECASE
+    # 2. Check for coordinate injection command (supports both `lat=... lon=...` and bare `35.26, -116.67`)
+    lat_match = re.search(r'lat(?:itude)?\s*=\s*(-?\d+(?:\.\d+)?)', user_msg, re.IGNORECASE)
+    lon_match = re.search(r'lon(?:gitude)?\s*=\s*(-?\d+(?:\.\d+)?)', user_msg, re.IGNORECASE)
+    pair_match = re.search(r'(?<![=\d.-])(-?\d{1,3}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)', user_msg)
+    time_match = re.search(r'time\s*=\s*(\d{1,2}):(\d{2})', user_msg, re.IGNORECASE)
+
+    if ((lat_match and lon_match) or pair_match) and time_match:
+        if lat_match and lon_match:
+            lat = float(lat_match.group(1))
+            lon = float(lon_match.group(1))
+        else:
+            lat = float(pair_match.group(1))
+            lon = float(pair_match.group(2))
+
+        hours = int(time_match.group(1))
+        mins = int(time_match.group(2))
+        calc_min = hours * 60 + mins
+
+        if calc_min < day_min or calc_min > day_max:
+            start_str = f"{(day_min // 60) % 24:02d}:{day_min % 60:02d}"
+            end_str = f"{(day_max // 60) % 24:02d}:{day_max % 60:02d}"
+            bot_response = (
+                f"⚠️ **Out of Range:** Time `{hours:02d}:{mins:02d}` falls outside **{current_date}**'s "
+                f"timeline (`{start_str}` – `{end_str}`)."
+            )
+            history.append({"speaker": "assistant", "text": bot_response})
+            return history, features, "", None
+
+        name_match = re.search(r'name\s*=\s*(?:"([^"]+)"|\'([^\']+)\'|([^\s]+))', user_msg, re.IGNORECASE)
+        if name_match:
+            label = next(g for g in name_match.groups() if g is not None).strip()
+        else:
+            label = f"AI-Sensor-{len(features[current_date]) + 1}"
+
+        lob_match = re.search(r'(?:lob|bearing)\s*=\s*(-?\d+(?:\.\d+)?)', user_msg, re.IGNORECASE)
+        lob_val = float(lob_match.group(1)) if lob_match else None
+
+        freq_match = re.search(r'freq(?:uency)?\s*=\s*(\d+(?:\.\d+)?)', user_msg, re.IGNORECASE)
+        freq_val = float(freq_match.group(1)) if freq_match else None
+
+        is_rabbit_entry = any(k in label.lower() for k in ["rabbit", "events_list", "eventslist"])
+        if not is_rabbit_entry and freq_val is None:
+            bot_response = (
+                f"⚠️ **Frequency Required:** Sensor entries must include `freq=<MHz>` "
+                f"(e.g., `35.26, -116.67 name=\"{label}\" time={hours:02d}:{mins:02d} freq=560`)."
+            )
+            history.append({"speaker": "assistant", "text": bot_response})
+            return history, features, "", None
+
+        chosen_color = "blue" if is_rabbit_entry else "darkgreen"
+        if not is_rabbit_entry and freq_val is not None:
+            chosen_color, _ = get_frequency_color(freq_val)
+
+        time_str = f"{hours:02d}:{mins:02d}"
+        features[current_date].setdefault(label, []).append({
+            "lat": lat, "lon": lon, "lob": lob_val, "freq": freq_val,
+            "normalized_minutes": calc_min, "time_label": time_str,
+            "color": chosen_color, "is_rabbit": is_rabbit_entry
+        })
+        features[current_date][label] = sorted(features[current_date][label], key=lambda x: x["normalized_minutes"])
+
+        kind_word = "Rabbit" if is_rabbit_entry else "Sensor"
+        extra_info = []
+        if freq_val is not None and not is_rabbit_entry:
+            extra_info.append(f"Freq: `{freq_val} MHz`")
+        if lob_val is not None and not is_rabbit_entry:
+            extra_info.append(f"LOB: `{lob_val}°`")
+        extra_str = f" ({', '.join(extra_info)})" if extra_info else ""
+
+        bot_response = (
+            f"✅ Added {kind_word} **{label}** at `({lat:.6f}, {lon:.6f})` "
+            f"for **{time_str}**{extra_str} on **{current_date}**."
+        )
+        history.append({"speaker": "assistant", "text": bot_response})
+        return history, features, "", None
+
+    # 3. Fallback help prompt for unrecognized text
+    bot_response = (
+        "ℹ️ To plot a point, include coordinates, `time`, and **`freq`** (required for sensors; optional `name`, `lob`).\n\n"
+        "**Examples:**\n"
+        "* `35.26, -116.67 name=\"Sensor Alpha\" time=14:30 lob=120 freq=560`\n"
+        "* `name=\"Rabbit 3\" lat=35.218 lon=-116.652 time=14:35`\n"
+        "* `delete=\"Sensor Alpha\"` or `delete=all`"
     )
-    if name_match:
-        label = next(g for g in name_match.groups() if g is not None).strip()
-    else:
-        label = f"AI-Sensor-{len(features[current_date]) + 1}"
-    lob_match = re.search(r'lob\s*=\s*(\d+(?:\.\d+)?)', user_msg, re.IGNORECASE)
-    time_match = re.search(r'time\s*=\s*(\d{1,2})[:_]?(\d{2})', user_msg, re.IGNORECASE)
-    color_match = re.search(r'color\s*=\s*([^\s]+)', user_msg, re.IGNORECASE)
-
-    label = (name_match.group(1) or name_match.group(2)).strip() if name_match else f"AI-Sensor-{len(features[current_date]) + 1}"
-    lob_val = float(lob_match.group(1)) if lob_match else None
-    chosen_color = 'darkgreen'
-    unrecognized_color_entered = False
-
-    if color_match:
-        input_color = color_match.group(1).strip().lower()
-        if input_color in valid_folium_colors:
-            chosen_color = input_color
-        else:
-            unrecognized_color_entered = True
-
-    if not coord_match:
-        bot_response = "❌ Could not parse coordinates. Use: `35.21, -116.64 name=\"Sensor X\" time=14:30` or upload a `.csv`/`.txt` file with 📎."
-    elif not time_match:
-        bot_response = "⚠️ **Missing Required Timestamp!** Provide track time: `time=HH:MM`"
-    else:
-        lat, lon = float(coord_match.group(1)), float(coord_match.group(2))
-        calculated_minutes = int(time_match.group(1)) * 60 + int(time_match.group(2))
-        time_str = f"{int(time_match.group(1)):02d}:{int(time_match.group(2)):02d}"
-
-        if calculated_minutes < day_min or calculated_minutes > day_max:
-            min_h, min_m = day_min // 60, day_min % 60
-            max_h, max_m = day_max // 60, day_max % 60
-            bot_response = (
-                f"❌ **Timeline Range Error!** Time (**{time_str}**) falls outside **{current_date}**'s "
-                f"allowed window (`{min_h:02d}:{min_m:02d}` to `{max_h:02d}:{max_m:02d}`)."
-            )
-        else:
-            features[current_date].setdefault(label, []).append({
-                "lat": lat, "lon": lon, "lob": lob_val,
-                "normalized_minutes": calculated_minutes, "time_label": time_str, "color": chosen_color
-            })
-            features[current_date][label] = sorted(features[current_date][label], key=lambda x: x["normalized_minutes"])
-
-            node_count = len(features[current_date][label])
-            bot_response = (
-                f"📈 Extended track **{label}** using color **'{chosen_color}'**."
-                if node_count > 1 else
-                f"📍 Added point to **{label}** at {time_str} with theme color **'{chosen_color}'**."
-            )
-            if unrecognized_color_entered:
-                bot_response += (
-                    f"\n\n⚠️ **Note:** The entered color `'{input_color}'` is unrecognized. "
-                    f"Defaulted to **'darkgreen'**. Supported choices:\n`{', '.join(valid_folium_colors)}`"
-                )
-            if lob_val is not None:
-                bot_response += f"\n\nOrientation Line of Bearing set to **{lob_val}°**."
-
     history.append({"speaker": "assistant", "text": bot_response})
     return history, features, "", None
 
@@ -1156,9 +1197,13 @@ def update_map(_, initial_date):
 
     base_css = """
     <style>
-        html, body { overflow: hidden !important; margin: 0 !important; padding: 0 !important; width: 100% !important; height: 100% !important; }
+        html, body { overflow: hidden !important; margin: 0 !important; padding: 0 !important; width: 100% !important; height: 100% !important; background-color: #111; }
         ::-webkit-scrollbar { display: none !important; }
         .leaflet-tile-pane { transition: filter 0.15s ease; }
+        .leaflet-container.tilted-3d-view .leaflet-map-pane {
+            transform-origin: 50% 65%;
+            transition: transform 0.35s ease;
+        }
     </style>
     """
     my_map.get_root().html.add_child(folium.Element(base_css))
@@ -1180,10 +1225,22 @@ def update_map(_, initial_date):
 
             var tilePane = document.querySelector('.leaflet-tile-pane');
             if (tilePane) {{
-                var useInvert = isDark && (currentActiveBase !== 'Satellite');
+                // Keep Satellite and Tilted 3D satellite imagery natural in Dark Mode
+                var useInvert = isDark && (currentActiveBase !== 'Satellite' && currentActiveBase !== 'Tilted 3D');
                 tilePane.style.filter = useInvert
                     ? 'invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%)'
                     : 'none';
+            }}
+
+            var mapContainer = document.querySelector('.leaflet-container');
+            if (mapContainer) {{
+                if (currentActiveBase === 'Tilted 3D') {{
+                    mapContainer.style.transform = 'perspective(950px) rotateX(40deg) scale(1.32)';
+                    mapContainer.style.transformOrigin = '50% 60%';
+                    mapContainer.style.transition = 'transform 0.3s ease';
+                }} else {{
+                    mapContainer.style.transform = 'none';
+                }}
             }}
 
             var legendEl = document.getElementById('dynamic-legend');
@@ -1191,6 +1248,13 @@ def update_map(_, initial_date):
                 legendEl.style.backgroundColor = isDark ? '#212529' : 'white';
                 legendEl.style.color = isDark ? '#f8f9fa' : 'black';
                 legendEl.style.borderColor = isDark ? '#555' : 'grey';
+            }}
+
+            var mgrsEl = document.getElementById('mgrs-cursor-box');
+            if (mgrsEl) {{
+                mgrsEl.style.backgroundColor = isDark ? '#212529' : 'white';
+                mgrsEl.style.color = isDark ? '#f8f9fa' : 'black';
+                mgrsEl.style.borderColor = isDark ? '#555' : 'grey';
             }}
         }}
 
@@ -1206,20 +1270,22 @@ def update_map(_, initial_date):
             var styleMap = {{
                 'Street': typeof {js_street} !== 'undefined' ? {js_street} : null,
                 'Satellite': typeof {js_sat} !== 'undefined' ? {js_sat} : null,
-                'Topographic': typeof {js_topo} !== 'undefined' ? {js_topo} : null
+                'Topographic': typeof {js_topo} !== 'undefined' ? {js_topo} : null,
+                'Tilted 3D': typeof {js_sat} !== 'undefined' ? {js_sat} : null
             }};
 
-            if (!styleMap[styleName]) return;
+            var targetLayer = styleMap[styleName];
+            if (!targetLayer) return;
             currentActiveBase = styleName;
 
-            Object.keys(styleMap).forEach(function(key) {{
-                var lyr = styleMap[key];
+            [styleMap['Street'], styleMap['Satellite'], styleMap['Topographic']].forEach(function(lyr) {{
                 if (!lyr) return;
                 if (!mapObj.hasLayer(lyr)) {{
                     lyr.addTo(mapObj);
                 }}
-                lyr.setOpacity(key === styleName ? 1.0 : 0.0);
-                if (key === styleName) {{
+                var isActive = (lyr === targetLayer);
+                lyr.setOpacity(isActive ? 1.0 : 0.0);
+                if (isActive) {{
                     lyr.bringToBack();
                 }}
             }});
@@ -1256,42 +1322,7 @@ def update_map(_, initial_date):
             var hiddenLayers = JSON.parse(localStorage.getItem('dash_hidden_layers') || '[]');
 
             if (!layerControl) {{
-                var osmLayer = null;
-                mapObj.eachLayer(function(l) {{
-                    if (l instanceof L.TileLayer) {{
-                        osmLayer = l;
-                    }}
-                }});
-
-                var satelliteLayer = L.tileLayer(
-                    'https://arcgisonline.com{{z}}/{{y}}/{{x}}',
-                    {{ attribution: 'Tiles &copy; Esri', maxZoom: 19 }}
-                );
-
-                var topoLayer = L.tileLayer(
-                    'https://{{s}}.tile.opentopomap.org/{{z}}/{{x}}/{{y}}.png',
-                    {{ attribution: 'Map data: &copy; OpenTopoMap', maxZoom: 17 }}
-                );
-
-                var terrainLayer = L.tileLayer(
-                    'https://arcgisonline.com{{z}}/{{y}}/{{x}}',
-                    {{ attribution: 'Tiles &copy; Esri', maxZoom: 19 }}
-                );
-
-                baseLayers = {{
-                    'Street Map': osmLayer,
-                    'Satellite': satelliteLayer,
-                    'Terrain': terrainLayer,
-                    'Topographic': topoLayer
-                }};
-
-                layerControl = L.control.layers(baseLayers, {{}}).addTo(mapObj);
-
-                mapObj.on('baselayerchange', function(e) {{
-                    currentActiveBase = e.name;
-                    var themeEl = window.parent.document.getElementById('map-theme-carrier');
-                    applyMapTheme(themeEl ? themeEl.textContent.trim() : 'light');
-                }});
+                layerControl = L.control.layers(null, {{}}).addTo(mapObj);
 
                 var savedCenter = localStorage.getItem('dash_map_center');
                 var savedZoom = localStorage.getItem('dash_map_zoom');
@@ -1379,7 +1410,7 @@ def update_map(_, initial_date):
                         mapObj.setView(layer.points.at(0), 12, {{animate: false}});
                         hasCentered = true;
                     }}
-                    if (layer.points.length > 1) {{
+                    if (layer.is_rabbit && layer.points.length > 1) {{
                         L.polyline(layer.points, {{
                             color: layer.color,
                             weight: 3,
@@ -1528,24 +1559,20 @@ def compute_lob_intersection_ellipse(s1, s2, angular_err_deg=4.0, max_range_km=1
     km_per_deg_lat = 111.32
     km_per_deg_lon = 111.32 * cos_lat
 
-    # Sensor positions in local km (x = East, y = North)
     x1, y1 = 0.0, 0.0
     x2 = (lon2 - lon1) * km_per_deg_lon
     y2 = (lat2 - lat1) * km_per_deg_lat
 
-    # Unit direction vectors along each bearing (clockwise from North)
     dx1, dy1 = math.sin(b1), math.cos(b1)
     dx2, dy2 = math.sin(b2), math.cos(b2)
 
-    # Solve P1 + t1*D1 = P2 + t2*D2
     denom = dx1 * dy2 - dy1 * dx2
-    if abs(denom) < 0.08:  # Rays are nearly parallel (< ~4.5 deg apart) -> unstable intersection
+    if abs(denom) < 0.08:
         return None
 
     t1 = ((x2 - x1) * dy2 - (y2 - y1) * dx2) / denom
     t2 = ((x2 - x1) * dy1 - (y2 - y1) * dx1) / denom
 
-    # Must intersect in front of both sensors (positive ray distance) and within max_range_km
     if t1 <= 0.05 or t2 <= 0.05 or t1 > max_range_km or t2 > max_range_km:
         return None
 
@@ -1555,13 +1582,10 @@ def compute_lob_intersection_ellipse(s1, s2, angular_err_deg=4.0, max_range_km=1
     int_lat = lat1 + (iy_km / km_per_deg_lat)
     int_lon = lon1 + (ix_km / km_per_deg_lon)
 
-    # Estimate cross-range error widths from angular uncertainty (sigma = r * tan(err))
     err_rad = math.radians(angular_err_deg)
     w1 = max(0.08, t1 * math.tan(err_rad))
     w2 = max(0.08, t2 * math.tan(err_rad))
 
-    # Build 2x2 information matrix (sum of normal-direction precisions perpendicular to each LOB)
-    # Normal to ray i is (-dy_i, dx_i)
     nx1, ny1 = -dy1, dx1
     nx2, ny2 = -dy2, dx2
 
@@ -1576,12 +1600,10 @@ def compute_lob_intersection_ellipse(s1, s2, angular_err_deg=4.0, max_range_km=1
     if det <= 1e-12:
         return None
 
-    # Invert information matrix -> 2x2 position covariance matrix (km^2)
     c_xx = i_yy / det
     c_xy = -i_xy / det
     c_yy = i_xx / det
 
-    # Eigenvalues & orientation angle of covariance ellipse (95% confidence scale ~ 2.45)
     trace = c_xx + c_yy
     disc = math.sqrt(max(0.0, (c_xx - c_yy) ** 2 + 4.0 * c_xy * c_xy))
     eig1 = max(0.005, 0.5 * (trace + disc))
@@ -1619,6 +1641,89 @@ def compute_lob_intersection_ellipse(s1, s2, angular_err_deg=4.0, max_range_km=1
             f"Error Axes: {semi_major_km:.2f} km × {semi_minor_km:.2f} km"
         )
     }
+
+def latlon_to_mgrs(lat, lon, precision=5):
+    """
+    Converts WGS84 decimal degrees (lat, lon) to a Military Grid Reference System (MGRS) string.
+    precision=5 gives 10-digit MGRS (1-meter resolution, e.g., '11S NV 31894 97521').
+    """
+    if lat < -80.0 or lat > 84.0:
+        return "Outside MGRS"
+
+    a = 6378137.0
+    f = 1.0 / 298.257223563
+    e2 = 2 * f - f * f
+    e_prime2 = e2 / (1.0 - e2)
+    k0 = 0.9996
+
+    lat_rad = math.radians(lat)
+    lon_rad = math.radians(lon)
+
+    zone_num = int((lon + 180.0) // 6.0) + 1
+    if 56.0 <= lat < 64.0 and 3.0 <= lon < 12.0:
+        zone_num = 32
+    elif 72.0 <= lat < 84.0:
+        if 0.0 <= lon < 9.0:
+            zone_num = 31
+        elif 9.0 <= lon < 21.0:
+            zone_num = 33
+        elif 21.0 <= lon < 33.0:
+            zone_num = 35
+        elif 33.0 <= lon < 42.0:
+            zone_num = 37
+
+    lon_origin = (zone_num - 1) * 6.0 - 180.0 + 3.0
+    lon_origin_rad = math.radians(lon_origin)
+
+    lat_bands = "CDEFGHJKLMNPQRSTUVWX"
+    band_idx = min(19, max(0, int((lat + 80.0) // 8.0)))
+    band_letter = lat_bands[band_idx]
+
+    N = a / math.sqrt(1.0 - e2 * math.sin(lat_rad) ** 2)
+    T = math.tan(lat_rad) ** 2
+    C = e_prime2 * math.cos(lat_rad) ** 2
+    A = math.cos(lat_rad) * (lon_rad - lon_origin_rad)
+
+    M = a * (
+        (1.0 - e2 / 4.0 - 3.0 * e2 ** 2 / 64.0 - 5.0 * e2 ** 3 / 256.0) * lat_rad
+        - (3.0 * e2 / 8.0 + 3.0 * e2 ** 2 / 32.0 + 45.0 * e2 ** 3 / 1024.0) * math.sin(2.0 * lat_rad)
+        + (15.0 * e2 ** 2 / 256.0 + 45.0 * e2 ** 3 / 1024.0) * math.sin(4.0 * lat_rad)
+        - (35.0 * e2 ** 3 / 3072.0) * math.sin(6.0 * lat_rad)
+    )
+
+    easting = k0 * N * (
+        A + (1.0 - T + C) * (A ** 3) / 6.0
+        + (5.0 - 18.0 * T + T ** 2 + 72.0 * C - 58.0 * e_prime2) * (A ** 5) / 120.0
+    ) + 500000.0
+
+    northing = k0 * (
+        M + N * math.tan(lat_rad) * (
+            (A ** 2) / 2.0
+            + (5.0 - T + 9.0 * C + 4.0 * C ** 2) * (A ** 4) / 24.0
+            + (61.0 - 58.0 * T + T ** 2 + 600.0 * C - 330.0 * e_prime2) * (A ** 6) / 720.0
+        )
+    )
+    if lat < 0.0:
+        northing += 10000000.0
+
+    set_parm = zone_num % 6
+    if set_parm == 0:
+        set_parm = 6
+
+    e100k = int(easting // 100000.0)
+    n100k = int(northing // 100000.0) % 20
+
+    col_letters = ["ABCDEFGH", "JKLMNPQR", "STUVWXYZ"][(set_parm - 1) % 3]
+    col_letter = col_letters[(e100k - 1) % 8]
+
+    row_letters = "ABCDEFGHJKLMNPQRSTUV" if (set_parm % 2 == 1) else "FGHJKLMNPQRSTUVABCDE"
+    row_letter = row_letters[n100k]
+
+    divisor = 10 ** (5 - precision)
+    e_str = str(int((easting % 100000.0) // divisor)).zfill(precision)
+    n_str = str(int((northing % 100000.0) // divisor)).zfill(precision)
+
+    return f"{zone_num}{band_letter} {col_letter}{row_letter} {e_str} {n_str}"
 
 @app.callback(
     Output('live-map-payload', 'data'),
@@ -1699,11 +1804,13 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
 
             if is_rabbit:
                 layer_color = default_color
+                mgrs_str = latlon_to_mgrs(head_lat, head_lon)
                 popup_html = (
                     f"<b>{name}</b><br>"
                     f"Time: {time_str}<br>"
                     f"Lat: {head_lat:.6f}<br>"
-                    f"Lon: {head_lon:.6f}"
+                    f"Lon: {head_lon:.6f}<br>"
+                    f"MGRS: {mgrs_str}"
                 )
             else:
                 layer_color, band_label = get_frequency_color(latest_freq)
@@ -1727,13 +1834,15 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                     })
 
                 lob_text = f"{raw_lob}°" if raw_lob is not None else "N/A"
+                mgrs_str = latlon_to_mgrs(head_lat, head_lon)
                 popup_html = (
                     f"<b>{name}</b><br>"
                     f"Time: {time_str}<br>"
                     f"Frequency: {exact_freq_str} ({band_label})<br>"
                     f"LOB Abs Degree: {lob_text}<br>"
                     f"Lat: {head_lat:.6f}<br>"
-                    f"Lon: {head_lon:.6f}"
+                    f"Lon: {head_lon:.6f}<br>"
+                    f"MGRS: {mgrs_str}"
                 )
 
             output_layers.append({
@@ -1766,11 +1875,13 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
 
             if is_rabbit_track:
                 track_color = last.get("color", "darkgreen")
+                mgrs_str = latlon_to_mgrs(head_lat, head_lon)
                 popup_html = (
-                    f"<b>{b_lbl}</b><br>"
-                    f"Time: {last.get('time_label', 'N/A')}<br>"
-                    f"Lat: {last['lat']:.6f}<br>"
-                    f"Lon: {last['lon']:.6f}"
+                    f"<b>{name}</b><br>"
+                    f"Time: {time_str}<br>"
+                    f"Lat: {head_lat:.6f}<br>"
+                    f"Lon: {head_lon:.6f}<br>"
+                    f"MGRS: {mgrs_str}"
                 )
             else:
                 if latest_freq is not None:
@@ -1789,7 +1900,6 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                             [last["lat"], last["lon"]],
                             [last["lat"] + 0.08 * math.cos(rad), last["lon"] + 0.08 * math.sin(rad)]
                         ])
-                    # Register custom/uploaded sensor for LOB intersection ellipses
                     active_lob_sensors.append({
                         "name": b_lbl,
                         "lat": float(last["lat"]),
@@ -1800,13 +1910,15 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                     })
 
                 lob_text = f"{latest_lob}°" if latest_lob is not None else "N/A"
+                mgrs_str = latlon_to_mgrs(head_lat, head_lon)
                 popup_html = (
-                    f"<b>{b_lbl}</b><br>"
-                    f"Time: {last.get('time_label', 'N/A')}"
-                    f"{freq_line}<br>"
+                    f"<b>{name}</b><br>"
+                    f"Time: {time_str}<br>"
+                    f"Frequency: {exact_freq_str} ({band_label})<br>"
                     f"LOB Abs Degree: {lob_text}<br>"
-                    f"Lat: {last['lat']:.6f}<br>"
-                    f"Lon: {last['lon']:.6f}"
+                    f"Lat: {head_lat:.6f}<br>"
+                    f"Lon: {head_lon:.6f}<br>"
+                    f"MGRS: {mgrs_str}"
                 )
 
             output_layers.append({
@@ -1826,7 +1938,6 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
             s2 = active_lob_sensors[j]
             hit = compute_lob_intersection_ellipse(s1, s2, angular_err_deg=5.0, max_range_km=150.0)
             if hit:
-                # Use shared band color if same band, otherwise highlight cross-band intersection in gold/amber
                 if s1["freq_band"] != s2["freq_band"]:
                     hit["color"] = "#ffc107"
                 intersections.append(hit)
