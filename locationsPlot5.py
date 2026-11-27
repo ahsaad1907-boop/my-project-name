@@ -1,13 +1,25 @@
 import os
+from google import genai
 import glob
 import re
 import math
 import pandas as pd
+import dash
+import numpy as np
 import folium
 from dash import Dash, dcc, html, Input, Output, State, callback_context
 import json
 import base64
 import io
+import time
+
+env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+if os.path.exists(env_path):
+    with open(env_path, "r", encoding="utf-8") as f:
+        for line in f:
+            if "=" in line and not line.strip().startswith("#"):
+                k, v = line.strip().split("=", 1)
+                os.environ[k.strip()] = v.strip().strip('"').strip("'")
 
 USER_HOME = os.path.expanduser("~")
 DATA_ROOT = os.path.join(USER_HOME, "Downloads", "PCC6_DATA")
@@ -134,9 +146,9 @@ for date_key, path_directory in DATES_CONFIG.items():
     t2_keys = ["Sensor 11", "Sensor11"] if use_sensors else ["Raven2", "Raven_2"]
     t3_keys = ["Sensor 12", "Sensor12"] if use_sensors else ["Raven3", "Raven_3"]
     
-    v1_paths = discover_tracking_lists(path_directory, t1_keys, exclude_keywords=["Rabbit"])
-    v2_paths = discover_tracking_lists(path_directory, t2_keys, exclude_keywords=["Rabbit"])
-    v3_paths = discover_tracking_lists(path_directory, t3_keys, exclude_keywords=["Rabbit"])
+    v1_paths = discover_tracking_lists(path_directory, t1_keys, exclude_keywords=["Rabbit", "Did not collect data"])
+    v2_paths = discover_tracking_lists(path_directory, t2_keys, exclude_keywords=["Rabbit", "Did not collect data"])
+    v3_paths = discover_tracking_lists(path_directory, t3_keys, exclude_keywords=["Rabbit", "Did not collect data"])
     
     r1_parsed = [load_clean_file(p) for p in r1_rabbit_paths]
     r2_parsed = [load_clean_file(p) for p in r2_rabbit_paths]
@@ -169,6 +181,26 @@ for date_key, path_directory in DATES_CONFIG.items():
         "v1_sensor": v1_parsed, "v2_sensor": v2_parsed, "v3_sensor": v3_parsed,
         "min_minute": min_minute, "max_minute": max_minute
     }
+
+def pack_numpy_tracks(parsed_list):
+    packed_tracks = []
+    for df, lt, ln, lb, fq in (parsed_list or []):
+        if df.empty:
+            continue
+        df_sorted = df.sort_values('normalized_minutes')
+        mins = df_sorted['normalized_minutes'].to_numpy(dtype=np.float64)
+        lats = pd.to_numeric(df_sorted[lt], errors='coerce').to_numpy(dtype=np.float64)
+        lons = pd.to_numeric(df_sorted[ln], errors='coerce').to_numpy(dtype=np.float64)
+        lobs = pd.to_numeric(df_sorted[lb], errors='coerce').to_numpy(dtype=np.float64) if lb else np.full(len(df_sorted), np.nan)
+        freqs = pd.to_numeric(df_sorted[fq], errors='coerce').to_numpy(dtype=np.float64) if fq else np.full(len(df_sorted), np.nan)
+        valid = (~np.isnan(lats)) & (~np.isnan(lons)) & (lats != 0.0) & (lons != 0.0)
+        if np.any(valid):
+            packed_tracks.append((mins[valid], lats[valid], lons[valid], lobs[valid], freqs[valid]))
+    return packed_tracks
+
+for dk in GLOBAL_DATA_CACHE:
+    for key in ["r1_rabbit", "r2_rabbit", "v1_sensor", "v2_sensor", "v3_sensor"]:
+        GLOBAL_DATA_CACHE[dk][key] = pack_numpy_tracks(GLOBAL_DATA_CACHE[dk][key])
 
 print("Cache verification ready. Initializing web layout server....")
 
@@ -295,28 +327,32 @@ app.layout = html.Div([
             html.Button(
                 "▶ Play", id="play-button", n_clicks=0,
                 style={
-                    'marginRight': '15px', 'fontWeight': 'bold', 
-                    'padding': '5px 15px', 'fontFamily': 'sans-serif',
+                    'marginRight': '10px', 'fontWeight': 'bold', 
+                    'padding': '5px 12px', 'fontFamily': 'sans-serif',
                     'cursor': 'pointer', 'borderRadius': '4px',
-                    'border': '1px solid #ccc', 'backgroundColor': '#f8f9fa'
+                    'border': '1px solid #ccc', 'backgroundColor': '#f8f9fa',
+                    'flexShrink': 0
                 }
             ),
+
+                        # 1. Slider Mode buttons (tightened right margin)
             html.Div([
-                html.Label("Slider Mode:", id="slider-mode-label", style={'fontWeight': 'bold', 'fontFamily': 'sans-serif', 'marginRight': '6px'}),
+                html.Label("Slider Mode:", id="slider-mode-label", style={'fontWeight': 'bold', 'fontFamily': 'sans-serif', 'marginRight': '5px', 'fontSize': '13px', 'whiteSpace': 'nowrap'}),
                 dcc.RadioItems(
                     id='slider-mode-toggle',
                     options=[
-                        {'label': 'Range Window', 'value': 'RANGE'},
-                        {'label': 'Single Marker', 'value': 'SINGLE'}
+                        {'label': ' Windowed', 'value': 'window'},
+                        {'label': ' Cumulative', 'value': 'cumulative'},
+                        {'label': ' Current Only', 'value': 'current'}
                     ],
-                    value='RANGE',
+                    value='window',
                     inline=True,
-                    labelStyle={'marginRight': '6px', 'display': 'inline-flex', 'alignItems': 'center', 'cursor': 'pointer'},
-                    inputStyle={'marginRight': '3px'},
-                    style={'fontFamily': 'sans-serif', 'display': 'inline-flex', 'alignItems': 'center', 'marginRight': '15px'}
-                )
-            ], style={'display': 'flex', 'alignItems': 'center'}),
+                    labelStyle={'marginRight': '5px', 'cursor': 'pointer'},
+                    style={'fontFamily': 'sans-serif', 'fontSize': '12px', 'marginRight': '2px', 'whiteSpace': 'nowrap'}
+                ),
+            ], style={'display': 'flex', 'alignItems': 'center', 'flexShrink': 0}),
 
+            # 2. Start / End Marker shifted slightly left next to the mode buttons
             dcc.RadioItems(
                 id='active-handle-selector',
                 options=[
@@ -330,24 +366,27 @@ app.layout = html.Div([
                 style={
                     'fontFamily': 'sans-serif', 'fontSize': '12px', 
                     'display': 'flex', 'flexDirection': 'column', 
-                    'justifyContent': 'center', 'marginRight': '15px'
+                    'justifyContent': 'center', 'marginLeft': '-4px', 'marginRight': '8px',
+                    'flexShrink': 0
                 }
             ),
             
+            # 3. Slider stretches across the remaining width
             html.Div(
                 id='slider-wrapper-container', 
                 children=[
                     dcc.RangeSlider(id='time-slider', min=0, max=100, step=1, value=[0, 100])
                 ],
-                style={'flex': '1'}
+                style={'flex': '1', 'minWidth': '320px'}
             ),
             
             dcc.Interval(
-                id="play-interval", interval=300, n_intervals=0, disabled=True
+                id="play-interval", interval=450, n_intervals=0, disabled=True
             ),
         ], id="controls-container", style={
-            'width': '96%', 'margin': 'auto', 'padding': '15px 0 10px 0',
-            'display': 'flex', 'alignItems': 'center', 'boxSizing': 'border-box'
+            'width': '98%', 'margin': 'auto', 'marginBottom': '25px',
+            'padding': '12px 0 8px 0', 'display': 'flex',
+            'alignItems': 'center', 'boxSizing': 'border-box'
         }),
     
     html.Div([
@@ -456,15 +495,6 @@ def cycle_map_style(n_clicks):
     styles = ["Street", "Satellite", "Topographic", "Tilted 3D"]
     chosen = styles[(n_clicks or 0) % len(styles)]
     return f"🗺️ Map: {chosen}", chosen
-
-@app.callback(
-    Output('map-json-carrier', 'children'),
-    Input('live-map-payload', 'data')
-)
-def write_payload_to_carrier(payload):
-    if not payload:
-        return ""
-    return json.dumps(payload)
 
 @app.callback(
     Output('map-theme-carrier', 'children'),
@@ -681,24 +711,58 @@ def track_highlighted_handle(selected_handle, current_val, selected_date, store_
     return {'handle': active_handle, 'prev_val': current_val}, active_handle
 
 @app.callback(
-    Output('slider-wrapper-container', 'children'),
-    [Input('slider-mode-toggle', 'value'),
-     Input('date-tabs', 'value'),
-     Input('dark-mode-btn', 'n_clicks')]
+    [Output('slider-wrapper-container', 'children'),
+     Output('active-handle-selector', 'style')],
+    [Input('date-tabs', 'value'),
+     Input('slider-mode-toggle', 'value')]
 )
-def render_dynamic_slider_component(mode, selected_date, dark_clicks):
-    is_dark = (dark_clicks or 0) % 2 == 1
-    total_range, marks = lookup_timeline_scale(selected_date, is_dark=is_dark)
-    if mode == 'SINGLE':
-        return dcc.Slider(
-            id='time-slider', min=0, max=total_range, step=1, value=0,
-            marks=marks, updatemode='mouseup'
+def rebuild_time_slider(selected_date, slider_mode):
+    day_cache = GLOBAL_DATA_CACHE[selected_date]
+    start_min = day_cache["min_minute"]
+    end_min = day_cache["max_minute"]
+    duration = max(1, end_min - start_min)
+
+    # Generate ~8 evenly spaced HH:MM tick marks along the relative [0, duration] axis
+    step_tick = max(1, duration // 8)
+    marks = {}
+    for offset in range(0, duration + 1, step_tick):
+        abs_m = start_min + offset
+        marks[offset] = f"{(abs_m // 60) % 24:02d}:{abs_m % 60:02d}"
+    marks[duration] = f"{(end_min // 60) % 24:02d}:{end_min % 60:02d}"
+
+    if slider_mode == 'window':
+        slider_comp = dcc.RangeSlider(
+            id='time-slider',
+            min=0,
+            max=duration,
+            step=1,
+            value=[0, duration],
+            marks=marks,
+            allowCross=False,
         )
+        handle_style = {
+            'fontFamily': 'sans-serif',
+            'fontSize': '12px',
+            'display': 'flex',
+            'flexDirection': 'column',
+            'justifyContent': 'center',
+            'marginLeft': '-4px',
+            'marginRight': '8px',
+            'flexShrink': 0
+        }
     else:
-        return dcc.RangeSlider(
-            id='time-slider', min=0, max=total_range, step=1, value=[0, total_range],
-            marks=marks, updatemode='mouseup'
+        slider_comp = dcc.Slider(
+            id='time-slider',
+            min=0,
+            max=duration,
+            step=1,
+            value=duration,
+            marks=marks,
+            included=(slider_mode == 'cumulative')
         )
+        handle_style = {'display': 'none'}
+
+    return slider_comp, handle_style
 
 @app.callback(
     [Output('play-button', 'children'),
@@ -744,6 +808,97 @@ def toggle_playback(n_clicks, current_slider_val, selected_date, max_val, is_dis
 
     return "▶ Play", True
 
+GEMINI_ACTION_SCHEMA = {
+    "type": "OBJECT",
+    "properties": {
+        "reply": {"type": "STRING"},
+        "action": {"type": "STRING", "enum": ["none", "add_point", "delete_track", "clear_all"]},
+        "name": {"type": "STRING"},
+        "lat": {"type": "NUMBER"},
+        "lon": {"type": "NUMBER"},
+        "time": {"type": "STRING"},
+        "lob": {"type": "NUMBER"},
+        "freq": {"type": "NUMBER"}
+    },
+    "required": ["reply", "action"]
+}
+
+def query_cloud_gemini_assistant(user_msg, current_date, map_payload, day_min, day_max):
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        return None
+
+    start_str = f"{(day_min // 60) % 24:02d}:{day_min % 60:02d}"
+    end_str = f"{(day_max // 60) % 24:02d}:{day_max % 60:02d}"
+
+    layers_summary = []
+    for lyr in (map_payload or {}).get("layers", []):
+        pts = lyr.get("points") or []
+        head = pts[-1] if pts else None
+        layers_summary.append({
+            "name": lyr.get("name"),
+            "type": "Rabbit" if lyr.get("is_rabbit") else "Sensor",
+            "latest_lat_lon": head,
+            "popup_details": lyr.get("popup", "").replace("<br>", " | ").replace("<b>", "").replace("</b>", "")
+        })
+
+    intersections_summary = [
+        hit.get("popup", "").replace("<br>", " | ").replace("<b>", "").replace("</b>", "")
+        for hit in (map_payload or {}).get("intersections", [])
+    ]
+
+    system_prompt = (
+        f"You are an RF geolocation & tactical tracking assistant embedded in a live map dashboard.\n"
+        f"Active Date Tab: {current_date} (valid time range: {start_str} to {end_str}).\n"
+        f"Live Map Entities: {json.dumps(layers_summary)}\n"
+        f"Active LOB Intersections: {json.dumps(intersections_summary)}\n\n"
+        f"Rules:\n"
+        f"1. If the user asks a question about the current tracks, frequencies, bearings, MGRS coordinates, or LOB intersections, answer concisely using the Live Map Entities and set action='none'.\n"
+        f"2. If the user wants to plot/add a point, set action='add_point' and fill name, lat, lon, time ('HH:MM'), and optional lob/freq. Note: Sensors (anything not named Rabbit/Events_List) MUST have a numeric freq (MHz); if missing, set action='none' and ask the user for the frequency.\n"
+        f"3. If the user wants to remove a specific track, set action='delete_track' and fill name.\n"
+        f"4. If the user wants to clear all custom tracks, set action='clear_all'."
+    )
+
+    client = genai.Client(api_key=api_key)
+    models_to_try = ["gemini-3.8-flash"]
+    last_err = None
+
+    for idx in range(4):
+        model_name = models_to_try[idx] if idx < len(models_to_try) else "gemini-3.8-flash"
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=f"{system_prompt}\n\nUser message: {user_msg}",
+                config={
+                    "response_mime_type": "application/json",
+                    "response_schema": GEMINI_ACTION_SCHEMA,
+                    "temperature": 0.2
+                }
+            )
+            return json.loads(response.text)
+        except Exception as err:
+            last_err = err
+            err_str = str(err)
+            if "503" in err_str or "UNAVAILABLE" in err_str or "429" in err_str:
+                if len(models_to_try) == 1:
+                    try:
+                        for m in client.models.list():
+                            m_id = m.name.replace("models/", "")
+                            if (
+                                "gemini-3" in m_id
+                                and m_id != "gemini-3.8-flash"
+                                and "generateContent" in (m.supported_actions or [])
+                            ):
+                                models_to_try.append(m_id)
+                                break
+                    except Exception:
+                        pass
+                time.sleep(1.5 * (idx + 1))
+                continue
+            raise err
+
+    raise last_err
+
 @app.callback(
     [Output('chat-history-store', 'data'),
      Output('bot-features-store', 'data'),
@@ -757,10 +912,11 @@ def toggle_playback(n_clicks, current_slider_val, selected_date, max_val, is_dis
      State('chat-file-upload', 'filename'),
      State('chat-history-store', 'data'),
      State('bot-features-store', 'data'),
-     State('date-tabs', 'value')],
+     State('date-tabs', 'value'),
+     State('live-map-payload', 'data')],
     prevent_initial_call=True
 )
-def process_chatbot_intelligence(n_clicks, n_submit, upload_contents, reset_clicks, text, upload_filename, history, features, current_date):
+def process_chatbot_intelligence(n_clicks, n_submit, upload_contents, reset_clicks, text, upload_filename, history, features, current_date, map_payload):
     ctx = callback_context
     if not ctx.triggered:
         return history, features, "", None
@@ -1079,10 +1235,54 @@ def process_chatbot_intelligence(n_clicks, n_submit, upload_contents, reset_clic
         history.append({"speaker": "assistant", "text": bot_response})
         return history, features, "", None
 
-    # 3. Fallback help prompt for unrecognized text
+    # 3. Route natural-language questions & conversational commands to Cloud Gemini API
+    try:
+        ai_res = query_cloud_gemini_assistant(user_msg, current_date, map_payload, day_min, day_max)
+    except Exception as e:
+        ai_res = {"action": "none", "reply": f"⚠️ Cloud AI error: {str(e)}"}
+
+    if ai_res:
+        action = ai_res.get("action", "none")
+        reply_text = ai_res.get("reply", "")
+
+        if action == "clear_all":
+            features[current_date] = {}
+        elif action == "delete_track" and ai_res.get("name"):
+            target = ai_res["name"].strip()
+            matched_key = next((k for k in features[current_date] if k.lower() == target.lower()), None)
+            if matched_key:
+                del features[current_date][matched_key]
+        elif action == "add_point" and ai_res.get("lat") is not None and ai_res.get("lon") is not None and ai_res.get("time"):
+            lat = float(ai_res["lat"])
+            lon = float(ai_res["lon"])
+            t_match = re.search(r'(\d{1,2}):(\d{2})', str(ai_res["time"]))
+            if t_match:
+                hours, mins = int(t_match.group(1)), int(t_match.group(2))
+                calc_min = hours * 60 + mins
+                label = (ai_res.get("name") or f"AI-Sensor-{len(features[current_date]) + 1}").strip()
+                freq_val = float(ai_res["freq"]) if ai_res.get("freq") is not None else None
+                lob_val = float(ai_res["lob"]) if ai_res.get("lob") is not None else None
+                is_rabbit_entry = any(k in label.lower() for k in ["rabbit", "events_list", "eventslist"])
+
+                if day_min <= calc_min <= day_max and (is_rabbit_entry or freq_val is not None):
+                    chosen_color = "blue"
+                    if not is_rabbit_entry:
+                        chosen_color, _ = get_frequency_color(freq_val)
+                    features[current_date].setdefault(label, []).append({
+                        "lat": lat, "lon": lon, "lob": lob_val, "freq": freq_val,
+                        "normalized_minutes": calc_min, "time_label": f"{hours:02d}:{mins:02d}",
+                        "color": chosen_color, "is_rabbit": is_rabbit_entry
+                    })
+                    features[current_date][label] = sorted(
+                        features[current_date][label], key=lambda x: x["normalized_minutes"]
+                    )
+
+        history.append({"speaker": "assistant", "text": reply_text})
+        return history, features, "", None
+
+    # Fallback if GEMINI_API_KEY is not set in environment
     bot_response = (
-        "ℹ️ To plot a point, include coordinates, `time`, and **`freq`** (required for sensors; optional `name`, `lob`).\n\n"
-        "**Examples:**\n"
+        "ℹ️ Set `GEMINI_API_KEY` for natural-language AI Q&A, or enter structured coordinates:\n"
         "* `35.26, -116.67 name=\"Sensor Alpha\" time=14:30 lob=120 freq=560`\n"
         "* `name=\"Rabbit 3\" lat=35.218 lon=-116.652 time=14:35`\n"
         "* `delete=\"Sensor Alpha\"` or `delete=all`"
@@ -1139,43 +1339,25 @@ def render_chat_log(history, dark_clicks):
      Output('time-slider', 'marks'), 
      Output('time-slider', 'value')],
     [Input('date-tabs', 'value'),
-     Input('play-interval', 'n_intervals')],
+     Input('dark-mode-btn', 'n_clicks')],
     [State('slider-mode-toggle', 'value'),
-     State('time-slider', 'value'),
-     State('active-handle-store', 'data'),
-     State('dark-mode-btn', 'n_clicks')]
+     State('time-slider', 'value')]
 )
-def update_slider_mechanics(selected_date, n_intervals, mode, current_val, store_data, dark_clicks):
+def update_slider_mechanics(selected_date, dark_clicks, mode, current_val):
     is_dark = (dark_clicks or 0) % 2 == 1
-    ctx = callback_context
-    trigger_id = ctx.triggered[0]['prop_id'].split('.')[0] if ctx.triggered else None
+    trigger_id = callback_context.triggered_id
     total_range, marks = lookup_timeline_scale(selected_date, is_dark=is_dark)
-    
-    if trigger_id == 'date-tabs' or trigger_id is None or trigger_id == '':
-        return total_range, marks, (0 if mode == 'SINGLE' else [0, total_range])
-        
-    if trigger_id == 'play-interval':
-        if mode == 'SINGLE':
-            curr = int(current_val) if isinstance(current_val, (int, float)) else 0
-            return total_range, marks, min(curr + 1, total_range)
-        else:
-            if isinstance(current_val, list) and len(current_val) == 2:
-                low_handle = int(current_val[0])
-                high_handle = int(current_val[1])
-                active_handle = (store_data or {}).get('handle', 0)
+    is_single_handle = (mode != 'window')
 
-                if active_handle == 0:
-                    low_handle = min(low_handle + 1, high_handle)
-                else:
-                    high_handle = min(high_handle + 1, total_range)
-                return total_range, marks, [low_handle, high_handle]
-            return total_range, marks, [0, total_range]
-        
-    return total_range, marks, (0 if mode == 'SINGLE' else [0, total_range])
+    if trigger_id == 'dark-mode-btn':
+        return total_range, marks, current_val
+
+    return total_range, marks, (total_range if is_single_handle else [0, total_range])
+
 
 @app.callback(
     Output('folium-map', 'srcDoc'),
-    Input('date-tabs', 'id'),
+    Input('main-layout', 'id'),
     State('date-tabs', 'value')
 )
 def update_map(_, initial_date):
@@ -1212,6 +1394,12 @@ def update_map(_, initial_date):
     <div id="dynamic-legend" style="position: fixed; bottom: 50px; left: 50px; width: 175px; background-color: white; color: black; border: 2px solid grey; z-index: 9999; font-size: 13px; padding: 10px; font-family: sans-serif; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);">
         <b>Legend ({initial_date})</b><br><span style="color: gray;">Loading...</span>
     </div>
+    <div id="tilt-rotate-box" style="display: none; position: fixed; bottom: 56px; right: 20px; background-color: white; color: black; border: 2px solid grey; z-index: 9999; font-size: 12px; padding: 4px 8px; font-family: sans-serif; box-shadow: 2px 2px 5px rgba(0,0,0,0.3); align-items: center; gap: 6px;">
+        <button id="tilt-rot-left" type="button" style="cursor:pointer; padding:2px 6px; font-weight:bold;">⟲ -15°</button>
+        <span id="tilt-rot-label" style="font-family:monospace; min-width:38px; text-align:center;">0°</span>
+        <button id="tilt-rot-right" type="button" style="cursor:pointer; padding:2px 6px; font-weight:bold;">+15° ⟳</button>
+        <button id="tilt-rot-reset" type="button" style="cursor:pointer; padding:2px 6px;">Reset</button>
+    </div>
     <script>
         var layerRegistry = {{}};
         var layerControl = null;
@@ -1223,39 +1411,50 @@ def update_map(_, initial_date):
             var themeEl = window.parent.document.getElementById('map-theme-carrier');
             var isDark = themeEl && (themeEl.textContent.trim() === 'dark');
 
+            var styleEl = window.parent.document.getElementById('map-style-carrier');
+            var activeStyle = (styleEl && styleEl.textContent.trim()) ? styleEl.textContent.trim() : currentActiveBase;
+            currentActiveBase = activeStyle;
+
             var tilePane = document.querySelector('.leaflet-tile-pane');
             if (tilePane) {{
-                // Keep Satellite and Tilted 3D satellite imagery natural in Dark Mode
-                var useInvert = isDark && (currentActiveBase !== 'Satellite' && currentActiveBase !== 'Tilted 3D');
+                // Never invert Satellite or Tilted 3D tiles in Dark Mode
+                var useInvert = isDark && (activeStyle !== 'Satellite' && activeStyle !== 'Tilted 3D');
                 tilePane.style.filter = useInvert
                     ? 'invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%)'
                     : 'none';
             }}
 
+            var deg = window.tiltRotationDeg || 0;
             var mapContainer = document.querySelector('.leaflet-container');
+            var rotBox = document.getElementById('tilt-rotate-box');
+            var rotLabel = document.getElementById('tilt-rot-label');
+
             if (mapContainer) {{
                 if (currentActiveBase === 'Tilted 3D') {{
-                    mapContainer.style.transform = 'perspective(950px) rotateX(40deg) scale(1.32)';
-                    mapContainer.style.transformOrigin = '50% 60%';
-                    mapContainer.style.transition = 'transform 0.3s ease';
+                    mapContainer.style.transform =
+                        'perspective(950px) rotateX(40deg) rotateZ(' + deg + 'deg) scale(1.45)';
+                    mapContainer.style.transformOrigin = '50% 55%';
+                    mapContainer.style.transition = 'transform 0.25s ease';
+                    if (rotBox) rotBox.style.display = 'flex';
+                    if (rotLabel) rotLabel.textContent = (((deg % 360) + 360) % 360) + '°';
                 }} else {{
                     mapContainer.style.transform = 'none';
+                    if (rotBox) rotBox.style.display = 'none';
                 }}
             }}
 
-            var legendEl = document.getElementById('dynamic-legend');
-            if (legendEl) {{
-                legendEl.style.backgroundColor = isDark ? '#212529' : 'white';
-                legendEl.style.color = isDark ? '#f8f9fa' : 'black';
-                legendEl.style.borderColor = isDark ? '#555' : 'grey';
-            }}
+            var bg = isDark ? '#212529' : 'white';
+            var fg = isDark ? '#f8f9fa' : 'black';
+            var bd = isDark ? '#555' : 'grey';
 
-            var mgrsEl = document.getElementById('mgrs-cursor-box');
-            if (mgrsEl) {{
-                mgrsEl.style.backgroundColor = isDark ? '#212529' : 'white';
-                mgrsEl.style.color = isDark ? '#f8f9fa' : 'black';
-                mgrsEl.style.borderColor = isDark ? '#555' : 'grey';
-            }}
+            ['dynamic-legend', 'mgrs-cursor-box', 'tilt-rotate-box'].forEach(function(id) {{
+                var el = document.getElementById(id);
+                if (el) {{
+                    el.style.backgroundColor = bg;
+                    el.style.color = fg;
+                    el.style.borderColor = bd;
+                }}
+            }});
         }}
 
         function applyMapTheme(themeStr) {{
@@ -1472,11 +1671,9 @@ def update_map(_, initial_date):
         function syncFromParent() {{
             var pDoc = window.parent.document;
             var jsonEl = pDoc.getElementById('map-json-carrier');
-            var themeEl = pDoc.getElementById('map-theme-carrier');
 
-            if (themeEl) {{
-                applyMapTheme(themeEl.textContent.trim());
-            }}
+            applyVisualFilters();
+
             if (jsonEl && jsonEl.textContent) {{
                 try {{
                     renderPayload(JSON.parse(jsonEl.textContent));
@@ -1506,6 +1703,35 @@ def update_map(_, initial_date):
                  applyMapStyle(styleEl.textContent.trim(), true);
              }}).observe(styleEl, {{ childList: true, characterData: true, subtree: true }});
          }}
+
+         window.tiltRotationDeg = 0;
+         var btnLeft = document.getElementById('tilt-rot-left');
+         var btnRight = document.getElementById('tilt-rot-right');
+         var btnReset = document.getElementById('tilt-rot-reset');
+
+         if (btnLeft) btnLeft.addEventListener('click', function() {{
+             tiltRotationDeg -= 15;
+             applyVisualFilters();
+         }});
+         if (btnRight) btnRight.addEventListener('click', function() {{
+             tiltRotationDeg += 15;
+             applyVisualFilters();
+         }});
+         if (btnReset) btnReset.addEventListener('click', function() {{
+             tiltRotationDeg = 0;
+             applyVisualFilters();
+         }});
+
+         document.addEventListener('keydown', function(e) {{
+             if (currentActiveBase !== 'Tilted 3D') return;
+             if (e.key === 'q' || e.key === 'Q') {{
+                 tiltRotationDeg -= 15;
+                 applyVisualFilters();
+             }} else if (e.key === 'e' || e.key === 'E') {{
+                 tiltRotationDeg += 15;
+                 applyVisualFilters();
+             }}
+         }});
      }});
     </script>
     """
@@ -1726,18 +1952,43 @@ def latlon_to_mgrs(lat, lon, precision=5):
     return f"{zone_num}{band_letter} {col_letter}{row_letter} {e_str} {n_str}"
 
 @app.callback(
-    Output('live-map-payload', 'data'),
+    [Output('live-map-payload', 'data'),
+     Output('map-json-carrier', 'children'),
+     Output('time-slider', 'value', allow_duplicate=True)],
     [Input('date-tabs', 'value'),
      Input('time-slider', 'value'),
-     Input('bot-features-store', 'data')]
+     Input('bot-features-store', 'data'),
+     Input('slider-mode-toggle', 'value'),
+     Input('play-interval', 'n_intervals')],
+    [State('time-slider', 'max'),
+     State('active-handle-store', 'data')],
+    prevent_initial_call=True
 )
-def compute_live_map_data(selected_date, slider_range_window, bot_features):
+def compute_live_map_data(selected_date, slider_range_window, bot_features, slider_mode, n_intervals, max_val, store_data):
     ctx = callback_context
     trigger_id = ctx.triggered_id
 
     day_cache = GLOBAL_DATA_CACHE[selected_date]
     start_min = day_cache["min_minute"]
     end_min = day_cache["max_minute"]
+    total_range = int(max_val) if max_val is not None else max(1, end_min - start_min)
+
+    next_slider_val = dash.no_update
+
+    if trigger_id == 'play-interval':
+        if slider_mode != 'window':
+            curr = int(slider_range_window[-1]) if isinstance(slider_range_window, list) else (int(slider_range_window) if isinstance(slider_range_window, (int, float)) else 0)
+            slider_range_window = min(curr + 1, total_range)
+            next_slider_val = slider_range_window
+        elif isinstance(slider_range_window, list) and len(slider_range_window) >= 2:
+            low_h, high_h = int(slider_range_window[0]), int(slider_range_window[1])
+            active_handle = (store_data or {}).get('handle', 0)
+            if active_handle == 0:
+                low_h = min(low_h + 1, high_h)
+            else:
+                high_h = min(high_h + 1, total_range)
+            slider_range_window = [low_h, high_h]
+            next_slider_val = slider_range_window
 
     if trigger_id == 'date-tabs' or slider_range_window is None:
         min_cutoff = start_min
@@ -1766,31 +2017,48 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
 
     for name, default_color, parsed_list, is_rabbit in layers_def:
         timed_pts, raw_lob, latest_min, latest_freq = [], None, None, None
-        for item in (parsed_list or []):
-            df, lt, ln, lb, fq = item
-            if df.empty:
+        for mins, lats, lons, lobs, freqs in (parsed_list or []):
+            i0 = int(np.searchsorted(mins, min_cutoff, side='left'))
+            i1 = int(np.searchsorted(mins, max_cutoff, side='right'))
+            if i0 >= i1:
                 continue
-            sliced = df.loc[(df['normalized_minutes'] >= min_cutoff) & (df['normalized_minutes'] <= max_cutoff)]
-            if not sliced.empty:
-                for m_val, lat_v, lon_v in zip(
-                    sliced['normalized_minutes'].to_numpy(),
-                    sliced[lt].to_numpy(),
-                    sliced[ln].to_numpy()
-                ):
-                    timed_pts.append((float(m_val), float(lat_v), float(lon_v)))
 
-                last_row_min = int(sliced['normalized_minutes'].iloc[-1])
-                if latest_min is None or last_row_min >= latest_min:
-                    latest_min = last_row_min
-                    if lb and not sliced[lb].dropna().empty:
-                        raw_lob = float(sliced[lb].dropna().iloc[-1])
-                    if fq and not sliced[fq].dropna().empty:
-                        latest_freq = float(sliced[fq].dropna().iloc[-1])
+            sub_m = mins[i0:i1]
+            sub_lat = lats[i0:i1]
+            sub_lon = lons[i0:i1]
+
+            if not is_rabbit:
+                # Filter out out-of-region coordinates (e.g., 44, -76)
+                in_box = (sub_lat >= 30.0) & (sub_lat <= 40.0) & (sub_lon >= -122.0) & (sub_lon <= -110.0)
+                if not np.any(in_box):
+                    continue
+                sub_m = sub_m[in_box]
+                sub_lat = sub_lat[in_box]
+                sub_lon = sub_lon[in_box]
+                sub_lob = lobs[i0:i1][in_box]
+                sub_freq = freqs[i0:i1][in_box]
+            else:
+                sub_lob = lobs[i0:i1]
+                sub_freq = freqs[i0:i1]
+
+            timed_pts.extend(zip(sub_m.tolist(), sub_lat.tolist(), sub_lon.tolist()))
+
+            last_row_min = int(sub_m[-1])
+            if latest_min is None or last_row_min >= latest_min:
+                latest_min = last_row_min
+                valid_lobs = sub_lob[~np.isnan(sub_lob)]
+                if len(valid_lobs) > 0:
+                    raw_lob = float(valid_lobs[-1])
+                valid_freqs = sub_freq[~np.isnan(sub_freq)]
+                if len(valid_freqs) > 0:
+                    latest_freq = float(valid_freqs[-1])
 
         timed_pts.sort()
         pts = []
         for _, lat_v, lon_v in timed_pts:
             if lat_v == 0.0 or lon_v == 0.0:
+                continue
+            if not is_rabbit and not (30.0 <= lat_v <= 40.0 and -122.0 <= lon_v <= -110.0):
                 continue
             if not pts or pts[-1] != [lat_v, lon_v]:
                 pts.append([lat_v, lon_v])
@@ -1845,6 +2113,9 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                     f"MGRS: {mgrs_str}"
                 )
 
+            if slider_mode == 'current' or not is_rabbit:
+                pts = [pts[-1]]
+
             output_layers.append({
                 "name": name,
                 "color": layer_color,
@@ -1872,15 +2143,15 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
             valid_freqs = [float(n["freq"]) for n in vis if n.get("freq") is not None]
             latest_freq = valid_freqs[-1] if valid_freqs else None
             cones = []
+            mgrs_str = latlon_to_mgrs(last["lat"], last["lon"])
 
             if is_rabbit_track:
-                track_color = last.get("color", "darkgreen")
-                mgrs_str = latlon_to_mgrs(head_lat, head_lon)
+                track_color = last.get("color", "blue")
                 popup_html = (
-                    f"<b>{name}</b><br>"
-                    f"Time: {time_str}<br>"
-                    f"Lat: {head_lat:.6f}<br>"
-                    f"Lon: {head_lon:.6f}<br>"
+                    f"<b>{b_lbl}</b><br>"
+                    f"Time: {last.get('time_label', 'N/A')}<br>"
+                    f"Lat: {last['lat']:.6f}<br>"
+                    f"Lon: {last['lon']:.6f}<br>"
                     f"MGRS: {mgrs_str}"
                 )
             else:
@@ -1898,7 +2169,7 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                         rad = math.radians(latest_lob + offset)
                         cones.append([
                             [last["lat"], last["lon"]],
-                            [last["lat"] + 0.08 * math.cos(rad), last["lon"] + 0.08 * math.sin(rad)]
+                            [last["lat"] + 0.25 * math.cos(rad), last["lon"] + 0.25 * math.sin(rad)]
                         ])
                     active_lob_sensors.append({
                         "name": b_lbl,
@@ -1906,20 +2177,23 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                         "lon": float(last["lon"]),
                         "lob": float(latest_lob),
                         "color": track_color,
-                        "freq_band": band_label
+                        "freq_band": band_label,
+                        "freq_val": latest_freq
                     })
 
                 lob_text = f"{latest_lob}°" if latest_lob is not None else "N/A"
-                mgrs_str = latlon_to_mgrs(head_lat, head_lon)
                 popup_html = (
-                    f"<b>{name}</b><br>"
-                    f"Time: {time_str}<br>"
-                    f"Frequency: {exact_freq_str} ({band_label})<br>"
+                    f"<b>{b_lbl}</b><br>"
+                    f"Time: {last.get('time_label', 'N/A')}"
+                    f"{freq_line}<br>"
                     f"LOB Abs Degree: {lob_text}<br>"
-                    f"Lat: {head_lat:.6f}<br>"
-                    f"Lon: {head_lon:.6f}<br>"
+                    f"Lat: {last['lat']:.6f}<br>"
+                    f"Lon: {last['lon']:.6f}<br>"
                     f"MGRS: {mgrs_str}"
                 )
+
+            if slider_mode == 'current' or not is_rabbit_track:
+                pts = [pts[-1]]
 
             output_layers.append({
                 "name": b_lbl,
@@ -1942,12 +2216,13 @@ def compute_live_map_data(selected_date, slider_range_window, bot_features):
                     hit["color"] = "#ffc107"
                 intersections.append(hit)
 
-    return {
+    payload = {
         "date": selected_date,
         "layers": output_layers,
         "freq_legend": freq_legend_entries,
         "intersections": intersections
     }
+    return payload, json.dumps(payload), next_slider_val
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=8055)
